@@ -1,0 +1,6 @@
+{
+  "parent": "cdmoveset:item/spear",
+  "textures": {
+    "layer0": "cdmoveset:item/iron_spear"
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        " B ",
+        " B ",
+        "S  "
+    ],
+    "key":
+    {
+        "B": { "item" : "minecraft:iron_ingot" },
+        "S": { "item" : "cdmoveset:s_ironsword" }
+    },
+    "result":
+    {
+        "item" : "cdmoveset:s_irontachi",
+        "count" : 1
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "attributes":
+  {
+    "common":
+    {
+      "impact":2.4,
+      "max_strikes":3,
+      "damage_bonus": 1
+    }
+  },
+  "type":"cdmoveset:s_tachi"
+}

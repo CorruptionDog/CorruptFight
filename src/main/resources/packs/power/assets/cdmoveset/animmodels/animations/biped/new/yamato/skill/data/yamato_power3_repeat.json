@@ -1,0 +1,108 @@
+{
+	"trail_effects": [
+		{
+			"start_time": 0.05,
+			"end_time": 0.25,
+			"joint": "Tool_R",
+			"color": [64, 64, 64],
+    	    "begin_pos": [0.0, 0.0, -0.5],
+    	    "end_pos": [0.0, 0.1, -2.1],
+			"item_skin_hand": "main_hand",
+			"lifetime": 4,
+		    "interpolations": 7,
+	    	"texture_path": "epicfight:textures/particle/power_trail2.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		},
+		{
+			"start_time": 0.05,
+			"end_time": 0.25,
+			"joint": "Tool_R",
+			"color": [48, 48, 48],
+    	    "begin_pos": [0.5, 0.0, 0.5],
+    	    "end_pos": [-0.5, 0.1, -2.7],
+			"item_skin_hand": "main_hand",
+			"lifetime": 5,
+		    "interpolations": 7,
+	    	"texture_path": "epicfight:textures/particle/power_trail4.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		},
+		{
+			"start_time": 0.05,
+			"end_time": 0.25,
+			"joint": "Tool_R",
+			"color": [80, 80, 80],
+    	    "begin_pos": [-0.5, 0.0, 0.1],
+    	    "end_pos": [0.5, -0.1, -1.5],
+			"item_skin_hand": "main_hand",
+			"lifetime": 6,
+		    "interpolations": 7,
+	    	"texture_path": "epicfight:textures/particle/power_trail6.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		},
+		{
+			"start_time": 0.3,
+			"end_time": 0.5,
+			"joint": "Tool_R",
+			"color": [64, 64, 64],
+    	    "begin_pos": [0.0, 0.0, 0.5],
+    	    "end_pos": [0.0, 0.1, -2.1],
+			"item_skin_hand": "main_hand",
+			"lifetime": 4,
+		    "interpolations": 7,
+	    	"texture_path": "epicfight:textures/particle/power_trail2.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		},
+		{
+			"start_time": 0.3,
+			"end_time": 0.5,
+			"joint": "Tool_R",
+			"color": [48, 48, 48],
+    	    "begin_pos": [-0.5, 0.0, 0.5],
+    	    "end_pos": [0.5, 0.1, -2.7],
+			"item_skin_hand": "main_hand",
+			"lifetime": 5,
+		    "interpolations": 7,
+	    	"texture_path": "epicfight:textures/particle/power_trail4.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		},
+		{
+			"start_time": 0.3,
+			"end_time": 0.5,
+			"joint": "Tool_R",
+			"color": [80, 80, 80],
+    	    "begin_pos": [0.5, 0.0, 0.1],
+    	    "end_pos": [-0.5, -0.1, -1.5],
+			"item_skin_hand": "main_hand",
+			"lifetime": 6,
+		    "interpolations": 7,
+	    	"texture_path": "epicfight:textures/particle/power_trail6.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		},
+		{
+			"start_time": 0.05,
+			"end_time": 0.06,
+			"joint": "Tool_R",
+			"item_skin_hand": "main_hand",
+			"color": [80, 80, 80],
+    	    "begin_pos": [-0.25, 0.0, 0.5],
+    	    "end_pos": [0.25, 0.2, -2.5],
+    	    "lifetime": 10,
+		    "interpolations": 4,
+	    	"texture_path": "epicfight:textures/particle/power_trail3.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		},
+		{
+			"start_time": 0.3,
+			"end_time": 0.31,
+			"joint": "Tool_R",
+			"item_skin_hand": "main_hand",
+			"color": [80, 80, 80],
+    	    "begin_pos": [-0.25, 0.0, 0.5],
+    	    "end_pos": [0.25, 0.2, -2.5],
+    	    "lifetime": 10,
+		    "interpolations": 4,
+	    	"texture_path": "epicfight:textures/particle/power_trail3.png",
+	    	"particle_type": "epicacg:bloom_trail"
+		}
+	]
+}

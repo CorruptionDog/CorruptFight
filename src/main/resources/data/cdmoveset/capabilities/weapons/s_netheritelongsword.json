@@ -1,0 +1,13 @@
+{
+	"attributes":
+	{
+		"two_hand":
+		{
+			"armor_negation":15.0,
+			"max_strikes": 3,
+			"damage_bonus": 1,
+			"impact":3.1
+		}
+	},
+	"type":"cdmoveset:s_longsword"
+}

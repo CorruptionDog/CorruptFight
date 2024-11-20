@@ -1,0 +1,6 @@
+{
+  "parent": "cdmoveset:item/longsword",
+  "textures": {
+    "layer0": "cdmoveset:item/s_diamondlongsword"
+  }
+}

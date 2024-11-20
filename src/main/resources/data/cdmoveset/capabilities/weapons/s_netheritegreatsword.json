@@ -1,0 +1,19 @@
+{
+	"attributes":
+	{
+		"common":
+		{
+			"armor_negation": 20.0,
+			"max_strikes": 4,
+			"damage_bonus": 1.5,
+			"impact": 4.5
+		},
+		"two_hand":
+		{
+			"armor_negation":15.0,
+			"max_strikes": 2,
+			"impact": 3.5
+		}
+	},
+	"type":"cdmoveset:s_greatsword"
+}

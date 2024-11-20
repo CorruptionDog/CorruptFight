@@ -1,0 +1,58 @@
+{   
+    "skill.yamato_step":
+    {
+        "category":"master",
+        "subtitle":"skill.yamato_step",
+        "sounds":[{"name":"cdmoveset:entity/skill/yamato_step", "stream":true, "attenuation_distance":50}]
+    },
+
+   "sfx.foresight":
+    {
+        "category":"master",
+        "subtitle":"sfx.foresight",
+        "sounds":[{"name":"cdmoveset:sfx/foresight", "stream":true, "attenuation_distance":50}]
+    },
+
+    "sfx.yamato_step":
+    {
+        "category":"master",
+        "subtitle":"sfx.yamato_step",
+        "sounds":[{"name":"cdmoveset:sfx/yamato_step", "stream":true, "attenuation_distance":50}]
+    },
+    "sfx.execute":
+    {
+        "category":"master",
+        "subtitle":"sfx.execute",
+        "sounds":[{"name":"cdmoveset:sfx/execute", "stream":true, "attenuation_distance":50}]
+    },
+    "sfx.damage":
+    {
+        "category":"master",
+        "subtitle":"sfx.damage",
+        "sounds":[{"name":"cdmoveset:sfx/damage1", "stream":true, "attenuation_distance":50},{"name":"cdmoveset:sfx/damage2", "stream":true, "attenuation_distance":50}]
+    },
+    "sfx.dodge":
+    {
+        "category":"master",
+        "subtitle":"sfx.dodge",
+        "sounds":[{"name":"cdmoveset:sfx/dodge", "stream":true, "attenuation_distance":20}]
+    },
+  "sfx.hurt":
+  {
+    "category":"master",
+    "subtitle":"sfx.hurt",
+    "sounds":[{"name":"cdmoveset:sfx/hurt", "stream":true, "attenuation_distance":50}]
+  },
+    "sfx.skills":
+    {
+        "category":"master",
+        "subtitle":"sfx.skills",
+        "sounds":[{"name":"cdmoveset:sfx/skills", "stream":true, "attenuation_distance":20}]
+    },
+    "yamato.yamato_in":
+    {
+        "category":"master",
+        "subtitle":"yamato.yamato_in",
+        "sounds":[{"name":"cdmoveset:yamato/yamato_in", "stream":true, "attenuation_distance":50},{"name":"cdmoveset:yamato/sword_in2", "stream":true, "attenuation_distance":50}]
+    }
+}

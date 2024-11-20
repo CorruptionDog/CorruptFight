@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "  B",
+        " S ",
+        "S  "
+    ],
+    
+    "key":
+    {
+        "B": { "item" : "minecraft:diamond_sword" },
+        "S": { "item" : "minecraft:iron_block" }
+    },
+    
+    "result":
+    {
+        "item" : "cdmoveset:s_diamondspear",
+        "count" : 1
+    }
+}

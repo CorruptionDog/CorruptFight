@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.corruptdog.cdm.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "cdmoveset.mixin-refmap.json",
+  "mixins": [
+    "PlayerPatchMixin",
+    "DodgeSkillMixin",
+    "TechnicianSkillMixin"
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}

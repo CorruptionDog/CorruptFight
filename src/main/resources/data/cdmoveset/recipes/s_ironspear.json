@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "  B",
+        " S ",
+        "S  "
+    ],
+    
+    "key":
+    {
+        "B": { "item" : "cdmoveset:s_ironsword" },
+        "S": { "item" : "minecraft:stick" }
+    },
+    
+    "result":
+    {
+        "item" : "cdmoveset:s_ironspear",
+        "count" : 1
+    }
+}

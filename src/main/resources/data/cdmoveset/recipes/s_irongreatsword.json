@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        " BB",
+        "BBB",
+        "SB "
+    ],
+    "key":
+    {
+        "B": { "item" : "minecraft:iron_ingot" },
+        "S": { "item" : "minecraft:iron_block" }
+    },
+    "result":
+    {
+        "item" : "cdmoveset:s_irongreatsword",
+        "count" : 1
+    }
+}

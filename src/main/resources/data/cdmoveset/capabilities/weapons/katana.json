@@ -1,0 +1,12 @@
+{
+	"attributes":
+	{
+		"common":
+		{
+			"speed_bonus":-0.35,
+			"impact":0.8,
+			"max_strikes":2
+		}
+	},
+	"type":"cdmoveset:katana"
+}

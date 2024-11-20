@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        " B ",
+        " B ",
+        "S  "
+    ],
+    "key":
+    {
+        "B": { "item" : "minecraft:diamond" },
+        "S": { "item" : "cdmoveset:s_diamondsword" }
+    },
+    "result":
+    {
+        "item" : "cdmoveset:s_diamondtachi",
+        "count" : 1
+    }
+}

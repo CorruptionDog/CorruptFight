@@ -1,0 +1,52 @@
+{
+	"loader": "forge:separate_transforms",
+	"base":
+	{
+		"loader": "forge:obj",
+  		"model": "cdmoveset:models/item/obj/yamato.obj",
+  		"flip_v": true,
+		"display":
+  		 	{
+    		"thirdperson_righthand":
+    		{
+      		"translation": [6.7, -7, 5.3],
+      		"rotation": [ 89.5, 0.25, 0 ],
+      		"scale": [0.82, 0.65, 0.65]
+    		},
+    		"firstperson_righthand":
+    		{
+      		"translation": [13,-6,-0],
+      		"rotation": [85,0,0],
+          	"scale": [ 0.8, 0.7, 0.75 ]
+    		}
+  	}
+	},
+	"perspectives":
+	{
+		"ground":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "cdmoveset:item/katana"
+			}
+		},
+		"gui":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "cdmoveset:item/katana"
+			},
+			"gui_light": "front"
+		},
+		"fixed":
+		{
+			"parent": "item/generated",
+			"textures":
+			{
+				"layer0": "cdmoveset:item/katana"
+			}
+		}
+	}
+}
