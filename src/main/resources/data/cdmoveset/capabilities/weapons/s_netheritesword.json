@@ -1,0 +1,19 @@
+{
+	"attributes":
+	{
+		"common":
+		{
+			"speed_bonus": 0.4,
+			"impact": 1.4,
+			"max_strikes":2,
+			"armor_negation":15.0
+		},
+		"two_hand":
+		{
+			"max_strikes": 3,
+			"damage_bonus": -1,
+			"impact": 1.0
+		}
+	},
+	"type":"cdmoveset:s_sword"
+}
