@@ -157,7 +157,7 @@ public class CDmoveset
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"yamato"), YAMATO);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_spear"), S_SPEAR);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_sword"), S_SWORD);
-        event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"yamatos"), YAMATOS);
+
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_longsword"), S_LONGSWORD);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"dual_tachi"), DUAL_TACHI);
     }

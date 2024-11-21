@@ -10,9 +10,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.skill.SkillDataKey;
-import yesman.epicfight.skill.identity.MeteorSlamSkill;
-import yesman.epicfight.skill.mover.DemolitionLeapSkill;
-import yesman.epicfight.skill.mover.PhantomAscentSkill;
 
 public class CDSkillDataKeys {
     public static final DeferredRegister<SkillDataKey<?>> DATA_KEYS = DeferredRegister.create(new ResourceLocation(EpicFightMod.MODID, "skill_data_keys"), CDmoveset.MOD_ID);
@@ -44,6 +41,12 @@ public class CDSkillDataKeys {
     public static final RegistryObject<SkillDataKey<Boolean>> POWER3 = DATA_KEYS.register("power3", () ->
             SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
 
+    public static final RegistryObject<SkillDataKey<Boolean>> FATAL = DATA_KEYS.register("fatal", () ->
+            SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
+
+//
+//    public static final RegistryObject<SkillDataKey<Integer>> COMBO_COUNT = DATA_KEYS.register("combo_counter", () ->
+//            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));
 //    public static final RegistryObject<SkillDataKey<Float>> SLASH_COUNTER = DATA_KEYS.register("slash_counter", () ->
 //            SkillDataKey.createFloatKey(0F, false, YamatoArt.class));
 //    public static final RegistryObject<SkillDataKey<Boolean>> COUNTER_SUCCESSED = DATA_KEYS.register("counter_successed", () ->

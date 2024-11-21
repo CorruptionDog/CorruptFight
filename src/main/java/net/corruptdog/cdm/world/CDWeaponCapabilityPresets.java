@@ -146,25 +146,6 @@ public class CDWeaponCapabilityPresets {
                     .weaponCombinationPredicator((entitypatch) -> EpicFightCapabilities.getItemStackCapability(entitypatch.getOriginal().getOffhandItem()).getWeaponCategory() == CorruptWeaponCategories.DUAL_TACHI);
 
 
-    public static final Function<Item, CapabilityItem.Builder> YAMATOS = (item) ->
-            WeaponCapability.builder()
-                    .category(CorruptWeaponCategories.YAMATO)
-                    .canBePlacedOffhand(false)
-                    .styleProvider((playerpatch) -> Styles.TWO_HAND)
-                    .hitSound(EpicFightSounds.BLADE_HIT.get())
-                    .collider(CorruptCollider.YAMATO)
-                    .newStyleCombo(Styles.TWO_HAND, CorruptAnimations.YAMATOS_A1, CorruptAnimations.YAMATOS_A2, CorruptAnimations.YAMATOS_A3,CorruptAnimations.YAMATOS_A4,CorruptAnimations.YAMATOS_A5, CorruptAnimations.YAMATO_DASH, CorruptAnimations.YAMATO_AIRSLASH)
-                    .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.YAMATOSKILL)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, CorruptAnimations.YAMATO_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, CorruptAnimations.YAMATOS_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, CorruptAnimations.YAMATOS_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, CorruptAnimations.YAMATOS_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SNEAK, CorruptAnimations.YAMATO_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, CorruptAnimations.YAMATO_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.JUMP, CorruptAnimations.YAMATO_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, CorruptAnimations.YAMATO_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, CorruptAnimations.YAMATO_GUARD);
-
     public static final Function<Item, CapabilityItem.Builder> S_LONGSWORD = (item) ->
             WeaponCapability.builder()
                     .category(CorruptWeaponCategories.S_LONGSWORD)

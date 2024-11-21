@@ -3,6 +3,7 @@ package net.corruptdog.cdm.gameasset;
 import java.util.Set;
 
 import net.corruptdog.cdm.main.CDmoveset;
+import net.corruptdog.cdm.skill.Dodge.Dodge;
 import net.corruptdog.cdm.skill.Dodge.SStep;
 import net.corruptdog.cdm.skill.Passive.BloodWolf;
 import net.corruptdog.cdm.skill.weaponinnate.*;
@@ -30,20 +31,20 @@ public class CDSkills {
     public static Skill SPEAR_SLASH;
     public static Skill LETHAL_SLICING;
     public static Skill YAMATOSKILL;
-    public static Skill CDPARRY;
     public static Skill GUARDPARRY;
     public static Skill DENGLONG;
     public static Skill DUAL_GREATSWORD_SKILL;
     public static Skill WIND_SLASH;
     public static Skill FATAL_DRAW_DASH;
     public static Skill BLADE_RUSH;
-    public static Skill KATANASKILL;
+    public static Skill KATANASPSKILL;
     public static Skill BLOODWOLF;
     public static Skill BLOOD;
     public static Skill YAMATO_STEP;
     public static Skill SSTEP;
     public static Skill PSSTEP;
     public static Skill DUAL_TACHISKILL;
+    public static Skill KATANASKILL;
 //
 //    public static Skill YAMATO_PASSIVE;
 //    public static Skill YAMATO_ART;
@@ -53,12 +54,12 @@ public class CDSkills {
 
         SkillBuildEvent.ModRegistryWorker modRegistry = build.createRegistryWorker(CDmoveset.MOD_ID);
         YAMATO_STEP = modRegistry.build("yamato_step", DodgeSkill::new, StepSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.YAMATO_STEP_FORWARD, () -> CorruptAnimations.YAMATO_STEP_BACKWARD, () -> CorruptAnimations.YAMATO_STEP_LEFT, () -> CorruptAnimations.YAMATO_STEP_RIGHT));
-        SSTEP = modRegistry.build("sstep", DodgeSkill::new, StepSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.SSTEP_FORWARD, () -> CorruptAnimations.SSTEP_BACKWARD, () -> CorruptAnimations.SSTEP_LEFT, () -> CorruptAnimations.SSTEP_FORWARD));
+        SSTEP = modRegistry.build("sstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.SSTEP_FORWARD, () -> CorruptAnimations.SSTEP_BACKWARD, () -> CorruptAnimations.SSTEP_LEFT, () -> CorruptAnimations.SSTEP_FORWARD));
         GUARDPARRY = modRegistry.build("guardparry", GuardParrySkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION_INFINITE));
         BLOODWOLF = modRegistry.build( "bloodwolf", BloodWolf::new, PassiveSkill.createIdentityBuilder());
         DUAL_TACHISKILL = modRegistry.build( "dual_tachiskill", DualTchiSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         YAMATOSKILL = modRegistry.build( "yamatoskill", YamatoSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
-
+        YAMATOSKILL = modRegistry.build( "yamatoskill", YamatoSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
 //
 //        YAMATO_ART = modRegistry.build( "yamato_art", YamatoArt::new, WeaponInnateSkill.createWeaponInnateBuilder());
 //        YAMATO_ATTACK = modRegistry.build("yamato_attack",YamatoAttack::new,YamatoAttack.createBuilder());
@@ -92,7 +93,16 @@ public class CDSkills {
                         () -> CorruptAnimations.SSTEP_RIGHT
                 )
         );
-        WeaponInnateSkill KatanaSkill = modRegistry.build("katanaskill", KatanaSpSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        WeaponInnateSkill KatanaspSkill = modRegistry.build("katanaspskill", KatanaSpSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        KatanaspSkill.newProperty()
+                .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(15.0F))
+                .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(3))
+                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(3F))
+                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE))
+                .registerPropertiesToAnimation();
+        KATANASPSKILL = KatanaspSkill;
+
+        WeaponInnateSkill KatanaSkill = modRegistry.build("katanaskill", KatanaSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         KatanaSkill.newProperty()
                 .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(15.0F))
                 .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(3))
@@ -153,15 +163,6 @@ public class CDSkills {
         DUAL_SLASH = dual_slash;
 
 
-        WeaponInnateSkill denglong = modRegistry.build("denglong", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(() -> (AttackAnimation) CorruptAnimations.DENG_LONG));
-        denglong
-                .newProperty()
-                .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(3))
-                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
-                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
-        DENGLONG = denglong;
-
         WeaponInnateSkill spearslash = modRegistry.build("spearslash", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(() -> (AttackAnimation) CorruptAnimations.SPEAR_SLASH));
         spearslash
                 .newProperty()
@@ -181,16 +182,6 @@ public class CDSkills {
                 .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
                 .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
         SWORD_SLASH = swordslash;
-
-        WeaponInnateSkill blood = modRegistry.build("blood", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(() -> (AttackAnimation) CorruptAnimations.BLOOD));
-        blood.newProperty()
-                .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(3))
-                .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(15.0F))
-                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.6F))
-                .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
-                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
-        BLOOD = blood;
-
     }
 
     public CDSkills(){}

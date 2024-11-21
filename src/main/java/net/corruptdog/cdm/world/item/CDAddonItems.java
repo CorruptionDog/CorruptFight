@@ -23,9 +23,11 @@ public class CDAddonItems {
     public static final RegistryObject<Item> S_IRONSPEAR = ITEMS.register("s_ironspear", () -> new SpearItem(new Item.Properties(), Tiers.IRON));
     public static final RegistryObject<Item> S_DIAMONDSPEAR = ITEMS.register("s_diamondspear", () -> new SpearItem(new Item.Properties(), Tiers.DIAMOND));
 
+
     public static final RegistryObject<Item> S_IRONTACHI = ITEMS.register("s_irontachi", () -> new TachiItem(new Item.Properties(), Tiers.IRON));
     public static final RegistryObject<Item> S_DIAMONDTACHI = ITEMS.register("s_diamondtachi", () -> new TachiItem(new Item.Properties(), Tiers.DIAMOND));
     public static final RegistryObject<Item> S_NETHERITETACHI = ITEMS.register("s_netheritetachi", () -> new LongswordItem(new Item.Properties(), Tiers.NETHERITE));
+
 
     public static final RegistryObject<Item> S_IRONSWORD = ITEMS.register("s_ironsword", () -> new LongswordItem(new Item.Properties(), Tiers.IRON));
     public static final RegistryObject<Item> S_DIAMONDSWORD = ITEMS.register("s_diamondsword", () -> new LongswordItem(new Item.Properties(), Tiers.DIAMOND));
@@ -39,7 +41,15 @@ public class CDAddonItems {
     public static final RegistryObject<Item> S_DIAMONDGREATSWORD = ITEMS.register("s_diamondgreatsword", () -> new GreatSwordItem(new Item.Properties(), Tiers.DIAMOND));
     public static final RegistryObject<Item> S_NETHERITEGREATSWORD = ITEMS.register("s_netheritegreatsword", () -> new GreatSwordItem(new Item.Properties(), Tiers.NETHERITE));
 
+    public static final RegistryObject<Item> S_IRONDAGGER = ITEMS.register("s_irondagger", () -> new LongswordItem(new Item.Properties(), Tiers.IRON));
+    public static final RegistryObject<Item> S_DIAMONDDAGGER = ITEMS.register("s_diamonddagger", () -> new LongswordItem(new Item.Properties(), Tiers.DIAMOND));
+    public static final RegistryObject<Item> S_NETHERITEDAGGER = ITEMS.register("s_netheritedagger", () -> new LongswordItem(new Item.Properties(), Tiers.NETHERITE));
+
+
+
     public static final RegistryObject<Item> DUAL_TACHI = ITEMS.register("dual_tachi", () -> new TachiItem(new Item.Properties(), Tiers.NETHERITE));
+
+
 
 
      public static void register(IEventBus eventBus) {
