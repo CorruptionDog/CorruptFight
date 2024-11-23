@@ -1,11 +1,4 @@
 {   
-    "skill.yamato_step":
-    {
-        "category":"master",
-        "subtitle":"skill.yamato_step",
-        "sounds":[{"name":"cdmoveset:entity/skill/yamato_step", "stream":true, "attenuation_distance":50}]
-    },
-
    "sfx.foresight":
     {
         "category":"master",

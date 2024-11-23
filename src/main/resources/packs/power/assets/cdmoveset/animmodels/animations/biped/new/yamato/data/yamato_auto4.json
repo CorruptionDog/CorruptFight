@@ -2,13 +2,13 @@
 	"trail_effects": [
 		{
 			"start_time": 0.6,
-			"end_time": 1.25,
+			"end_time": 2.25,
 			"joint": "Tool_R",
 			"item_skin_hand": "main_hand"
 		},
 		{
 			"start_time": 0.6,
-			"end_time": 0.65,
+			"end_time": 1.65,
 			"joint": "Tool_R",
 			"item_skin_hand": "main_hand",
 			"color": [80, 80, 80],
@@ -17,7 +17,7 @@
     	    "lifetime": 12,
 		    "interpolations": 4,
 	    	"texture_path": "epicfight:textures/particle/power_trail3.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		}
 	]
 }

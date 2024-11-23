@@ -21,7 +21,7 @@
 			"lifetime": 15,
 		    "interpolations": 7,
 	    	"texture_path": "epicfight:textures/particle/power_trail4.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.5,
@@ -34,7 +34,7 @@
     	    "lifetime": 18,
 		    "interpolations": 7,
 	    	"texture_path": "epicfight:textures/particle/power_trail3.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.5,
@@ -47,7 +47,7 @@
     	    "lifetime": 8,
 		    "interpolations": 7,
 	    	"texture_path": "epicfight:textures/particle/power_trail5.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.5,
@@ -60,7 +60,7 @@
     	    "lifetime": 12,
 		    "interpolations": 7,
 	    	"texture_path": "epicfight:textures/particle/power_trail6.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		}
 	]
 }

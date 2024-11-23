@@ -1,0 +1,7 @@
+{
+    "parent": "cdmoveset:item/dagger",
+    "textures":
+    {
+        "layer0" : "cdmoveset:item/s_netheritedagger"
+    }
+}

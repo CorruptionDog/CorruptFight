@@ -96,8 +96,9 @@ public class CDSkills {
         WeaponInnateSkill KatanaspSkill = modRegistry.build("katanaspskill", KatanaSpSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         KatanaspSkill.newProperty()
                 .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(15.0F))
+                .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1F))
                 .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(3))
-                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(3F))
+                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2F))
                 .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE))
                 .registerPropertiesToAnimation();
         KATANASPSKILL = KatanaspSkill;
@@ -182,6 +183,14 @@ public class CDSkills {
                 .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
                 .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
         SWORD_SLASH = swordslash;
+
+        WeaponInnateSkill blade_rush = modRegistry.build("blade_rush", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(() -> (AttackAnimation) CorruptAnimations.BLADE_RUSH_FINISHER));
+        blade_rush.newProperty()
+                .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(10.0F))
+                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.0F))
+                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
+        BLADE_RUSH = blade_rush;
+
     }
 
     public CDSkills(){}

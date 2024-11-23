@@ -85,7 +85,7 @@ public class YamatoSkill extends WeaponInnateSkill {
         listener.addEventListener(MODIFY_DAMAGE_EVENT, EVENT_UUID, (event) -> {
             ResourceLocation rl = event.getPlayerPatch().getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
             Integer K = container.getDataManager().getDataValue(DAMAGES.get());
-            int max = 20;
+            int max = 25;
             if (rl == CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER3.getRegistryName() ) {
                 container.getDataManager().setData(DAMAGES.get(), K + 1);
             }

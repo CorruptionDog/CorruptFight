@@ -11,7 +11,7 @@
     	    "lifetime": 15,
 		    "interpolations": 4,
 	    	"texture_path": "epicfight:textures/particle/power_trail3.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.25,
@@ -24,7 +24,7 @@
     	    "lifetime": 15,
 		    "interpolations": 4,
 	    	"texture_path": "epicfight:textures/particle/power_trail3.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.5,
@@ -37,7 +37,7 @@
 			"lifetime": 4,
 		    "interpolations": 5,
 	    	"texture_path": "epicfight:textures/particle/power_trail.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.5,
@@ -50,7 +50,7 @@
 			"lifetime": 13,
 		    "interpolations": 5,
 	    	"texture_path": "epicfight:textures/particle/power_trail4.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.1,
@@ -63,7 +63,7 @@
 			"lifetime": 5,
 		    "interpolations": 4,
 	    	"texture_path": "epicfight:textures/particle/power_trail4.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.1,
@@ -76,7 +76,7 @@
 			"lifetime": 5,
 		    "interpolations": 4,
 	    	"texture_path": "epicfight:textures/particle/power_trail2.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.2,
@@ -89,7 +89,7 @@
 			"lifetime": 5,
 		    "interpolations": 4,
 	    	"texture_path": "epicfight:textures/particle/power_trail4.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		},
 		{
 			"start_time": 0.2,
@@ -102,7 +102,7 @@
 			"lifetime": 5,
 		    "interpolations": 4,
 	    	"texture_path": "epicfight:textures/particle/power_trail2.png",
-	    	"particle_type": "epicacg:bloom_trail"
+	    	"particle_type": "epicfight:swing_trail"
 		}
 	]
 }

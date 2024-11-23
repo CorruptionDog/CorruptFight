@@ -40,7 +40,7 @@ public class CDWeaponCapabilityPresets {
                     .newStyleCombo(Styles.SHEATH, CorruptAnimations.KATANA_SHEATHING_AUTO, CorruptAnimations.KATANA_SHEATHING_DASH, CorruptAnimations.KATANA_SHEATH_AIR_SLASH)
                     .newStyleCombo(Styles.TWO_HAND, CorruptAnimations.KATANA_AUTO1, CorruptAnimations.KATANA_AUTO2, CorruptAnimations.KATANA_AUTO3,  CorruptAnimations.YAMATO_DASH, CorruptAnimations.KATANA_AIR_SLASH)
                     .newStyleCombo(Styles.MOUNT, Animations.SWORD_MOUNT_ATTACK)
-                    .innateSkill(Styles.SHEATH, (itemstack) -> CDSkills.FATAL_DRAW_DASH)
+                    .innateSkill(Styles.SHEATH, (itemstack) -> CDSkills.KATANASKILL)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.KATANASKILL)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, CorruptAnimations.BIPED_HOLD_KATANA)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, CorruptAnimations.BIPED_HOLD_KATANA)

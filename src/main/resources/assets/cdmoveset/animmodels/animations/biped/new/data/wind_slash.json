@@ -5,7 +5,7 @@
 			"end_time": 1.85,
 			"joint": "Tool_R",
 			"item_skin_hand": "main_hand",
-			"texture_path": "epicfight:textures/particle/corruptdog/swing_trail.png"
+			"texture_path": "cdmoveset:textures/particle/corruptdog/swing_trail.png"
 		}
 	]
 }

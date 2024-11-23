@@ -29,11 +29,11 @@ public class KatanaSkill extends WeaponInnateSkill {
     }
 
     private void SKILL1(ServerPlayerPatch executer) {
-        executer.playAnimationSynchronized(CorruptAnimations.FATAL_DRAW, 0.25F);
+        executer.playAnimationSynchronized(CorruptAnimations.BLADE_RUSH_FINISHER, 0.1F);
     }
 
     private void SKILL2(ServerPlayerPatch executer) {
-        executer.playAnimationSynchronized(CorruptAnimations.FATAL_DRAW_DASH, 0.25F);
+        executer.playAnimationSynchronized(CorruptAnimations.FATAL_DRAW_DASH, 0.0F);
     }
 
 
