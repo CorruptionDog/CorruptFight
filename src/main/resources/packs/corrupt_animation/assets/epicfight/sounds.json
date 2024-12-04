@@ -45,14 +45,14 @@
     {
         "category":"master",
         "subtitle":"entity.weapon.whoosh",
-        "sounds":[{"name":"epicfight:entity/weapon/whoosh", "stream":true}, {"name":"epicfight:entity/weapon/whoosh2", "stream":true}, {"name":"epicfight:entity/weapon/whoosh3", "stream":true}, {"name":"epicfight:entity/weapon/whoosh4", "stream":true}, {"name":"epicfight:entity/weapon/whoosh5", "stream":true}, {"name":"epicfight:entity/weapon/whoosh6", "stream":true}, {"name":"epicfight:entity/weapon/whoosh7", "stream":true}, {"name":"epicfight:entity/weapon/whoosh8", "stream":true}, {"name":"epicfight:entity/weapon/whoosh9", "stream":true}]
+        "sounds":[{"name":"epicfight:entity/weapon/whoosh", "stream":true}, {"name":"epicfight:entity/weapon/whoosh2", "stream":true}, {"name":"epicfight:entity/weapon/whoosh3", "stream":true}, {"name":"epicfight:entity/weapon/whoosh4", "stream":true}]
     },
     
     "entity.weapon.whoosh_hard":
     {
         "category":"master",
         "subtitle":"entity.weapon.whoosh_hard",
-        "sounds":[{"name":"epicfight:entity/weapon/whoosh_hard9", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard10", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard11", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard12", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard2", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard3", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard4", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard5", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard6", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard7", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard8", "stream":true}]
+        "sounds":[{"name":"epicfight:entity/weapon/whoosh_hard", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard2", "stream":true}, {"name":"epicfight:entity/weapon/whoosh_hard3", "stream":true},{"name":"epicfight:entity/weapon/whoosh_hard4", "stream":true}]
     },
     
     "entity.weapon.whoosh_small":
@@ -192,7 +192,7 @@
     {
         "category":"master",
         "subtitle":"skill.roll",
-        "sounds":[{"name":"epicfight:entity/skill/roll", "stream":true},{"name":"epicfight:entity/skill/roll1", "stream":true}]
+        "sounds":[{"name":"epicfight:entity/skill/roll", "stream":true},{"name":"epicfight:entity/skill/roll1", "stream":true},{"name":"epicfight:entity/skill/roll2", "stream":true}]
     },
     
     "skill.rocket_jump":

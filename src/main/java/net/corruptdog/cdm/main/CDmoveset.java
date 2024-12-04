@@ -4,10 +4,11 @@ import com.mojang.logging.LogUtils;
 import net.corruptdog.cdm.gameasset.CorruptAnimations;
 import net.corruptdog.cdm.gameasset.CorruptSound;
 import net.corruptdog.cdm.network.server.NetworkManager;
+import net.corruptdog.cdm.particle.CorruptParticles;
 import net.corruptdog.cdm.skill.CDSkillDataKeys;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.corruptdog.cdm.world.RanDer.KtanaSheathRenderer;
-import net.corruptdog.cdm.world.RanDer.YamatoSheathRenderer;
+import net.corruptdog.cdm.world.RanDer.RenderYamato;
 import net.corruptdog.cdm.world.item.CDAddonItems;
 import net.corruptdog.cdm.world.item.CorruptfightModTabs;
 import net.minecraft.network.chat.Component;
@@ -74,7 +75,7 @@ public class CDmoveset
         CDAddonItems.ITEMS.register(bus);
         CorruptSound.SOUNDS.register(bus);
         CDSkillDataKeys.DATA_KEYS.register(bus);
-        bus.addListener(CDmoveset::registerGuard);
+        bus.addListener(CDmoveset::RegisterWeaponType);
         bus.addListener(CorruptAnimations::registerAnimations);
         bus.addListener(CDmoveset::buildSkillEvent);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG);
@@ -83,7 +84,7 @@ public class CDmoveset
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {bus.addListener(CDmoveset::registerRenderer);});
         bus.addListener(CDmoveset::addPackFindersEvent);
         CorruptfightModTabs.REGISTRY.register(bus);
-
+        CorruptParticles.PARTICLES.register(bus);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -96,6 +97,7 @@ public class CDmoveset
         event.registerCategory(CorruptWeaponCategories.S_SPEAR,new ItemStack(CDAddonItems.S_IRONSPEAR.get()));
         event.registerCategory(CorruptWeaponCategories.DUAL_TACHI,new ItemStack(CDAddonItems.DUAL_TACHI.get()));
     }
+
     private void doCommonStuff(final FMLCommonSetupEvent event) {
         event.enqueueWork(NetworkManager::registerPackets);
     }
@@ -109,7 +111,7 @@ public class CDmoveset
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderer(PatchedRenderersEvent.Add event){
         event.addItemRenderer(CDAddonItems.KATANA.get(), new KtanaSheathRenderer());
-        event.addItemRenderer(CDAddonItems.YAMATO.get(), new YamatoSheathRenderer());
+        event.addItemRenderer(CDAddonItems.YAMATO.get(), new RenderYamato());
     }
 
     public static void addPackFindersEvent(AddPackFindersEvent event) {
@@ -150,15 +152,15 @@ public class CDmoveset
     public void onServerStarting(ServerStartingEvent event) {
 
     }
-    public static void registerGuard(WeaponCapabilityPresetRegistryEvent event) {
+    public static void RegisterWeaponType(WeaponCapabilityPresetRegistryEvent event) {
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"katana"), KATANA);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_greatsword"), S_GREATSWORD);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_tachi"), S_TACHI);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"yamato"), YAMATO);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_spear"), S_SPEAR);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_sword"), S_SWORD);
-
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_longsword"), S_LONGSWORD);
+//        event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_dagger"), S_DAGGER);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"dual_tachi"), DUAL_TACHI);
     }
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

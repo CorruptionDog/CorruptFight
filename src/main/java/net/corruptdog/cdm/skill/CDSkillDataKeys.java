@@ -44,6 +44,8 @@ public class CDSkillDataKeys {
     public static final RegistryObject<SkillDataKey<Boolean>> FATAL = DATA_KEYS.register("fatal", () ->
             SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
 
+//    public static final RegistryObject<SkillDataKey<Integer>> RUSH = DATA_KEYS.register("rush", () ->
+//            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));
 //
 //    public static final RegistryObject<SkillDataKey<Integer>> COMBO_COUNT = DATA_KEYS.register("combo_counter", () ->
 //            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));

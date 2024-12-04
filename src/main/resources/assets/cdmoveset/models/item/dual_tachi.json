@@ -1,7 +1,0 @@
-{
-  "parent": "cdmoveset:item/katanas",
-  "textures": {
-    "0": "cdmoveset:item/steelkatanas",
-    "particle": "cdmoveset:items/steelkatana"
-  }
-}

@@ -19,6 +19,7 @@ public class CDAddonItems {
 
     public static final RegistryObject<Item> YAMATO_BLADE = ITEMS.register("yamato_blade", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> YAMATO = ITEMS.register("yamato", () -> new Yamatoitem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> T_YAMATO_SHEATH = ITEMS.register("t_yamato_sheath", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> S_IRONSPEAR = ITEMS.register("s_ironspear", () -> new SpearItem(new Item.Properties(), Tiers.IRON));
     public static final RegistryObject<Item> S_DIAMONDSPEAR = ITEMS.register("s_diamondspear", () -> new SpearItem(new Item.Properties(), Tiers.DIAMOND));
@@ -45,14 +46,8 @@ public class CDAddonItems {
     public static final RegistryObject<Item> S_DIAMONDDAGGER = ITEMS.register("s_diamonddagger", () -> new LongswordItem(new Item.Properties(), Tiers.DIAMOND));
     public static final RegistryObject<Item> S_NETHERITEDAGGER = ITEMS.register("s_netheritedagger", () -> new LongswordItem(new Item.Properties(), Tiers.NETHERITE));
 
-
-
     public static final RegistryObject<Item> DUAL_TACHI = ITEMS.register("dual_tachi", () -> new TachiItem(new Item.Properties(), Tiers.NETHERITE));
-
-
-
-
-     public static void register(IEventBus eventBus) {
+    public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
 }

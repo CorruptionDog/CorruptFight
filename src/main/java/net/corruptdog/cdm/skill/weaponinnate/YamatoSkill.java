@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Maps;
+import net.corruptdog.cdm.gameasset.CDSkills;
 import net.corruptdog.cdm.network.server.NetworkManager;
 import net.corruptdog.cdm.network.server.SPAfterImagine;
 import net.corruptdog.cdm.skill.CDSkillDataKeys;
@@ -25,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.skill.*;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -51,6 +53,10 @@ public class YamatoSkill extends WeaponInnateSkill {
             if (animation == CorruptAnimations.YAMATO_COUNTER2 ) {
                 container.getDataManager().setDataSync(CDSkillDataKeys.COUNTER_SUCCESS.get(), false, ((ServerPlayerPatch) container.getExecuter()).getOriginal());
             }
+            if (animation == CorruptAnimations.YAMATO_STRIKE1 || animation == CorruptAnimations.YAMATO_STRIKE2) {
+                container.getDataManager().setDataSync(COUNTER_SUCCESS.get(), false, ((ServerPlayerPatch) container.getExecuter()).getOriginal());
+                container.getDataManager().setDataSync(COUNTER.get(), false, ((ServerPlayerPatch) container.getExecuter()).getOriginal());
+            }
             if (animation == CorruptAnimations.YAMATO_POWER3_FINISH || animation == CorruptAnimations.YAMATO_POWER_DASH  ) {
                 container.getDataManager().setDataSync(POWER3.get(), false, ((ServerPlayerPatch) container.getExecuter()).getOriginal());
             }
@@ -76,10 +82,21 @@ public class YamatoSkill extends WeaponInnateSkill {
             int id = event.getDamageSource().getAnimation().getId();
             float maxstamina = event.getPlayerPatch().getMaxStamina();
             float stamina = event.getPlayerPatch().getStamina();
-            float recover = maxstamina * 0.02F;
+            float recover = maxstamina * 0.025F;
             if (id == CorruptAnimations.YAMATO_POWER3.getId() || id == CorruptAnimations.YAMATO_POWER3_REPEAT.getId()) {
                 event.getPlayerPatch().setStamina(stamina + recover);
                 container.getDataManager().setData(DAMAGES.get(), k + 1);
+            }
+            if (id == CorruptAnimations.YAMATO_POWER1.getId()) {
+                float r = 0.25F;
+                if (stamina < maxstamina) {
+                    container.getExecuter().setStamina(stamina + r * maxstamina);
+                }
+            } else if(id == CorruptAnimations.YAMATO_COUNTER2.getId()) {
+                float c = 0.1F;
+                if (stamina < maxstamina) {
+                    container.getExecuter().setStamina(stamina + c * maxstamina);
+                }
             }
         });
         listener.addEventListener(MODIFY_DAMAGE_EVENT, EVENT_UUID, (event) -> {
@@ -89,18 +106,24 @@ public class YamatoSkill extends WeaponInnateSkill {
             if (rl == CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER3.getRegistryName() ) {
                 container.getDataManager().setData(DAMAGES.get(), K + 1);
             }
-            float bonus = 0.22F;
+            float bonus = 0.33F;
             if (rl == CorruptAnimations.YAMATO_POWER3_FINISH.getRegistryName()) {
                 K = Math.min(K,max);
                 event.setDamage(event.getDamage() * (1F + bonus * K));
             }
         });
         listener.addEventListener(HURT_EVENT_PRE, EVENT_UUID, (event) -> {
+            int power2_recover = 2;
+            Skill skill = container.getExecuter().getSkill(SkillSlots.WEAPON_INNATE).getSkill();
             ServerPlayerPatch executer = event.getPlayerPatch();
             AnimationPlayer animationPlayer = executer.getAnimator().getPlayerFor(null);
             float elapsedTime = animationPlayer.getElapsedTime();
+            int animationId = executer.getAnimator().getPlayerFor(null).getAnimation().getId();
+            if (animationId == CorruptAnimations.YAMATO_STRIKE1.getId() || animationId == CorruptAnimations.YAMATO_STRIKE2.getId()) {
+                event.setCanceled(true);
+                event.setResult(AttackResult.ResultType.MISSED);
+            }
             if (elapsedTime <= 0.35F) {
-                int animationId = executer.getAnimator().getPlayerFor(null).getAnimation().getId();
                 if (animationId == CorruptAnimations.YAMATO_POWER0_1.getId()) {
                     DamageSource damagesource = event.getDamageSource();
                     Vec3 sourceLocation = damagesource.getSourcePosition();
@@ -112,7 +135,6 @@ public class YamatoSkill extends WeaponInnateSkill {
                                     && !damagesource.is(DamageTypes.MAGIC)
                                     && !damagesource.is(DamageTypeTags.BYPASSES_ARMOR)
                                     && !damagesource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                                Skill skill = container.getExecuter().getSkill(SkillSlots.WEAPON_INNATE).getSkill();
                                 ServerPlayer serverPlayer = (ServerPlayer) container.getExecuter().getOriginal();
                                 SPAfterImagine msg = new SPAfterImagine(serverPlayer.position(), serverPlayer.getId());
                                 NetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, serverPlayer);
@@ -120,8 +142,7 @@ public class YamatoSkill extends WeaponInnateSkill {
                                 container.getDataManager().setDataSync(CDSkillDataKeys.COUNTER_SUCCESS.get(), true, ((ServerPlayerPatch) container.getExecuter()).getOriginal());
                                 scheduler.schedule(() -> executer.getSkill(SkillSlots.WEAPON_INNATE).getDataManager().setData(CDSkillDataKeys.COUNTER_SUCCESS.get(), false), 1500, TimeUnit.MILLISECONDS);
                                 if (skill != null) {
-                                    SkillContainer weaponInnateContainer = event.getPlayerPatch().getSkill(SkillSlots.WEAPON_INNATE);
-                                    weaponInnateContainer.getSkill().setConsumptionSynchronize(event.getPlayerPatch(), weaponInnateContainer.getResource() + 100F);
+                                    this.stackCost(executer, -power2_recover);
                                 } else {
                                     event.getPlayerPatch().playAnimationSynchronized(CorruptAnimations.YAMATO_POWER0_2, 0.15F);
                                 }
@@ -194,11 +215,14 @@ public class YamatoSkill extends WeaponInnateSkill {
             ItemStack itemstack = executer.getOriginal().getMainHandItem();
             return executer.getHoldingItemCapability(InteractionHand.MAIN_HAND).getInnateSkill(executer, itemstack) == this;
         }
-
     }
+
+    private void stackCost(ServerPlayerPatch player,int cost){
+        this.setStackSynchronize(player, player.getSkill(CDSkills.YAMATOSKILL).getStack() - cost);
+    }
+
     @Override
     public void executeOnServer(ServerPlayerPatch execute, FriendlyByteBuf args) {
-        int default_cost = 1;
         ResourceLocation rl = execute.getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
         SkillContainer skillContainer = execute.getSkill(SkillSlots.WEAPON_INNATE);
         Boolean counterSuccess = skillContainer.getDataManager().getDataValue(COUNTER_SUCCESS.get());
@@ -206,18 +230,16 @@ public class YamatoSkill extends WeaponInnateSkill {
         Boolean power3 = skillContainer.getDataManager().getDataValue(POWER3.get());
         if (counterSuccess) {
             STRIKE(execute);
-            skillContainer.getDataManager().setData(CDSkillDataKeys.COUNTER_SUCCESS.get(), false);
             return;
         }
         if (counter) {
             STRIKE2(execute);
-            skillContainer.getDataManager().setData(CDSkillDataKeys.COUNTER_SUCCESS.get(), false);
             return;
         }
         if (power3) {
             POWER_REPEAT(execute);
         }
-        if (execute.getOriginal().isSprinting()) {
+        if (execute.getOriginal().isSprinting() && execute.getSkill(CDSkills.YAMATOSKILL).getStack() >= 0) {
             float stamina = execute.getStamina();
             float maxStamina = execute.getMaxStamina();
             float p = maxStamina * 0.25F;

@@ -24,6 +24,7 @@ public class CorruptSound {
     public static final RegistryObject<SoundEvent> DODGE = registerSound("sfx.dodge");
     public static final RegistryObject<SoundEvent> SKILL = registerSound("sfx.skills");
     public static final RegistryObject<SoundEvent> HURT = registerSound("sfx.hurt");
+    public static final RegistryObject<SoundEvent> STEP = registerSound("sfx.step");
 
 
 

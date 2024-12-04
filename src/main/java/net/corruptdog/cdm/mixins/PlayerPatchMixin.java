@@ -70,7 +70,7 @@ public abstract class PlayerPatchMixin<T extends Player> extends LivingEntityPat
         float stamina = this.getStamina();
         float maxStamina = this.getMaxStamina();
         float staminaRegen = (float)this.original.getAttributeValue(EpicFightAttributes.STAMINA_REGEN.get());
-        int regenStandbyTime = 600 / (int)(35 * staminaRegen);
+        int regenStandbyTime = 750 / (int)(30 * staminaRegen);
 
         if (stamina < maxStamina && this.tickSinceLastAction > regenStandbyTime) {
             float staminaFactor = 1.0F + (float)Math.pow((stamina / (maxStamina - stamina * 0.5F)), 2);

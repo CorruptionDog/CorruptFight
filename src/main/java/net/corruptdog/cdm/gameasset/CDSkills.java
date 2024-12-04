@@ -32,20 +32,21 @@ public class CDSkills {
     public static Skill LETHAL_SLICING;
     public static Skill YAMATOSKILL;
     public static Skill GUARDPARRY;
-    public static Skill DENGLONG;
     public static Skill DUAL_GREATSWORD_SKILL;
     public static Skill WIND_SLASH;
     public static Skill FATAL_DRAW_DASH;
-    public static Skill BLADE_RUSH;
+    public static Skill BLADE_RUSH_FINISHER;
     public static Skill KATANASPSKILL;
     public static Skill BLOODWOLF;
-    public static Skill BLOOD;
+    public static Skill BLADE_RUSH;
     public static Skill YAMATO_STEP;
     public static Skill SSTEP;
     public static Skill PSSTEP;
     public static Skill DUAL_TACHISKILL;
     public static Skill KATANASKILL;
-//
+
+
+
 //    public static Skill YAMATO_PASSIVE;
 //    public static Skill YAMATO_ART;
     public static Skill YAMATO_ATTACK;
@@ -53,18 +54,18 @@ public class CDSkills {
     public static void buildSkillEvent(SkillBuildEvent build) {
 
         SkillBuildEvent.ModRegistryWorker modRegistry = build.createRegistryWorker(CDmoveset.MOD_ID);
-        YAMATO_STEP = modRegistry.build("yamato_step", DodgeSkill::new, StepSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.YAMATO_STEP_FORWARD, () -> CorruptAnimations.YAMATO_STEP_BACKWARD, () -> CorruptAnimations.YAMATO_STEP_LEFT, () -> CorruptAnimations.YAMATO_STEP_RIGHT));
+        YAMATO_STEP = modRegistry.build("yamato_step", DodgeSkill::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.YAMATO_STEP_FORWARD, () -> CorruptAnimations.YAMATO_STEP_BACKWARD, () -> CorruptAnimations.YAMATO_STEP_LEFT, () -> CorruptAnimations.YAMATO_STEP_RIGHT));
         SSTEP = modRegistry.build("sstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.SSTEP_FORWARD, () -> CorruptAnimations.SSTEP_BACKWARD, () -> CorruptAnimations.SSTEP_LEFT, () -> CorruptAnimations.SSTEP_FORWARD));
         GUARDPARRY = modRegistry.build("guardparry", GuardParrySkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION_INFINITE));
         BLOODWOLF = modRegistry.build( "bloodwolf", BloodWolf::new, PassiveSkill.createIdentityBuilder());
         DUAL_TACHISKILL = modRegistry.build( "dual_tachiskill", DualTchiSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         YAMATOSKILL = modRegistry.build( "yamatoskill", YamatoSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
-        YAMATOSKILL = modRegistry.build( "yamatoskill", YamatoSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
-//
-//        YAMATO_ART = modRegistry.build( "yamato_art", YamatoArt::new, WeaponInnateSkill.createWeaponInnateBuilder());
+//        BLADE_RUSH = modRegistry.build( "blade_rush", DualDaggerSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+
+
 //        YAMATO_ATTACK = modRegistry.build("yamato_attack",YamatoAttack::new,YamatoAttack.createBuilder());
-////        YAMATO_PASSIVE = modRegistry.build("yamato_passive",YamatoPassive::new,Skill.createBuilder().setCategory(SkillCategories.WEAPON_PASSIVE));
-//
+//        YAMATO_PASSIVE = modRegistry.build("yamato_passive",YamatoPassive::new,Skill.createBuilder().setCategory(SkillCategories.WEAPON_PASSIVE));
+
 
         SkillBuildEvent.ModRegistryWorker registryWorker = build.createRegistryWorker(CDmoveset.MOD_ID);
         PSSTEP = registryWorker.build("psstep", SStep::new, SStep.createDodgeBuilder()
@@ -184,12 +185,12 @@ public class CDSkills {
                 .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
         SWORD_SLASH = swordslash;
 
-        WeaponInnateSkill blade_rush = modRegistry.build("blade_rush", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(() -> (AttackAnimation) CorruptAnimations.BLADE_RUSH_FINISHER));
-        blade_rush.newProperty()
+        WeaponInnateSkill blade_rush_finisher = modRegistry.build("blade_rush_finisher", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(() -> (AttackAnimation) CorruptAnimations.BLADE_RUSH_FINISHER));
+        blade_rush_finisher.newProperty()
                 .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(10.0F))
                 .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.0F))
                 .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
-        BLADE_RUSH = blade_rush;
+        BLADE_RUSH_FINISHER = blade_rush_finisher;
 
     }
 

@@ -3,7 +3,7 @@
 	{
 		"common":
 		{
-			"speed_bonus":-0.35,
+			"speed_bonus": -0.50,
 			"impact":0.8,
 			"max_strikes":2
 		}

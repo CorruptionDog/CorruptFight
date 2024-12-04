@@ -5,6 +5,8 @@ import java.util.UUID;
 import net.corruptdog.cdm.gameasset.CorruptSound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.dodge.DodgeSkill;
@@ -30,6 +32,12 @@ public class DodgeSkillMixin extends Skill {
 
         container.getExecuter().getEventListener().addEventListener(PlayerEventListener.EventType.DODGE_SUCCESS_EVENT, EVENT_UUID, (event) -> {
             event.getPlayerPatch().playSound(CorruptSound.FORESIGHT.get(), 0.8F, 1.2F);
+        });
+        container.getExecuter().getEventListener().addEventListener(PlayerEventListener.EventType.ANIMATION_BEGIN_EVENT, EVENT_UUID, (event) -> {
+            StaticAnimation animation = event.getAnimation();
+            if (animation == Animations.BIPED_STEP_FORWARD || animation == Animations.BIPED_STEP_BACKWARD || animation == Animations.BIPED_STEP_LEFT || animation == Animations.BIPED_STEP_RIGHT) {
+                event.getPlayerPatch().playSound(CorruptSound.STEP.get(), 0.8F, 1.0F);
+            }
         });
     }
 

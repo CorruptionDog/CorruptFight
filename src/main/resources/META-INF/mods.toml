@@ -11,10 +11,13 @@ license="NONE"
 # The modid of the mod
 modId="cdmoveset" #mandatory
 # The version number of the mod
-version="0.1.0" #mandatory
-displayName="CD moveset" #mandator
+version="1.0" #mandatory
+
+displayName="${mod_name}" #mandatory
+
 logoFile="icon.png"
-authors="CorruptDog,menzen,墨镜,namelesssLK" #optional
+
+authors="CorruptDog,Asanginxst,墨镜,namelesssLK" #optional
 
 description='''仅仅只是为了个人游玩添加的武器和动作,未经允许严禁转载和发布'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.

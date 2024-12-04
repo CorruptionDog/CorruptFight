@@ -1,6 +1,8 @@
 package net.corruptdog.cdm.network.server;
 
 import java.util.function.Supplier;
+
+import net.corruptdog.cdm.particle.CorruptParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,7 +35,7 @@ public class SPAfterImagine {
         ((NetworkEvent.Context)ctx.get()).enqueueWork(() -> {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level != null)
-                mc.level.addParticle((ParticleOptions)EpicFightParticles.ENTITY_AFTER_IMAGE.get(), msg.location.x, msg.location.y, msg.location.z, Double.longBitsToDouble(msg.entityId), 0.0D, 0.0D);
+                mc.level.addParticle(CorruptParticles.CORRUPT_AFTER_IMAGE.get(), msg.location.x, msg.location.y, msg.location.z, Double.longBitsToDouble(msg.entityId), 0.0D, 0.0D);
         });
         ((NetworkEvent.Context)ctx.get()).setPacketHandled(true);
     }
