@@ -163,6 +163,10 @@ public class CDmoveset
 //        event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_dagger"), S_DAGGER);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"dual_tachi"), DUAL_TACHI);
     }
+
+
+
+
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
@@ -234,11 +238,12 @@ public class CDmoveset
                 new StaticAnimation[]{Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2});
 
         guardMotions.put(CorruptWeaponCategories.S_TACHI,
-                (item, player) -> Animations.LONGSWORD_GUARD_HIT);
+                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.TACHI_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
         guardBreakMotions.put(CorruptWeaponCategories.S_TACHI,
-                (item, player) -> CorruptAnimations.GUARD_BREAK2);
-        advancedGuardMotions.put(CorruptWeaponCategories.S_TACHI, (itemCap, playerpatch) ->
-                new StaticAnimation[]{Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2});
+                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.GUARD_BREAK2 : CorruptAnimations.GUARD_BREAK1);
+        advancedGuardMotions.put(CorruptWeaponCategories.S_TACHI, (itemCap, playerpatch) -> itemCap.getStyle(playerpatch) == CapabilityItem.Styles.ONE_HAND ?
+                new StaticAnimation[] { Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2 } :
+                new StaticAnimation[] { Animations.SWORD_GUARD_ACTIVE_HIT2, Animations.SWORD_GUARD_ACTIVE_HIT3 });
 
         guardMotions.put(CorruptWeaponCategories.S_LONGSWORD,
                 (item, player) -> Animations.LONGSWORD_GUARD_HIT);

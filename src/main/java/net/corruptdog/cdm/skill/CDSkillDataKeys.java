@@ -46,14 +46,15 @@ public class CDSkillDataKeys {
 
 //    public static final RegistryObject<SkillDataKey<Integer>> RUSH = DATA_KEYS.register("rush", () ->
 //            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));
-//
 //    public static final RegistryObject<SkillDataKey<Integer>> COMBO_COUNT = DATA_KEYS.register("combo_counter", () ->
 //            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));
+//
+//
 //    public static final RegistryObject<SkillDataKey<Float>> SLASH_COUNTER = DATA_KEYS.register("slash_counter", () ->
 //            SkillDataKey.createFloatKey(0F, false, YamatoArt.class));
 //    public static final RegistryObject<SkillDataKey<Boolean>> COUNTER_SUCCESSED = DATA_KEYS.register("counter_successed", () ->
 //            SkillDataKey.createBooleanKey(false, false, YamatoArt.class));
-//    public static final RegistryObject<SkillDataKey<Boolean>> COUNTER = DATA_KEYS.register("counter", () ->
+//    public static final RegistryObject<SkillDataKey<Boolean>> COUNTERS = DATA_KEYS.register("counter", () ->
 //            SkillDataKey.createBooleanKey(false, false, YamatoArt.class));
 
 

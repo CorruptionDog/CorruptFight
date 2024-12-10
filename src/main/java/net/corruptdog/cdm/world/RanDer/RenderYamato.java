@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.client.renderer.patched.item.RenderItemBase;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -31,13 +32,29 @@ public class RenderYamato extends RenderItemBase {
         modelMatrix_1.mulFront(poses[armature.toolL.getId()]);
 
         DynamicAnimation animation = entitypatch.getAnimator().getPlayerFor(null).getAnimation();
+        if (!animation.equals(CorruptAnimations.YAMATO_POWER0_1)
+                && !animation.equals(CorruptAnimations.YAMATO_IDLE)
+                && !animation.equals(CorruptAnimations.YAMATO_POWER0_2)
+                && !animation.equals(Animations.BIPED_HIT_LONG)
+                && !animation.equals(Animations.BIPED_HIT_SHORT)
+                && !animation.equals(CorruptAnimations.YAMATO_RUN)
+                && !animation.equals(CorruptAnimations.YAMATO_WALK)
+                && !animation.equals(Animations.BIPED_STEP_BACKWARD)
+                && !animation.equals(Animations.BIPED_STEP_FORWARD)
+                && !animation.equals(Animations.BIPED_STEP_LEFT)
+                && !animation.equals(Animations.BIPED_STEP_RIGHT)
+                && !animation.equals(CorruptAnimations.GUARD_BREAK1)) {
+            poseStack.pushPose();
+            this.mulPoseStack(poseStack, modelMatrix);
+            Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
+            poseStack.popPose();
+        }
 
         ItemStack currentSheath = (animation.equals(CorruptAnimations.YAMATO_AUTO2)
                 || animation.equals(CorruptAnimations.YAMATO_AUTO3)
                 || animation.equals(CorruptAnimations.YAMATO_AUTO4)
                 || animation.equals(CorruptAnimations.YAMATO_AIRSLASH)
                 || animation.equals(CorruptAnimations.YAMATO_DASH)
-                || animation.equals(CorruptAnimations.YAMATO_POWER0_2)
                 || animation.equals(CorruptAnimations.YAMATO_POWER1)
                 || animation.equals(CorruptAnimations.YAMATO_POWER2)
                 || animation.equals(CorruptAnimations.YAMATO_POWER3)
@@ -48,11 +65,6 @@ public class RenderYamato extends RenderItemBase {
                 || animation.equals(CorruptAnimations.YAMATO_STRIKE2)
                 || animation.equals(CorruptAnimations.YAMATO_COUNTER1))
                 ? sheathStack : sheathStack2;
-
-        poseStack.pushPose();
-        this.mulPoseStack(poseStack, modelMatrix);
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
-        poseStack.popPose();
 
         poseStack.pushPose();
         this.mulPoseStack(poseStack, modelMatrix_1);

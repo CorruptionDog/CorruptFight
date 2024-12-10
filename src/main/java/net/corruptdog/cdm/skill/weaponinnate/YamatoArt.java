@@ -1,12 +1,12 @@
 //package net.corruptdog.cdm.skill.weaponinnate;
 //
+//import net.corruptdog.cdm.gameasset.CDSkills;
 //import net.corruptdog.cdm.gameasset.CorruptAnimations;
 //import net.corruptdog.cdm.network.server.NetworkManager;
 //import net.corruptdog.cdm.network.server.SPAfterImagine;
 //import net.minecraft.network.FriendlyByteBuf;
 //import net.minecraft.server.level.ServerPlayer;
 //import net.minecraft.tags.DamageTypeTags;
-//import net.minecraft.world.InteractionHand;
 //import net.minecraft.world.damagesource.DamageSource;
 //import net.minecraft.world.damagesource.DamageTypes;
 //import net.minecraft.world.phys.Vec3;
@@ -141,11 +141,10 @@
 //        int strike2_cost = 2;
 //        float maxstamina = executer.getMaxStamina();
 //        float stamina = executer.getStamina();
-//        int combo = executer.getSkill(SkillCategories.BASIC_ATTACK.universalOrdinal()).getDataManager().getDataValue(COMBO_COUNTER.get());
+//        int combo = executer.getSkill(SkillCategories.BASIC_ATTACK.universalOrdinal()).getDataManager().getDataValue(SkillDataKeys.COMBO_COUNTER.get());
 //        if (executer.getSkill(SkillSlots.GUARD).hasSkill(EpicFightSkills.PARRYING) && executer.getSkill(SkillSlots.WEAPON_INNATE).getStack() >= counter_cost) {
 //            executer.playAnimationSynchronized(CorruptAnimations.YAMATO_COUNTER1, 0);
 //            this.stackCost(executer,counter_cost);
-//
 //        } else if (combo == 4 && executer.getSkill(SkillSlots.WEAPON_INNATE).getStack() >= strike2_cost) {
 //            executer.playAnimationSynchronized(CorruptAnimations.YAMATO_STRIKE2,0);
 //            this.stackCost(executer,strike2_cost);
@@ -182,7 +181,7 @@
 //        }
 //    }
 //    private boolean artExecutable(ServerPlayerPatch executer){
-//        return executer.getSkill((Skill) this.category).getStack() >= 1 || executer.getOriginal().isCreative();
+//        return executer.getSkill(CDSkills.YAMATOSKILL).getStack() >= 1 || executer.getOriginal().isCreative();
 //    }
 //    @Override
 //    public void onRemoved(SkillContainer container) {
@@ -205,6 +204,6 @@
 //    }
 //
 //    private void stackCost(ServerPlayerPatch player,int cost){
-//        this.setStackSynchronize(player, player.getSkill((Skill) this.category).getStack() - cost);
+//        this.setStackSynchronize(player, player.getSkill(CDSkills.YAMATOSKILL).getStack() - cost);
 //    }
 //}
