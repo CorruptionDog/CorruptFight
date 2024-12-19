@@ -2,15 +2,16 @@
     "type": "minecraft:crafting_shaped",
     "pattern":
     [
-        "  B",
-        " S ",
-        "S  "
+        " DS",
+        " BD",
+        "B  "
     ],
     
     "key":
     {
-        "B": { "item" : "minecraft:diamond_sword" },
-        "S": { "item" : "minecraft:iron_block" }
+        "B": { "item" : "minecraft:stick" },
+        "D": { "item" : "minecraft:diamond" },
+        "S": { "item" : "cdmoveset:s_diamondsword" }
     },
     
     "result":

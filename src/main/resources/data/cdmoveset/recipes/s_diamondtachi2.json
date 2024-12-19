@@ -3,17 +3,17 @@
     "pattern":
     [
         "  B",
-        "BB ",
-        "SB "
+        " B ",
+        "S  "
     ],
     "key":
     {
         "B": { "item" : "minecraft:diamond" },
-        "S": { "item" : "cdmoveset:s_diamondsword" }
+        "S": { "item" : "epicfight:diamond_tachi" }
     },
     "result":
     {
-        "item" : "cdmoveset:s_diamondlongsword",
+        "item" : "cdmoveset:s_diamondtachi",
         "count" : 1
     }
 }

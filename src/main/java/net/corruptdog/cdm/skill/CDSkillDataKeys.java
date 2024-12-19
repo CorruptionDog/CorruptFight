@@ -3,6 +3,7 @@ package net.corruptdog.cdm.skill;
 import net.corruptdog.cdm.main.CDmoveset;
 import net.corruptdog.cdm.skill.Dodge.SStep;
 import net.corruptdog.cdm.skill.Passive.BloodWolf;
+import net.corruptdog.cdm.skill.weaponinnate.DualDaggerSkill;
 import net.corruptdog.cdm.skill.weaponinnate.YamatoAttack;
 import net.corruptdog.cdm.skill.weaponinnate.YamatoSkill;
 import net.minecraft.resources.ResourceLocation;
@@ -41,13 +42,14 @@ public class CDSkillDataKeys {
     public static final RegistryObject<SkillDataKey<Boolean>> POWER3 = DATA_KEYS.register("power3", () ->
             SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
 
-    public static final RegistryObject<SkillDataKey<Boolean>> FATAL = DATA_KEYS.register("fatal", () ->
-            SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
+//    public static final RegistryObject<SkillDataKey<Boolean>> FATAL = DATA_KEYS.register("fatal", () ->
+//            SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
 
-//    public static final RegistryObject<SkillDataKey<Integer>> RUSH = DATA_KEYS.register("rush", () ->
-//            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));
-//    public static final RegistryObject<SkillDataKey<Integer>> COMBO_COUNT = DATA_KEYS.register("combo_counter", () ->
-//            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));
+    public static final RegistryObject<SkillDataKey<Integer>> RUSH_COMBO = DATA_KEYS.register("rush_combo", () ->
+            SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));
+
+    public static final RegistryObject<SkillDataKey<Boolean>> RUSH_STAR = DATA_KEYS.register("rush_end", () ->
+            SkillDataKey.createBooleanKey(false, false, DualDaggerSkill.class));
 //
 //
 //    public static final RegistryObject<SkillDataKey<Float>> SLASH_COUNTER = DATA_KEYS.register("slash_counter", () ->

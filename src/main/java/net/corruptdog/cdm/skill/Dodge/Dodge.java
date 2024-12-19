@@ -32,10 +32,10 @@ public class Dodge extends DodgeSkill {
         input.tick(false, pulse);
 
 
-        int forward = input.up ? 1 : 0; // 输入后退时，实际向前移动
-        int backward = input.down ? -1 : 0; // 输入前进时，实际向后移动
-        int left = input.right ? 1 : 0;    // 输入右移时，实际向左移动
-        int right = input.left ? -1 : 0;    // 输入左移时，实际向右移动
+        int forward = input.up ? 1 : 0;
+        int backward = input.down ? -1 : 0;
+        int left = input.right ? 1 : 0;
+        int right = input.left ? -1 : 0;
 
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeInt(forward);

@@ -1,6 +1,7 @@
 package net.corruptdog.cdm.main;
 
 import com.mojang.logging.LogUtils;
+import net.corruptdog.cdm.CDConfig;
 import net.corruptdog.cdm.gameasset.CorruptAnimations;
 import net.corruptdog.cdm.gameasset.CorruptSound;
 import net.corruptdog.cdm.network.server.NetworkManager;
@@ -85,6 +86,8 @@ public class CDmoveset
         bus.addListener(CDmoveset::addPackFindersEvent);
         CorruptfightModTabs.REGISTRY.register(bus);
         CorruptParticles.PARTICLES.register(bus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CDConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CDConfig.CLIENT_SPEC);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -160,7 +163,7 @@ public class CDmoveset
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_spear"), S_SPEAR);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_sword"), S_SWORD);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_longsword"), S_LONGSWORD);
-//        event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_dagger"), S_DAGGER);
+        event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"s_dagger"), S_DAGGER);
         event.getTypeEntry().put(new ResourceLocation(CDmoveset.MOD_ID,"dual_tachi"), DUAL_TACHI);
     }
 
@@ -188,6 +191,7 @@ public class CDmoveset
     }
     public static void regGuard() throws NoSuchFieldException, IllegalAccessException {
         LOGGER.info("buildSkillEvent");
+        Map<WeaponCategory, BiFunction<CapabilityItem,PlayerPatch<?>,?>> impactGuardMotions=new HashMap<>();
         Map<WeaponCategory, BiFunction<CapabilityItem, PlayerPatch<?>, ?>> guardMotions=new HashMap<>();
         Map<WeaponCategory, BiFunction<CapabilityItem, PlayerPatch<?>, ?>> guardBreakMotions=new HashMap<>();
         Map<WeaponCategory, BiFunction<CapabilityItem, PlayerPatch<?>, ?>> advancedGuardMotions=new HashMap<>();
@@ -221,6 +225,8 @@ public class CDmoveset
         advancedGuardMotions.put(CorruptWeaponCategories.S_GREATSWORD, (itemCap, playerpatch) -> itemCap.getStyle(playerpatch) == CapabilityItem.Styles.ONE_HAND ?
                 new StaticAnimation[] { Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2 } :
                 new StaticAnimation[] { Animations.SWORD_GUARD_ACTIVE_HIT2, Animations.SWORD_GUARD_ACTIVE_HIT3 });
+        impactGuardMotions.put(CorruptWeaponCategories.S_GREATSWORD, (item, player) ->
+                item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? Animations.GREATSWORD_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
 
         guardMotions.put(CorruptWeaponCategories.DUAL_TACHI,
                 (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.TACHI_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
@@ -236,6 +242,7 @@ public class CDmoveset
                 (item, player) -> CorruptAnimations.GUARD_BREAK2);
         advancedGuardMotions.put(CorruptWeaponCategories.S_SPEAR, (itemCap, playerpatch) ->
                 new StaticAnimation[]{Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2});
+        impactGuardMotions.put(CorruptWeaponCategories.S_SPEAR, (item, player) -> Animations.SPEAR_GUARD_HIT);
 
         guardMotions.put(CorruptWeaponCategories.S_TACHI,
                 (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.TACHI_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
@@ -244,6 +251,7 @@ public class CDmoveset
         advancedGuardMotions.put(CorruptWeaponCategories.S_TACHI, (itemCap, playerpatch) -> itemCap.getStyle(playerpatch) == CapabilityItem.Styles.ONE_HAND ?
                 new StaticAnimation[] { Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2 } :
                 new StaticAnimation[] { Animations.SWORD_GUARD_ACTIVE_HIT2, Animations.SWORD_GUARD_ACTIVE_HIT3 });
+        impactGuardMotions.put(CorruptWeaponCategories.S_TACHI, (item, player) -> CorruptAnimations.TACHI_GUARD);
 
         guardMotions.put(CorruptWeaponCategories.S_LONGSWORD,
                 (item, player) -> Animations.LONGSWORD_GUARD_HIT);
@@ -251,6 +259,7 @@ public class CDmoveset
                 (item, player) -> CorruptAnimations.GUARD_BREAK2);
         advancedGuardMotions.put(CorruptWeaponCategories.S_LONGSWORD, (itemCap, playerpatch) ->
                 new StaticAnimation[]{Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2});
+        impactGuardMotions.put(CorruptWeaponCategories.S_LONGSWORD, (item, player) -> Animations.LONGSWORD_GUARD_HIT);
 
 
 
@@ -293,6 +302,10 @@ public class CDmoveset
         target=(Map) temp.get(EpicFightSkills.PARRYING);
         for (WeaponCategory weaponCapability:advancedGuardMotions.keySet()){
             target.put(weaponCapability,advancedGuardMotions.get(weaponCapability));
+        }
+        target=(Map) temp.get(EpicFightSkills.IMPACT_GUARD);
+        for(WeaponCategory weaponCapability:impactGuardMotions.keySet()){
+            target.put(weaponCapability,impactGuardMotions.get(weaponCapability));
         }
     }
 }

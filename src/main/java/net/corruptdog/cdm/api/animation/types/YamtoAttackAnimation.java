@@ -2,83 +2,81 @@ package net.corruptdog.cdm.api.animation.types;
 
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
-import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.EntityState.StateFactor;
+import yesman.epicfight.api.animation.types.StateSpectrum;
 import yesman.epicfight.api.client.animation.Layer;
 import yesman.epicfight.api.client.animation.property.JointMaskEntry;
-import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.model.Armature;
-import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.datastruct.TypeFlexibleHashMap;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.config.EpicFightOptions;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.damagesource.EpicFightDamageType;
 import yesman.epicfight.world.gamerule.EpicFightGamerules;
 
+public class YamtoAttackAnimation extends AttackAnimation {
 
-public class DodgeAttackAnimation extends AttackAnimation {
-    public static final Function<DamageSource, AttackResult.ResultType> DODGEABLE_SOURCE_VALIDATOR = (damagesource) -> {
-        if (damagesource.getEntity() != null && !damagesource.is(DamageTypeTags.IS_EXPLOSION) && !damagesource.is(DamageTypes.MAGIC) && !damagesource.is(DamageTypeTags.BYPASSES_ARMOR)
-                && !damagesource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damagesource.is(EpicFightDamageType.BYPASS_DODGE)) {
-            return AttackResult.ResultType.MISSED;
-        }
 
-        return AttackResult.ResultType.SUCCESS;
-    };
+    protected final StateSpectrum.Blueprint stateUtilsBlueprint = new StateSpectrum.Blueprint();
+    private final StateSpectrum stateUtils = new StateSpectrum();
+    protected final float attackstart;
+    protected final float attackwinopen;
+    protected final float attackwinclose;
+    protected final float skillwinopen;
+    protected final float skillwinclose;
+    protected final float attackend;
+    protected final float lockon;
+    protected final float lockoff;
 
-    public DodgeAttackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, Joint colliderJoint, String path, Armature armature) {
-        super(convertTime, antic, preDelay, contact, recovery, collider, colliderJoint, path, armature);
+    public YamtoAttackAnimation(float convertTime, float attackstart, float attackend, float attackwinopen, float attackwinclose, float skillwinopen, float skillwinclose, float lockon, float lockoff, String path, Armature armature, AttackAnimation.Phase... phases) {
+        super(convertTime, path, armature, phases);
 
-        this.addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true);
-        this.addProperty(ActionAnimationProperty.MOVE_VERTICAL, false);
-        this.addProperty(StaticAnimationProperty.POSE_MODIFIER, Animations.ReusableSources.COMBO_ATTACK_DIRECTION_MODIFIER);
+
+        this.attackstart = attackstart;
+        this.attackwinopen = attackwinopen;
+        this.attackwinclose = attackwinclose;
+        this.skillwinopen = skillwinopen;
+        this.skillwinclose = skillwinclose;
+        this.lockon = lockon;
+        this.lockoff = lockoff;
+        this.attackend = attackend;
+        this.stateUtilsBlueprint.clear();
+        AttackAnimation.Phase[] var13 = phases;
+        int var14 = phases.length;
+        this.addProperty(ActionAnimationProperty.STOP_MOVEMENT, true);
     }
+
+
     @Override
     protected void bindPhaseState(Phase phase) {
         float preDelay = phase.preDelay;
 
         this.stateSpectrumBlueprint
+                .newTimePair(attackstart, attackwinopen)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
                 .newTimePair(phase.start, preDelay)
                 .addState(EntityState.PHASE_LEVEL, 1)
-                .newTimePair(phase.start, phase.contact)
-                .addState(EntityState.CAN_BASIC_ATTACK, false)
-                .addState(EntityState.CAN_SKILL_EXECUTION, false)
-
-                .newTimePair(phase.start, phase.recovery)
+                .newTimePair(phase.start, phase.end+1F)
                 .addState(EntityState.MOVEMENT_LOCKED, true)
                 .addState(EntityState.UPDATE_LIVING_MOTION, false)
-                .addState(EntityState.CAN_BASIC_ATTACK, false)
-
                 .newTimePair(phase.start, phase.end)
                 .addState(EntityState.INACTION, true)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
                 .addState(EntityState.MOVEMENT_LOCKED, true)
-                .newTimePair(preDelay, phase.contact)
-                .addState(EntityState.TURNING_LOCKED, true)
+                .newTimePair(preDelay, phase.contact + 0.01F)
                 .addState(EntityState.ATTACKING, true)
                 .addState(EntityState.PHASE_LEVEL, 2)
-
-                .newTimePair(phase.contact, phase.end)
+                .newTimePair(phase.contact + 0.01F, phase.end)
                 .addState(EntityState.PHASE_LEVEL, 3)
                 .addState(EntityState.TURNING_LOCKED, true)
-
-                .newTimePair(0.0F, Float.MAX_VALUE)
-                .addState(EntityState.ATTACK_RESULT, DODGEABLE_SOURCE_VALIDATOR);
+                .newTimePair(attackwinclose ,skillwinclose)
+                .addState(EntityState.PHASE_LEVEL, 3)
+                .addState(EntityState.TURNING_LOCKED, true);
     }
 
     @Override

@@ -2,6 +2,7 @@ package net.corruptdog.cdm.mixins;
 
 import java.util.UUID;
 
+import net.corruptdog.cdm.CDConfig;
 import net.corruptdog.cdm.gameasset.CorruptSound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -31,12 +32,16 @@ public class DodgeSkillMixin extends Skill {
         super.onInitiate(container);
 
         container.getExecuter().getEventListener().addEventListener(PlayerEventListener.EventType.DODGE_SUCCESS_EVENT, EVENT_UUID, (event) -> {
-            event.getPlayerPatch().playSound(CorruptSound.FORESIGHT.get(), 0.8F, 1.2F);
+            if (CDConfig.ENABLE_DODGESUCCESS_SOUND.get() ) {
+                container.getExecuter().playSound(CorruptSound.FORESIGHT.get(), 0.8F, 1.2F);
+            }
         });
         container.getExecuter().getEventListener().addEventListener(PlayerEventListener.EventType.ANIMATION_BEGIN_EVENT, EVENT_UUID, (event) -> {
             StaticAnimation animation = event.getAnimation();
-            if (animation == Animations.BIPED_STEP_FORWARD || animation == Animations.BIPED_STEP_BACKWARD || animation == Animations.BIPED_STEP_LEFT || animation == Animations.BIPED_STEP_RIGHT) {
-                event.getPlayerPatch().playSound(CorruptSound.STEP.get(), 0.8F, 1.0F);
+            if (CDConfig.ENABLE_DODGE_SOUND.get()) {
+                if (animation == Animations.BIPED_STEP_FORWARD || animation == Animations.BIPED_STEP_BACKWARD || animation == Animations.BIPED_STEP_LEFT || animation == Animations.BIPED_STEP_RIGHT) {
+                    event.getPlayerPatch().playSound(CorruptSound.STEP.get(), 0.8F, 1.0F);
+                }
             }
         });
     }

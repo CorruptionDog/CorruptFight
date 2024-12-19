@@ -3,17 +3,17 @@
     "pattern":
     [
         "  B",
-        "BB ",
-        "SB "
+        " B ",
+        "S  "
     ],
     "key":
     {
         "B": { "item" : "minecraft:iron_ingot" },
-        "S": { "item" : "cdmoveset:s_ironsword" }
+        "S": { "item" : "epicfight:iron_tachi" }
     },
     "result":
     {
-        "item" : "cdmoveset:s_ironlongsword",
+        "item" : "cdmoveset:s_irontachi",
         "count" : 1
     }
 }

@@ -2,18 +2,20 @@
     "type": "minecraft:crafting_shaped",
     "pattern":
     [
-        "  B",
-        "BB ",
-        "SB "
+        " BB",
+        " SB",
+        "B  "
     ],
+    
     "key":
     {
         "B": { "item" : "minecraft:diamond" },
-        "S": { "item" : "cdmoveset:s_diamondsword" }
+        "S": { "item" : "epicfight:diamond_spear" }
     },
+    
     "result":
     {
-        "item" : "cdmoveset:s_diamondlongsword",
+        "item" : "cdmoveset:s_diamondspear",
         "count" : 1
     }
 }

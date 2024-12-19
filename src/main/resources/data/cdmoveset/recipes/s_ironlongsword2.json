@@ -9,7 +9,7 @@
     "key":
     {
         "B": { "item" : "minecraft:iron_ingot" },
-        "S": { "item" : "cdmoveset:s_ironsword" }
+        "S": { "item" : "epicfight:iron_longsword" }
     },
     "result":
     {

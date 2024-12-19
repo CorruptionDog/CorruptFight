@@ -44,7 +44,6 @@ public class CDWeaponCapabilityPresets {
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.KATANASKILL)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, CorruptAnimations.BIPED_HOLD_KATANA)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, CorruptAnimations.BIPED_HOLD_KATANA)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.JUMP, CorruptAnimations.BIPED_HOLD_KATANA)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, CorruptAnimations.WALK_KATANA)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, CorruptAnimations.WALK_KATANA)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, CorruptAnimations.RUN_KATANA)
@@ -157,28 +156,28 @@ public class CDWeaponCapabilityPresets {
                     .weaponCombinationPredicator((entitypatch) -> EpicFightCapabilities.getItemStackCapability(entitypatch.getOriginal().getOffhandItem()).getWeaponCategory() == CorruptWeaponCategories.DUAL_TACHI);
 
 
-//    public static final Function<Item, CapabilityItem.Builder> S_DAGGER = (item) ->
-//            WeaponCapability.builder()
-//                    .category(CorruptWeaponCategories.S_DAGGER)
-//                    .styleProvider((playerpatch) -> playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CorruptWeaponCategories.S_DAGGER ? Styles.TWO_HAND : Styles.ONE_HAND)
-//                    .hitSound(EpicFightSounds.BLADE_HIT.get())
-//                    .swingSound(EpicFightSounds.WHOOSH_SMALL.get())
-//                    .collider(ColliderPreset.DAGGER)
-//                    .weaponCombinationPredicator((entitypatch) -> EpicFightCapabilities.getItemStackCapability(entitypatch.getOriginal().getOffhandItem()).getWeaponCategory() == CorruptWeaponCategories.S_DAGGER)
-//                    .newStyleCombo(Styles.ONE_HAND, Animations.DAGGER_AUTO1, Animations.DAGGER_AUTO2, Animations.DAGGER_AUTO3, Animations.DAGGER_DASH, Animations.DAGGER_AIR_SLASH)
-//                    .newStyleCombo(Styles.TWO_HAND, Animations.DAGGER_DUAL_AUTO1, Animations.DAGGER_DUAL_AUTO2, Animations.DAGGER_DUAL_AUTO3, Animations.BIPED_MOB_DAGGER_TWOHAND1, Animations.DAGGER_DUAL_DASH, Animations.DAGGER_DUAL_AIR_SLASH)
-//                    .newStyleCombo(Styles.MOUNT, Animations.SWORD_MOUNT_ATTACK)
-//                    .innateSkill(Styles.ONE_HAND, (itemstack) -> EpicFightSkills.EVISCERATE)
-//                    .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.BLADE_RUSH)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, Animations.BIPED_HOLD_DUAL_WEAPON)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_DUAL)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SNEAK, Animations.BIPED_HOLD_DUAL_WEAPON)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_DUAL_WEAPON)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_DUAL_WEAPON)
-//                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_DUAL_WEAPON);
+    public static final Function<Item, CapabilityItem.Builder> S_DAGGER = (item) ->
+            WeaponCapability.builder()
+                    .category(CorruptWeaponCategories.S_DAGGER)
+                    .styleProvider((playerpatch) -> playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CorruptWeaponCategories.S_DAGGER ? Styles.TWO_HAND : Styles.ONE_HAND)
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .swingSound(EpicFightSounds.WHOOSH_SMALL.get())
+                    .collider(ColliderPreset.DAGGER)
+                    .weaponCombinationPredicator((entitypatch) -> EpicFightCapabilities.getItemStackCapability(entitypatch.getOriginal().getOffhandItem()).getWeaponCategory() == CorruptWeaponCategories.S_DAGGER)
+                    .newStyleCombo(Styles.ONE_HAND, Animations.DAGGER_AUTO1, Animations.DAGGER_AUTO2, Animations.DAGGER_AUTO3, Animations.DAGGER_DASH, Animations.DAGGER_AIR_SLASH)
+                    .newStyleCombo(Styles.TWO_HAND, Animations.DAGGER_DUAL_AUTO1, Animations.DAGGER_DUAL_AUTO2, Animations.DAGGER_DUAL_AUTO3, Animations.BIPED_MOB_DAGGER_TWOHAND1, Animations.DAGGER_DUAL_DASH, Animations.DAGGER_DUAL_AIR_SLASH)
+                    .newStyleCombo(Styles.MOUNT, Animations.SWORD_MOUNT_ATTACK)
+                    .innateSkill(Styles.ONE_HAND, (itemstack) -> EpicFightSkills.EVISCERATE)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.BLADE_RUSH)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_DUAL)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SNEAK, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_DUAL_WEAPON);
 
 
     public static final Function<Item, CapabilityItem.Builder> S_LONGSWORD = (item) ->
@@ -261,9 +260,8 @@ public class CDWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, CorruptAnimations.YAMATO_WALK)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, CorruptAnimations.YAMATO_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, CorruptAnimations.YAMATO_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SNEAK,CorruptAnimations.YAMATO_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_FLOAT)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_FALL)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, CorruptAnimations.YAMATO_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, CorruptAnimations.YAMATO_GUARD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.LANDING_RECOVERY, Animations.BIPED_LANDING);
 

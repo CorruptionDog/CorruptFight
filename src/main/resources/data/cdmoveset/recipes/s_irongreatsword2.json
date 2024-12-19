@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "base": {
+        "item": "epicfight:iron_greatsword"
+    },
+    "addition": {
+        "item" : "minecraft:iron_block"
+    },
+    "result": {
+        "item": "cdmoveset:s_irongreatsword"
+    },
+    "template": {
+      "item": "minecraft:oak_planks"
+    }
+}

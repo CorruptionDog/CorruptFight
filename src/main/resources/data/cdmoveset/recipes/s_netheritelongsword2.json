@@ -8,12 +8,12 @@
     ],
     "key":
     {
-        "B": { "item" : "minecraft:iron_ingot" },
-        "S": { "item" : "cdmoveset:s_ironsword" }
+        "B": { "item" : "minecraft:diamond" },
+        "S": { "item" : "epicfight:netherite_longsword" }
     },
     "result":
     {
-        "item" : "cdmoveset:s_ironlongsword",
+        "item" : "cdmoveset:s_netheritelongsword",
         "count" : 1
     }
 }

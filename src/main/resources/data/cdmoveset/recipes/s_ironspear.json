@@ -2,14 +2,15 @@
     "type": "minecraft:crafting_shaped",
     "pattern":
     [
-        "  B",
-        " S ",
+        " DB",
+        " SD",
         "S  "
     ],
     
     "key":
     {
         "B": { "item" : "cdmoveset:s_ironsword" },
+        "D": { "item" : "minecraft:iron_ingot" },
         "S": { "item" : "minecraft:stick" }
     },
     
