@@ -1,5 +1,6 @@
 package net.corruptdog.cdm.skill.weaponinnate;
 
+import com.google.common.collect.Maps;
 import net.corruptdog.cdm.gameasset.CorruptAnimations;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -16,6 +17,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class LethalSlicingSkill extends WeaponInnateSkill {
@@ -56,11 +58,20 @@ public class LethalSlicingSkill extends WeaponInnateSkill {
         this.generateTooltipforPhase(list, itemStack, cap, playerCap, this.properties.get(1), "Once Strike:");
         return list;
     }
-
+    private void SLASH(ServerPlayerPatch executer) {
+        executer.playAnimationSynchronized(CorruptAnimations.TACHI_SLASH, 0.0F);
+    }
 
     @Override
     public void executeOnServer(ServerPlayerPatch executer, FriendlyByteBuf args) {
-        executer.playAnimationSynchronized(CorruptAnimations.LETHAL_SLICING_START, 0);
-        super.executeOnServer(executer, args);
+        ResourceLocation rl = executer.getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
+        Map<ResourceLocation, Runnable> actionMap = Maps.newHashMap();
+        actionMap.put(CorruptAnimations.LETHAL_SLICING_START.getRegistryName(), () -> SLASH(executer));
+        if (actionMap.containsKey(rl)) {
+            actionMap.get(rl).run();
+        } else {
+            executer.playAnimationSynchronized(CorruptAnimations.LETHAL_SLICING_START, 0);
+            super.executeOnServer(executer, args);
+        }
     }
 }

@@ -7,7 +7,6 @@ import net.corruptdog.cdm.skill.Dodge.Dodge;
 import net.corruptdog.cdm.skill.Dodge.SStep;
 import net.corruptdog.cdm.skill.Passive.BloodWolf;
 import net.corruptdog.cdm.skill.weaponinnate.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
@@ -17,7 +16,6 @@ import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.*;
 import yesman.epicfight.skill.dodge.DodgeSkill;
-import yesman.epicfight.skill.dodge.StepSkill;
 import yesman.epicfight.skill.passive.PassiveSkill;
 import yesman.epicfight.skill.weaponinnate.*;
 import yesman.epicfight.world.damagesource.EpicFightDamageType;
@@ -41,10 +39,11 @@ public class CDSkills {
     public static Skill BLADE_RUSH;
     public static Skill YAMATO_STEP;
     public static Skill SSTEP;
+    public static Skill BSTEP;
     public static Skill PSSTEP;
     public static Skill DUAL_TACHISKILL;
     public static Skill KATANASKILL;
-
+    public static Skill SHILEDSLASH;
 
 
 //    public static Skill YAMATO_PASSIVE;
@@ -54,14 +53,15 @@ public class CDSkills {
     public static void buildSkillEvent(SkillBuildEvent build) {
 
         SkillBuildEvent.ModRegistryWorker modRegistry = build.createRegistryWorker(CDmoveset.MOD_ID);
-        YAMATO_STEP = modRegistry.build("yamato_step", DodgeSkill::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.YAMATO_STEP_FORWARD, () -> CorruptAnimations.YAMATO_STEP_BACKWARD, () -> CorruptAnimations.YAMATO_STEP_LEFT, () -> CorruptAnimations.YAMATO_STEP_RIGHT));
-        SSTEP = modRegistry.build("sstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.SSTEP_FORWARD, () -> CorruptAnimations.SSTEP_BACKWARD, () -> CorruptAnimations.SSTEP_LEFT, () -> CorruptAnimations.SSTEP_FORWARD));
+        YAMATO_STEP = modRegistry.build("yamato_step", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.YAMATO_STEP_FORWARD, () -> CorruptAnimations.YAMATO_STEP_BACKWARD, () -> CorruptAnimations.YAMATO_STEP_LEFT, () -> CorruptAnimations.YAMATO_STEP_RIGHT));
+        SSTEP = modRegistry.build("sstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.SSTEP_FORWARD, () -> CorruptAnimations.SSTEP_BACKWARD, () -> CorruptAnimations.SSTEP_LEFT, () -> CorruptAnimations.SSTEP_RIGHT));
         GUARDPARRY = modRegistry.build("guardparry", GuardParrySkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION_INFINITE));
         BLOODWOLF = modRegistry.build( "bloodwolf", BloodWolf::new, PassiveSkill.createIdentityBuilder());
         DUAL_TACHISKILL = modRegistry.build( "dual_tachiskill", DualTchiSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         YAMATOSKILL = modRegistry.build( "yamatoskill", YamatoSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         BLADE_RUSH = modRegistry.build( "blade_rush", DualDaggerSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
-
+        SHILEDSLASH = modRegistry.build( "shiled_slahs", ShiledSlash::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        BSTEP = modRegistry.build("bstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.STEP_FORWARD, () -> CorruptAnimations.STEP_BACKWARD, () -> CorruptAnimations.STEP_LEFT, () -> CorruptAnimations.STEP_RIGHT));
 
 //        YAMATO_ATTACK = modRegistry.build("yamato_attack",YamatoAttack::new,YamatoAttack.createBuilder());
 //        YAMATO_PASSIVE = modRegistry.build("yamato_passive",YamatoPassive::new,Skill.createBuilder().setCategory(SkillCategories.WEAPON_PASSIVE));
@@ -72,8 +72,8 @@ public class CDSkills {
                 .setAnimations1(
                         () -> CorruptAnimations.WOLFDODGE_FORWARD,
                         () -> CorruptAnimations.WOLFDODGE_BACKWARD,
-                        () -> CorruptAnimations.SSTEP_LEFT,
-                        () -> CorruptAnimations.SSTEP_RIGHT
+                        () -> CorruptAnimations.WOLFDODGE_LEFT,
+                        () -> CorruptAnimations.WOLFDODGE_RIGHT
                 )
                 .setAnimations2(
                         () -> CorruptAnimations.ROLL_FORWARD,
@@ -84,17 +84,17 @@ public class CDSkills {
                 .setAnimations3(
                         () -> CorruptAnimations.WOLFDODGE_FORWARD,
                         () -> CorruptAnimations.WOLFDODGE_BACKWARD,
-                        () -> CorruptAnimations.SSTEP_LEFT,
-                        () -> CorruptAnimations.SSTEP_RIGHT
+                        () -> CorruptAnimations.WOLFDODGE_LEFT,
+                        () -> CorruptAnimations.WOLFDODGE_RIGHT
                 )
                 .setPerfectAnimations(
-                        () -> Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT,
+                        () -> CorruptAnimations.STEP_FORWARD,
+                        () -> CorruptAnimations.STEP_BACKWARD,
                         () -> Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT,
-                        () -> CorruptAnimations.SSTEP_LEFT,
-                        () -> CorruptAnimations.SSTEP_RIGHT
+                        () -> Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT
                 )
         );
-        WeaponInnateSkill KatanaspSkill = modRegistry.build("katanaspskill", KatanaSpSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        WeaponInnateSkill KatanaspSkill = modRegistry.build("katanaspskill", TachiDual::new, WeaponInnateSkill.createWeaponInnateBuilder());
         KatanaspSkill.newProperty()
                 .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(15.0F))
                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1F))

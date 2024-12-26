@@ -8,9 +8,11 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -23,8 +25,12 @@ public class ParticleRenderTypes {
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             RenderSystem.enableDepthTest();
             RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
-            bufferBuilder.begin(VertexFormat.Mode.TRIANGLES,DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
 
+            Minecraft mc = Minecraft.getInstance();
+            mc.gameRenderer.lightTexture().turnOnLightLayer();
+
+            bufferBuilder.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
+            RenderSystem.setShaderTexture(0, new ResourceLocation("cdmoveset", "textures/particle/afterimage.png"));
         }
 
         public void end(Tesselator tesselator) {
@@ -35,6 +41,8 @@ public class ParticleRenderTypes {
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableCull();
 
+            Minecraft mc = Minecraft.getInstance();
+            mc.gameRenderer.lightTexture().turnOffLightLayer();
         }
 
         public String toString() {

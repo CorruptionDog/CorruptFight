@@ -1,0 +1,14 @@
+{
+    "trail_effects": [
+        {
+            "start_time": 0.5,
+            "end_time": 0.501,
+            "joint": "Tool_L",
+            "item_skin_hand": "main_hand",
+            "begin_pos": [0.0, 0.0, -0.1],
+            "end_pos": [0.0, 0.1, -1.65],
+            "lifetime": 12,
+            "interpolations": 7
+        }
+    ]
+}

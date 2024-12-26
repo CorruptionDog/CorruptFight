@@ -1,26 +1,25 @@
 {
-	"loader": "forge:separate-perspective",
+	"loader": "forge:separate_transforms",
 	"base":
 	{
 		"loader": "forge:obj",
-  		"model": "epicfight:models/item/obj/yamato_in_sheath.obj",
-  		"flip-v": true,
-		"display":
-		{
-    	"thirdperson_righthand":
-    	{
-     		"translation": [6.5, -4.5, 6.4],
-     		"rotation": [90, 1, 0],
-     		"scale": [0.83, 0.8, 0.65]
-    	},
-    	"firstperson_righthand":
-    	{
-     		"translation": [10,-1,-5],
-     		"rotation": [ 85, -3, 0 ],
-    		"scale": [0.45, 0.45, 0.45]
-    	}
+		"model": "cdmoveset:models/item/obj/yamato_in_sheath.obj",
+		"flip_v": true,
+		"display": {
+			"thirdperson_righthand":
+			{
+				"translation": [6.5, -4.5, 6.4],
+				"rotation": [90, 1, 0],
+				"scale": [0.83, 0.8, 0.65]
+			},
+			"firstperson_righthand":
+			{
+				"translation": [10,-1,-5],
+				"rotation": [ 85, -3, 0 ],
+				"scale": [0.45, 0.45, 0.45]
+			}
 		}
-		},
+	},
 	"perspectives":
 	{
 		"ground":
@@ -28,7 +27,7 @@
 			"parent": "item/generated",
 			"textures":
 			{
-				"layer0": "epicfight:item/katana"
+				"layer0": "cdmoveset:item/katana"
 			}
 		},
 		"gui":
@@ -36,7 +35,7 @@
 			"parent": "item/generated",
 			"textures":
 			{
-				"layer0": "epicfight:item/katana"
+				"layer0": "cdmoveset:item/katana"
 			},
 			"gui_light": "front"
 		},
@@ -45,7 +44,7 @@
 			"parent": "item/generated",
 			"textures":
 			{
-				"layer0": "epicfight:item/katana"
+				"layer0": "cdmoveset:item/katana"
 			}
 		}
 	}

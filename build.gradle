@@ -44,6 +44,7 @@ minecraft {
         client {
 
             property 'forge.enabledGameTestNamespaces', mod_id
+            args '--username', 'Corrupt_Dog','--skin', 'src/main/resources/assets/minecraft/textures/entity/player/wide/steve.png'
         }
 
         server {

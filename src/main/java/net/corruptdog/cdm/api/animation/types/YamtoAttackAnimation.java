@@ -59,21 +59,30 @@ public class YamtoAttackAnimation extends AttackAnimation {
         this.stateSpectrumBlueprint
                 .newTimePair(attackstart, attackwinopen)
                 .addState(EntityState.CAN_BASIC_ATTACK, false)
+
+                .newTimePair( phase.contact, phase.recovery)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
+
                 .newTimePair(phase.start, preDelay)
                 .addState(EntityState.PHASE_LEVEL, 1)
+
                 .newTimePair(phase.start, phase.end+1F)
                 .addState(EntityState.MOVEMENT_LOCKED, true)
                 .addState(EntityState.UPDATE_LIVING_MOTION, false)
+
                 .newTimePair(phase.start, phase.end)
                 .addState(EntityState.INACTION, true)
                 .addState(EntityState.CAN_BASIC_ATTACK, false)
                 .addState(EntityState.MOVEMENT_LOCKED, true)
+
                 .newTimePair(preDelay, phase.contact + 0.01F)
                 .addState(EntityState.ATTACKING, true)
                 .addState(EntityState.PHASE_LEVEL, 2)
+
                 .newTimePair(phase.contact + 0.01F, phase.end)
                 .addState(EntityState.PHASE_LEVEL, 3)
                 .addState(EntityState.TURNING_LOCKED, true)
+
                 .newTimePair(attackwinclose ,skillwinclose)
                 .addState(EntityState.PHASE_LEVEL, 3)
                 .addState(EntityState.TURNING_LOCKED, true);

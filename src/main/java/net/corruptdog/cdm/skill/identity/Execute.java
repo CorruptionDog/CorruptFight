@@ -79,10 +79,6 @@ public class Execute {
                         ep.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 0));
                         ep.playSound(CorruptSound.EXECUTE.get(), 1.0F, 1.0F);
                         player.teleportTo(ep.getOriginal().getX() + viewVec.x() * 1.85, ep.getOriginal().getY(), ep.getOriginal().getZ() + viewVec.z() * 1.85);
-                        player.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(ep.getOriginal().getX(), ep.getOriginal().getEyeY() - 0.1, ep.getOriginal().getZ()));
-                        ep.getOriginal().lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(player.getX(), player.getEyeY() - 0.1, player.getZ()));
-                        player.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(ep.getOriginal().getX(), ep.getOriginal().getEyeY() - 0.1, ep.getOriginal().getZ()));
-                        ep.getOriginal().lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(player.getX(), player.getEyeY() - 0.1, player.getZ()));
                         pp.playAnimationSynchronized(CorruptAnimations.EXECUTE, 0.0F);
                         ep.playAnimationSynchronized(CorruptAnimations.GUARD_BREAK1, 0.35F, SPPlayAnimation::new);
                         break;

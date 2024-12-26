@@ -17,9 +17,8 @@ public class CDAddonItems {
     public static final RegistryObject<Item> KATANA = ITEMS.register("katana", () -> new Katanaitem(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> KATANA_SHEATH = ITEMS.register("katana_sheath", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
+    public static final RegistryObject<Item> YAMATO = ITEMS.register("yamato", () -> new YamatoItem(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> YAMATO_BLADE = ITEMS.register("yamato_blade", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
-    public static final RegistryObject<Item> YAMATO = ITEMS.register("yamato", () -> new Yamatoitem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final RegistryObject<Item> T_YAMATO_SHEATH = ITEMS.register("t_yamato_sheath", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> S_IRONSPEAR = ITEMS.register("s_ironspear", () -> new SpearItem(new Item.Properties(), Tiers.IRON));
     public static final RegistryObject<Item> S_DIAMONDSPEAR = ITEMS.register("s_diamondspear", () -> new SpearItem(new Item.Properties(), Tiers.DIAMOND));
@@ -42,9 +41,9 @@ public class CDAddonItems {
     public static final RegistryObject<Item> S_DIAMONDGREATSWORD = ITEMS.register("s_diamondgreatsword", () -> new GreatSwordItem(new Item.Properties(), Tiers.DIAMOND));
     public static final RegistryObject<Item> S_NETHERITEGREATSWORD = ITEMS.register("s_netheritegreatsword", () -> new GreatSwordItem(new Item.Properties(), Tiers.NETHERITE));
 
-    public static final RegistryObject<Item> S_IRONDAGGER = ITEMS.register("s_irondagger", () -> new LongswordItem(new Item.Properties(), Tiers.IRON));
-    public static final RegistryObject<Item> S_DIAMONDDAGGER = ITEMS.register("s_diamonddagger", () -> new LongswordItem(new Item.Properties(), Tiers.DIAMOND));
-    public static final RegistryObject<Item> S_NETHERITEDAGGER = ITEMS.register("s_netheritedagger", () -> new LongswordItem(new Item.Properties(), Tiers.NETHERITE));
+    public static final RegistryObject<Item> S_IRONDAGGER = ITEMS.register("s_irondagger", () -> new DaggerItem(new Item.Properties(), Tiers.IRON));
+    public static final RegistryObject<Item> S_DIAMONDDAGGER = ITEMS.register("s_diamonddagger", () -> new DaggerItem(new Item.Properties(), Tiers.DIAMOND));
+    public static final RegistryObject<Item> S_NETHERITEDAGGER = ITEMS.register("s_netheritedagger", () -> new DaggerItem(new Item.Properties(), Tiers.NETHERITE));
 
     public static final RegistryObject<Item> DUAL_TACHI = ITEMS.register("dual_tachi", () -> new TachiItem(new Item.Properties(), Tiers.NETHERITE));
     public static void register(IEventBus eventBus) {

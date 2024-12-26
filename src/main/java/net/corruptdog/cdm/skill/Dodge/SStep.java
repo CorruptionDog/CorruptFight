@@ -18,6 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import yesman.epicfight.api.animation.StaticAnimationProvider;
 import yesman.epicfight.api.animation.types.EntityState;
+import yesman.epicfight.api.utils.math.MathUtils;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.network.client.CPExecuteSkill;
 import yesman.epicfight.skill.*;
@@ -79,19 +80,30 @@ public class SStep extends Skill {
 
     @OnlyIn(Dist.CLIENT)
     public Object getExecutionPacket(LocalPlayerPatch executer, FriendlyByteBuf args) {
-        Input input = executer.getOriginal().input;
-        float pulse = Mth.clamp(0.3F + EnchantmentHelper.getSneakingSpeedBonus(executer.getOriginal()), 0.0F, 1.0F);
+        Input input = Minecraft.getInstance().player.input;
+        float pulse = Mth.clamp(0.3F + EnchantmentHelper.getSneakingSpeedBonus(Minecraft.getInstance().player), 0.0F, 1.0F);
         input.tick(false, pulse);
-        int forward = input.up ? 1 : 0;
-        int backward = input.down ? -1 : 0;
+        int forward = input.up ? 1:0;
+        int backward = input.down ? -1:0;
         int left = input.left ? 1 : 0;
         int right = input.right ? -1 : 0;
         int vertic = forward + backward;
         int horizon = left + right;
-        float yRot = Minecraft.getInstance().gameRenderer.getMainCamera().getYRot();
-        float degree = (float)(-(90 * horizon * (1 - Math.abs(vertic)) + 45 * vertic * horizon)) + yRot;
+        float degree = vertic == 0 ? 0 : -(90 * horizon * (1 - Math.abs(vertic)) + 45 * vertic * horizon);
+        int animation;
+
+        if (vertic == 0) {
+            if (horizon == 0) {
+                animation = 0;
+            } else {
+                animation = horizon >= 0 ? 2 : 3;
+            }
+        } else {
+            animation = vertic >= 0 ? 0 : 1;
+        }
+        degree= MathUtils.lerpBetween(degree,executer.getOriginal().getYRot(),1);
         CPExecuteSkill packet = new CPExecuteSkill(executer.getSkill(this).getSlotId());
-        packet.getBuffer().writeInt(vertic >= 0 ? 0 : 1);
+        packet.getBuffer().writeInt(animation);
         packet.getBuffer().writeFloat(degree);
         return packet;
     }

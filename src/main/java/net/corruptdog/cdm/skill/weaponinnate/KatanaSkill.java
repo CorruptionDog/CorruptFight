@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.SkillDataKeys;
+import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
@@ -39,7 +41,10 @@ public class KatanaSkill extends WeaponInnateSkill {
 
     @Override
     public void executeOnServer(ServerPlayerPatch executer, FriendlyByteBuf args) {
-        ResourceLocation rl = executer.getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
+        boolean isSheathed = executer.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().getDataValue(SkillDataKeys.SHEATH.get());
+        if (isSheathed) {
+            executer.playAnimationSynchronized(CorruptAnimations.FATAL_DRAW, -0.33F);
+        }
         if (executer.getOriginal().isSprinting()) {
             float stamina = executer.getStamina();
             float maxStamina = executer.getMaxStamina();

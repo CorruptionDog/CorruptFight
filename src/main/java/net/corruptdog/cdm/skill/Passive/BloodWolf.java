@@ -58,6 +58,8 @@ public class BloodWolf extends PassiveSkill {
             if (wolfPassive == null) {
                 wolfPassive = 0;
             }
+
+            container.getDataManager().setDataSync(CDSkillDataKeys.WOLFPASSIVE.get(), wolfPassive + 1, event.getPlayerPatch().getOriginal());
             if (wolfPassive < MAX_WOLFPASSIVE) {
                 container.getDataManager().setDataSync(CDSkillDataKeys.WOLFPASSIVE.get(), wolfPassive + 1, event.getPlayerPatch().getOriginal());
                 System.out.println(container.getDataManager().getDataValue(CDSkillDataKeys.WOLFPASSIVE.get()));
@@ -66,6 +68,10 @@ public class BloodWolf extends PassiveSkill {
                     container.getDataManager().setDataSync(CDSkillDataKeys.TIMER.get(), TIMER_DURATION, event.getPlayerPatch().getOriginal());
                 }
             }
+        });
+        container.getExecuter().getEventListener().addEventListener(EventType.ACTION_EVENT_SERVER, EVENT_UUID, (event) -> {
+            container.getDataManager().setDataSync(CDSkillDataKeys.WOLFPASSIVE.get(), 0, event.getPlayerPatch().getOriginal());
+            container.getDataManager().setDataSync(CDSkillDataKeys.TIMER.get(), 0, event.getPlayerPatch().getOriginal());
         });
         container.getExecuter().getEventListener().addEventListener(EventType.MODIFY_DAMAGE_EVENT, EVENT_UUID, (event) -> {
             Integer damage = container.getDataManager().getDataValue(CDSkillDataKeys.DAMAGE.get());
@@ -97,7 +103,7 @@ public class BloodWolf extends PassiveSkill {
                 wolfPassive = 0;
             }
             if (wolfPassive == MAX_WOLFPASSIVE && event.getDamageSource().getEntity() != null) {
-                double probability = 0.35;
+                double probability = 0.40;
                 if (Math.random() < probability) {
                     event.getPlayerPatch().playSound(CorruptSound.HURT.get(), 0.8F, 1.2F);
                     event.getPlayerPatch().playSound(EpicFightSounds.BLADE_HIT.get(), 0.8F, 1.2F);
@@ -130,9 +136,12 @@ public class BloodWolf extends PassiveSkill {
 
     @Override
     public void onRemoved(SkillContainer container) {
+        container.getExecuter().getEventListener().removeListener(EventType.ANIMATION_BEGIN_EVENT, EVENT_UUID);
         container.getExecuter().getEventListener().removeListener(EventType.DODGE_SUCCESS_EVENT, EVENT_UUID);
+        container.getExecuter().getEventListener().removeListener(EventType.ACTION_EVENT_SERVER, EVENT_UUID);
         container.getExecuter().getEventListener().removeListener(EventType.HURT_EVENT_PRE, EVENT_UUID);
         container.getExecuter().getEventListener().removeListener(EventType.MODIFY_DAMAGE_EVENT, EVENT_UUID);
+        container.getExecuter().getEventListener().removeListener(EventType.DEALT_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
     }
 
     @OnlyIn(Dist.CLIENT)

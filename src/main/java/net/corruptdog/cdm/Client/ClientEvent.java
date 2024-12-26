@@ -21,6 +21,7 @@ public class ClientEvent {
     public static void onParticleRegistry(final RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(CorruptParticles.FORESIGHT.get(), BladeRushParticle.Provider::new);
         event.registerSpecial(CorruptParticles.CORRUPT_AFTER_IMAGE.get(), new AfterImageParticle.Provider());
+
     }
 
 

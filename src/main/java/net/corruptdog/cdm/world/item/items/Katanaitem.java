@@ -1,5 +1,6 @@
 package net.corruptdog.cdm.world.item.items;
 
+import net.corruptdog.cdm.main.CDmoveset;
 import net.corruptdog.cdm.world.item.CorruptItemTier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -26,7 +27,7 @@ public class Katanaitem extends WeaponItem {
         if (EpicFightMod.isPhysicalClient()) {
             this.tooltipExpand = new ArrayList<Component>();
             this.tooltipExpand.add(Component.literal(""));
-            this.tooltipExpand.add(Component.translatable("item." + EpicFightMod.MODID + "item.cdmoveset.katana.tooltip"));
+            this.tooltipExpand.add(Component.translatable("item." + CDmoveset.MOD_ID + ".katana.tooltip"));
         }
     }
 

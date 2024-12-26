@@ -1,10 +1,84 @@
 {
 	"trail_effects": [
 		{
-			"start_time": 0.05,
-			"end_time": 2.15,
-			"joint": "Tool_R",
-			"item_skin_hand": "main_hand"
+			"start_time": 0.25,
+			"end_time": 0.40,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [-0.25, 0.5, 0.5],
+			"end_pos": [0.25, 0.5, -2.5],
+			"lifetime": 15,
+			"interpolations": 4
+		},
+		{
+			"start_time": 0.25,
+			"end_time": 0.40,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [-0.25, 1.5, -0.5],
+			"end_pos": [0.25, 1.5, 2.5],
+			"lifetime": 15,
+			"interpolations": 4
+		},
+		{
+			"start_time": 0.5,
+			"end_time": 0.85,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [0.0, 1.0, -0.5],
+			"end_pos": [0.0, 1.0, -2.5],
+			"lifetime": 4,
+			"interpolations": 5
+		},
+		{
+			"start_time": 0.5,
+			"end_time": 0.85,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [0.0, 1.0, 0.0],
+			"end_pos": [0.0, 1.0, -3.0],
+			"lifetime": 13,
+			"interpolations": 5
+		},
+		{
+			"start_time": 0.1,
+			"end_time": 0.4,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [0.0, 1.5, 2.0],
+			"end_pos": [0.0, 1.5, -2.0],
+			"lifetime": 5,
+			"interpolations": 4
+		},
+		{
+			"start_time": 0.1,
+			"end_time": 0.4,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [0.0, 1.25, -1.0],
+			"end_pos": [0.0, 1.25, 1.0],
+			"lifetime": 5,
+			"interpolations": 4
+		},
+		{
+			"start_time": 0.2,
+			"end_time": 0.4,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [0.0, 0.5, -1.0],
+			"end_pos": [0.0, 0.5, 2.0],
+			"lifetime": 5,
+			"interpolations": 4
+		},
+		{
+			"start_time": 0.2,
+			"end_time": 0.4,
+			"joint": "Root",
+			"item_skin_hand": "main_hand",
+			"begin_pos": [0.0, 0.25, 1.0],
+			"end_pos": [0.0, 0.25, -1.0],
+			"lifetime": 5,
+			"interpolations": 4
 		}
 	]
 }

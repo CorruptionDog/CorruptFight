@@ -6,7 +6,8 @@
   "mixins": [
     "PlayerPatchMixin",
     "DodgeSkillMixin",
-    "TechnicianSkillMixin"
+    "TechnicianSkillMixin",
+    "ParryingMixin"
   ],
   "client": [
   ],

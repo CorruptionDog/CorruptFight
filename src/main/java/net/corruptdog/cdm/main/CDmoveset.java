@@ -9,7 +9,7 @@ import net.corruptdog.cdm.particle.CorruptParticles;
 import net.corruptdog.cdm.skill.CDSkillDataKeys;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.corruptdog.cdm.world.RanDer.KtanaSheathRenderer;
-import net.corruptdog.cdm.world.RanDer.RenderYamato;
+import net.corruptdog.cdm.world.RanDer.YamatoRender;
 import net.corruptdog.cdm.world.item.CDAddonItems;
 import net.corruptdog.cdm.world.item.CorruptfightModTabs;
 import net.minecraft.network.chat.Component;
@@ -114,7 +114,7 @@ public class CDmoveset
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderer(PatchedRenderersEvent.Add event){
         event.addItemRenderer(CDAddonItems.KATANA.get(), new KtanaSheathRenderer());
-        event.addItemRenderer(CDAddonItems.YAMATO.get(), new RenderYamato());
+        event.addItemRenderer(CDAddonItems.YAMATO.get(), new YamatoRender());
     }
 
     public static void addPackFindersEvent(AddPackFindersEvent event) {
@@ -151,7 +151,7 @@ public class CDmoveset
         event.registerReloadListener(ItemSkins.INSTANCE);
     }
 
-@SubscribeEvent
+    @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
     }

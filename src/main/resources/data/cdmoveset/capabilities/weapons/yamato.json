@@ -4,9 +4,8 @@
 		"two_hand":
 		{
 			"armor_negation":15.0,
-			"max_strikes": 3,
-			"damage_bonus": -2,
-			"impact": 1.0
+			"max_strikes": 2,
+			"damage_bonus": 0
 		}
 	},
 	"type":"cdmoveset:yamato"

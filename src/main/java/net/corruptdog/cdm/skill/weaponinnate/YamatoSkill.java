@@ -21,11 +21,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.*;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -47,8 +49,17 @@ public class YamatoSkill extends WeaponInnateSkill {
     public void onInitiate(SkillContainer container) {
         super.onInitiate(container);
         PlayerEventListener listener = container.getExecuter().getEventListener();
-        listener.addEventListener(PlayerEventListener.EventType.ACTION_EVENT_SERVER, EVENT_UUID, (event) -> {
+        listener.addEventListener(ACTION_EVENT_SERVER, EVENT_UUID, (event) -> {
             StaticAnimation animation = event.getAnimation();
+            ItemStack item = container.getExecuter().getOriginal().getMainHandItem();
+            if (!container.getExecuter().isLogicalClient()) {
+                item.getOrCreateTag().putBoolean("unsheathed", false);
+            }
+            if (!container.getExecuter().isLogicalClient()) {
+                if (animation ==CorruptAnimations.YAMATO_AUTO3  || animation ==CorruptAnimations.YAMATO_AUTO4 || animation ==CorruptAnimations.YAMATO_POWER2 ) {
+                    item.getOrCreateTag().putBoolean("unsheathed", true);
+                }
+            }
             if (animation == CorruptAnimations.YAMATO_COUNTER2) {
                 container.getDataManager().setDataSync(CDSkillDataKeys.COUNTER_SUCCESS.get(), false, ((ServerPlayerPatch) container.getExecuter()).getOriginal());
             }
@@ -136,7 +147,7 @@ public class YamatoSkill extends WeaponInnateSkill {
             AnimationPlayer animationPlayer = executer.getAnimator().getPlayerFor(null);
             float elapsedTime = animationPlayer.getElapsedTime();
             int animationId = executer.getAnimator().getPlayerFor(null).getAnimation().getId();
-            if (elapsedTime <= 0.35F) {
+            if (elapsedTime <= 0.40F) {
                 if (animationId == CorruptAnimations.YAMATO_POWER0_1.getId()) {
                     DamageSource damagesource = event.getDamageSource();
                     Vec3 sourceLocation = damagesource.getSourcePosition();
@@ -148,7 +159,7 @@ public class YamatoSkill extends WeaponInnateSkill {
                                     && !damagesource.is(DamageTypes.MAGIC)
                                     && !damagesource.is(DamageTypeTags.BYPASSES_ARMOR)
                                     && !damagesource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                                ServerPlayer serverPlayer = (ServerPlayer) container.getExecuter().getOriginal();
+                                ServerPlayer serverPlayer = (ServerPlayer)container.getExecuter().getOriginal();
                                 SPAfterImagine msg = new SPAfterImagine(serverPlayer.position(), serverPlayer.getId());
                                 NetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, serverPlayer);
                                 POWER0_2(executer);
@@ -166,6 +177,15 @@ public class YamatoSkill extends WeaponInnateSkill {
             }
         });
     }
+    @Override
+    public void onReset(SkillContainer container) {
+        PlayerPatch<?> executer = container.getExecuter();
+        ItemStack item = executer.getOriginal().getMainHandItem();
+
+        if (!executer.isLogicalClient()) {
+            item.getOrCreateTag().putBoolean("unsheathed",false);
+        }
+    }
 
     public void onRemoved(SkillContainer container) {
         container.getExecuter().getEventListener().removeListener(PlayerEventListener.EventType.HURT_EVENT_PRE, EVENT_UUID);
@@ -181,7 +201,7 @@ public class YamatoSkill extends WeaponInnateSkill {
         executer.playAnimationSynchronized(CorruptAnimations.YAMATO_STRIKE2, 0F);
     }
     private void POWER_1(ServerPlayerPatch executer) {
-        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_POWER1, 0.00F);
+        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_POWER1, 0.0F);
     }
     private void POWER_2(ServerPlayerPatch executer) {
         executer.playAnimationSynchronized(CorruptAnimations.YAMATO_POWER2, 0.0F);
