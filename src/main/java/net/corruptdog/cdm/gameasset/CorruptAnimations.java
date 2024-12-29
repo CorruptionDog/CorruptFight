@@ -1,7 +1,6 @@
 package net.corruptdog.cdm.gameasset;
 
 import net.corruptdog.cdm.api.animation.types.ExecuteAnimation;
-import net.corruptdog.cdm.api.animation.types.YamatoDodge;
 import net.corruptdog.cdm.main.CDmoveset;
 import net.corruptdog.cdm.api.animation.types.YamtoAttackAnimation;
 import net.corruptdog.cdm.api.animation.types.DodgeAttackAnimation;
@@ -33,7 +32,6 @@ import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.*;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
@@ -42,7 +40,6 @@ import  net.corruptdog.cdm.particle.CorruptParticles;
 import yesman.epicfight.world.entity.eventlistener.ComboCounterHandleEvent;
 
 import java.util.Set;
-import java.util.function.Consumer;
 
 
 public class CorruptAnimations {
@@ -53,7 +50,8 @@ public class CorruptAnimations {
     public static StaticAnimation TACHI_GUARD;
     public static StaticAnimation TACHI_GUARD_HIT;
     public static StaticAnimation KNOCKDOWN;
-//旧版本闪避动作
+
+    //旧版本闪避动作
     public static StaticAnimation ROLL_FORWARD;
     public static StaticAnimation ROLL_BACKWARD;
     public static StaticAnimation ROLL_LEFT;
@@ -63,7 +61,7 @@ public class CorruptAnimations {
     public static StaticAnimation STEP_LEFT;
     public static StaticAnimation STEP_RIGHT;
 
-
+    //完美闪避
     public static StaticAnimation SSTEP_FORWARD;
     public static StaticAnimation SSTEP_BACKWARD;
     public static StaticAnimation SSTEP_LEFT;
@@ -91,7 +89,7 @@ public class CorruptAnimations {
     public static StaticAnimation CLASH;
     public static StaticAnimation BACKWARD_SLASH;
     public static StaticAnimation BLADE_RUSH_FINISHER;
-    public static StaticAnimation  RECOVER;
+    public static StaticAnimation RECOVER;
 
 
     public static StaticAnimation DUAL_GREATSWORD_IDLE;
@@ -127,7 +125,7 @@ public class CorruptAnimations {
     public static StaticAnimation SSPEAR_TWOHAND_AUTO2;
     public static StaticAnimation SPEAR_SLASH;
 
-//Ymato moveset
+    //Ymato moveset
     public static StaticAnimation YAMATO_STEP_FORWARD;
     public static StaticAnimation YAMATO_STEP_BACKWARD;
     public static StaticAnimation YAMATO_STEP_LEFT;
@@ -160,6 +158,7 @@ public class CorruptAnimations {
     public static StaticAnimation YAMATO_RISING_SLASH;
     public static StaticAnimation YAMATO_TWIN_SLASH;
     public static StaticAnimation YAMATO_TURN_SLASH;
+
 
     public static StaticAnimation LONGSWORD_OLD_AUTO1;
     public static StaticAnimation LONGSWORD_OLD_AUTO2;
@@ -208,7 +207,7 @@ public class CorruptAnimations {
     public static StaticAnimation KATANA_SKILL3;
     public static StaticAnimation GUARD;
     public static StaticAnimation RECOUNTER;
-    public static StaticAnimation  SHILED_SLASH;
+    public static StaticAnimation SHILED_SLASH;
     public static StaticAnimation EXECUTE;
     public static StaticAnimation EXECUTED;
     public static StaticAnimation SK_EXECUTE;
@@ -818,7 +817,7 @@ public class CorruptAnimations {
                             entity.level().addParticle(EpicFightParticles.ENTITY_AFTER_IMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0, 0);
                         }, AnimationEvent.Side.CLIENT)
                 );
-        YAMATO_COUNTER1 = new DodgeAttackAnimation(0.0F, 0.60F, 0.60F, 0.8F, 1.2F, CorruptCollider.YAMATO_DASH, biped.rootJoint, "biped/new/yamato/skill/yamato_counter_1", biped)
+        YAMATO_COUNTER1 = new DodgeAttackAnimation(0.05F, 0.60F, 0.60F, 0.8F, 1.2F, CorruptCollider.YAMATO_DASH, biped.rootJoint, "biped/new/yamato/skill/yamato_counter_1", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.75F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 2F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
@@ -849,6 +848,7 @@ public class CorruptAnimations {
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.1F)
                 .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(0.0F,COMBO_BREAK, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.0F, YAMATO_OUT, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.55F, YAMATO_IN, AnimationEvent.Side.SERVER));
 
@@ -857,7 +857,7 @@ public class CorruptAnimations {
                 (new AttackAnimation.Phase(0.0F, 0.51F, 0.62F, 0.72F, 0.72F, biped.toolR, CorruptCollider.YAMATO_P))
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_PRIORITY, HitEntityList.Priority.TARGET)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.25F)),
-                (new AttackAnimation.Phase(0.75F, 0.78F, 0.87F, 0.9F, 1.25F, biped.toolR, CorruptCollider.YAMATO_P))
+                (new AttackAnimation.Phase(0.75F, 0.78F, 0.87F, 0.9F, 1.0F, biped.toolR, CorruptCollider.YAMATO_P))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.0F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F)))
@@ -877,7 +877,7 @@ public class CorruptAnimations {
                                 BasicAttack.setComboCounterWithEvent(ComboCounterHandleEvent.Causal.ANOTHER_ACTION_ANIMATION, patch, patch.getSkill(SkillSlots.BASIC_ATTACK), YAMATO_STRIKE1, 2);
                             }
                         }, AnimationEvent.Side.SERVER),
-                        AnimationEvent.TimeStampedEvent.create(1.55F,COMBO_BREAK, AnimationEvent.Side.SERVER)
+                        AnimationEvent.TimeStampedEvent.create(1.5F,COMBO_BREAK, AnimationEvent.Side.SERVER)
                 );
 
         YAMATO_STRIKE2 = new YamtoAttackAnimation(0.10F, 0.0F, 2.65F, 1.3F, 1.65F, 0.7F, 2.35F, 0.0F, 0.0F, "biped/new/yamato/skill/yamato_strike2", biped,
@@ -947,7 +947,8 @@ public class CorruptAnimations {
 
         YAMATO_RISING_SLASH = new YamtoAttackAnimation(0.25F, 0.0F, 2.65F, 1.3F, 1.75F, 0.7F, 2.65F, 0.0F, 0.0F, "biped/new/yamato/skill/yamato_risingslash", biped,
                 new AttackAnimation.Phase(0.0F, 0.35F, 0.50F, 0.60F, 2.3F, biped.toolR, CorruptCollider.YAMATO_P)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get()))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG))
                 .addState(EntityState.MOVEMENT_LOCKED, true)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                 .addEvents(
@@ -1132,11 +1133,12 @@ public class CorruptAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, CorruptSound.DAMAGE.get()),
                 new AttackAnimation.Phase(1.05F, 2.95F, 3.15F, 6.0F, Float.MAX_VALUE, biped.rootJoint, ColliderPreset.BIPED_BODY_COLLIDER)
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(100.0F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.EVISCERATE.get())
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.EVISCERATE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(1F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.TARGET_LOST_HEALTH.create(0.2F))))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.TARGET_LOST_HEALTH.create(0.25F))))
                 .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
                 .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_ON_LINK, false)
                 .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_LOCROT_TARGET)
@@ -1159,12 +1161,12 @@ public class CorruptAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.NEUTRALIZE_BOSSES.get())
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(0F)),
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(0.5F)),
                  new AttackAnimation.Phase(1.21F, 2.25F, 2.35F, 3.15F, Float.MAX_VALUE, biped.toolR, CorruptCollider.EXECUTE)
                          .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, CorruptSound.DAMAGE.get())
+                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
+                         .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(100.0F))
                          .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE))
-                .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(100.0F))
-                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                 .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false)

@@ -32,11 +32,11 @@ public class SPAfterImagine {
     }
 
     public static void handle(SPAfterImagine msg, Supplier<NetworkEvent.Context> ctx) {
-        ((NetworkEvent.Context)ctx.get()).enqueueWork(() -> {
+        ctx.get().enqueueWork(() -> {
             Minecraft mc = Minecraft.getInstance();
             if (mc.level != null)
                 mc.level.addParticle(CorruptParticles.CORRUPT_AFTER_IMAGE.get(), msg.location.x, msg.location.y, msg.location.z, Double.longBitsToDouble(msg.entityId), 0.0D, 0.0D);
         });
-        ((NetworkEvent.Context)ctx.get()).setPacketHandled(true);
+        ctx.get().setPacketHandled(true);
     }
 }
