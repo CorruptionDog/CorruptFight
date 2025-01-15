@@ -17,10 +17,6 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 public class KatanaSkill extends WeaponInnateSkill {
-    private final Map<ResourceLocation, Supplier<AttackAnimation>> comboAnimation = Maps.newHashMap();
-    private final UUID EVENT_UUID = UUID.fromString("f082557a-b2f9-11eb-8529-0242ac130003");
-
-
     public KatanaSkill(Builder<? extends Skill> builder) {
         super(builder);
     }
@@ -44,8 +40,7 @@ public class KatanaSkill extends WeaponInnateSkill {
         boolean isSheathed = executer.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().getDataValue(SkillDataKeys.SHEATH.get());
         if (isSheathed) {
             executer.playAnimationSynchronized(CorruptAnimations.FATAL_DRAW, -0.33F);
-        }
-        if (executer.getOriginal().isSprinting()) {
+        }else if (executer.getOriginal().isSprinting()) {
             float stamina = executer.getStamina();
             float maxStamina = executer.getMaxStamina();
             float p = maxStamina * 0.15F;

@@ -59,6 +59,11 @@ import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 
 import static net.corruptdog.cdm.world.CDWeaponCapabilityPresets.*;
@@ -68,6 +73,12 @@ public class CDmoveset
 {
     public static final String MOD_ID = "cdmoveset";
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    public static float PERCENT = 20F;
+    public static double millisF = 0F;
+    public static long millis = 0;
+    public static Timer timer;
+    public static ScheduledExecutorService service;
 
     public CDmoveset() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -79,7 +90,6 @@ public class CDmoveset
         bus.addListener(CDmoveset::RegisterWeaponType);
         bus.addListener(CorruptAnimations::registerAnimations);
         bus.addListener(CDmoveset::buildSkillEvent);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_CONFIG);
         bus.addListener(this::doCommonStuff);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {bus.addListener(CDmoveset::regIcon);});
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {bus.addListener(CDmoveset::registerRenderer);});
@@ -88,6 +98,7 @@ public class CDmoveset
         CorruptParticles.PARTICLES.register(bus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CDConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CDConfig.CLIENT_SPEC);
+        create();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -104,12 +115,33 @@ public class CDmoveset
     private void doCommonStuff(final FMLCommonSetupEvent event) {
         event.enqueueWork(NetworkManager::registerPackets);
     }
+    public static void create() {
+        if (service == null)
+            service = Executors.newSingleThreadScheduledExecutor();
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
+        if (timer == null)
+            timer = new Timer();
+        try {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    service.scheduleAtFixedRate(CDmoveset::update, 1L, 1L, TimeUnit.MILLISECONDS);
+                }
+            }, 1L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    static void update() {
+        float p = PERCENT / 20.0F;
+        millisF = p + millisF;
+        millis = (long) millisF;
     }
 
-    private void clientSetup(Event event) {
+    public static void changeAll(float percent) {
+        PERCENT = percent;
     }
+
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderer(PatchedRenderersEvent.Add event){

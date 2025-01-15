@@ -30,5 +30,6 @@ public class NetworkManager {
         int id = 0;
 
         INSTANCE.registerMessage(id++, SPAfterImagine.class, SPAfterImagine::toBytes, SPAfterImagine::fromBytes, SPAfterImagine::handle);
+        INSTANCE.registerMessage(id++, SPLockOn.class, SPLockOn::toBytes, SPLockOn::fromBytes, SPLockOn::handle);
     }
 }

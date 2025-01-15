@@ -27,6 +27,7 @@ public class CorruptCollider {
     public static final Collider ANTIMANER = new MultiOBBCollider(4, 0.8, 2.0, 0.8, 0.0, 0.0, 0.0);
     public static final Collider PARTYTABLE = new OBBCollider(1.7D, 1.0D, 2.0D, 0.0D, 1.0D, -1.0D);
     public static final Collider CONQUEROR_HAKI = new OBBCollider(24.0, 4.5, 24.0, 0.0, 1.75, 0.0);
+    public static final Collider RISING = new OBBCollider(1.7D, 1.0D, -3.5D, 0.0D, 1.0D, -2.5D);
 
     public CorruptCollider() {
     }

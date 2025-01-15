@@ -21,13 +21,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.*;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -224,13 +222,24 @@ public class YamatoSkill extends WeaponInnateSkill {
     private void COUNTER(ServerPlayerPatch executer) {
         executer.playAnimationSynchronized(CorruptAnimations.YAMATO_COUNTER1, 0.25F);
     }
+    private void RISING(ServerPlayerPatch executer) {
+        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_RISING_SLASH, 0.25F);
+    }
+    private void TURN(ServerPlayerPatch executer) {
+        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_TURN_SLASH, 0.25F);
+    }
+    private void NPOWER(ServerPlayerPatch executer) {
+        executer.playAnimationSynchronized(CorruptAnimations.N_YAMATO_POWER0_1, 0.25F);
+    }
+
 
     @Override
     public boolean canExecute(PlayerPatch<?> executer) {
         ResourceLocation rl = executer.getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
         if (rl == CorruptAnimations.YAMATO_POWER3.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName()
                 || rl == CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT.getRegistryName() || rl == CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT2.getRegistryName()
-                || rl == CorruptAnimations.YAMATO_COUNTER1.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER0_2.getRegistryName()) {
+                || rl == CorruptAnimations.YAMATO_COUNTER1.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER0_2.getRegistryName()
+                || rl == CorruptAnimations.YAMATO_TWIN_SLASH.getRegistryName()) {
             return true;
         } else if (executer.isLogicalClient()) {
             return executer.getEntityState().canBasicAttack();
@@ -243,7 +252,6 @@ public class YamatoSkill extends WeaponInnateSkill {
     private void stackCost(ServerPlayerPatch player, int cost) {
         this.setStackSynchronize(player, player.getSkill(CDSkills.YAMATOSKILL).getStack() - cost);
     }
-
     @Override
     public void executeOnServer(ServerPlayerPatch execute, FriendlyByteBuf args) {
         ResourceLocation rl = execute.getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
@@ -251,50 +259,53 @@ public class YamatoSkill extends WeaponInnateSkill {
         Boolean counterSuccess = skillContainer.getDataManager().getDataValue(COUNTER_SUCCESS.get());
         Boolean counter = skillContainer.getDataManager().getDataValue(COUNTER.get());
         Boolean power3 = skillContainer.getDataManager().getDataValue(POWER3.get());
-            if (power3) {
-              POWER_DASHS(execute);
+        if (power3) {
+            POWER_DASHS(execute);
+        }
+        if (counterSuccess) {
+            STRIKE2(execute);
+            return;
+        }
+        if (counter) {
+            STRIKE2(execute);
+            return;
+        }
+        if (execute.getOriginal().isSprinting() && execute.getSkill(CDSkills.YAMATOSKILL).getStack() >= 0) {
+            float stamina = execute.getStamina();
+            float maxStamina = execute.getMaxStamina();
+            float p = maxStamina * 0.25F;
+            if (stamina >= p) {
+                POWER_DASH(execute);
+                execute.setStamina(stamina - p);
             }
-            if (counterSuccess) {
-                STRIKE2(execute);
-                return;
-            }
-            if (counter) {
-                STRIKE2(execute);
-                return;
-            }
-            if (execute.getOriginal().isSprinting() && execute.getSkill(CDSkills.YAMATOSKILL).getStack() >= 0) {
-                float stamina = execute.getStamina();
-                float maxStamina = execute.getMaxStamina();
-                float p = maxStamina * 0.25F;
-                if (stamina >= p) {
-                    POWER_DASH(execute);
-                    execute.setStamina(stamina - p);
-                }
+        } else {
+            if (this.comboAnimation.containsKey(rl)) {
+                execute.playAnimationSynchronized(this.comboAnimation.get(rl).get(), 0.0F);
             } else {
-                if (this.comboAnimation.containsKey(rl)) {
-                    execute.playAnimationSynchronized(this.comboAnimation.get(rl).get(), 0.0F);
+                if (canExecute(execute)) {
+                    POWER0_1(execute);
                 } else {
-                    if (canExecute(execute)) {
-                        POWER0_1(execute);
-                    } else {
-                        return;
-                    }
-                    Map<ResourceLocation, Runnable> actionMap = Maps.newHashMap();
-                    actionMap.put(CorruptAnimations.YAMATO_AUTO1.getRegistryName(), () -> POWER_1(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_AUTO2.getRegistryName(), () -> POWER_2(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_AUTO3.getRegistryName(), () -> POWER_3(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_POWER3.getRegistryName(), () -> POWER_DASHS(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName(), () -> POWER_DASHS(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_STRIKE1.getRegistryName(), () -> POWER_2(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_STRIKE2.getRegistryName(), () -> POWER_3(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_COUNTER1.getRegistryName(), () -> STRIKE2(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT.getRegistryName(), () -> COUNTER(execute));
-                    actionMap.put(CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT2.getRegistryName(), () -> COUNTER(execute));
-                    if (actionMap.containsKey(rl)) {
-                        actionMap.get(rl).run();
-                    }
-                    super.executeOnServer(execute, args);
+                    return;
                 }
+                Map<ResourceLocation, Runnable> actionMap = Maps.newHashMap();
+                actionMap.put(CorruptAnimations.YAMATO_AUTO1.getRegistryName(), () -> POWER_1(execute));
+                actionMap.put(CorruptAnimations.YAMATO_AUTO2.getRegistryName(), () -> POWER_2(execute));
+                actionMap.put(CorruptAnimations.YAMATO_AUTO3.getRegistryName(), () -> POWER_3(execute));
+                actionMap.put(CorruptAnimations.YAMATO_TWIN_SLASH.getRegistryName(), () -> RISING(execute));
+                actionMap.put(CorruptAnimations.YAMATO_POWER0_1.getRegistryName(), () -> NPOWER(execute));
+                actionMap.put(CorruptAnimations.YAMATO_TURN_SLASH.getRegistryName(), () -> POWER_DASHS(execute));
+                actionMap.put(CorruptAnimations.YAMATO_POWER3.getRegistryName(), () -> POWER_DASHS(execute));
+                actionMap.put(CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName(), () -> POWER_DASHS(execute));
+                actionMap.put(CorruptAnimations.YAMATO_STRIKE1.getRegistryName(), () -> POWER_2(execute));
+                actionMap.put(CorruptAnimations.YAMATO_STRIKE2.getRegistryName(), () -> POWER_3(execute));
+                actionMap.put(CorruptAnimations.YAMATO_COUNTER1.getRegistryName(), () -> STRIKE2(execute));
+                actionMap.put(CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT.getRegistryName(), () -> COUNTER(execute));
+                actionMap.put(CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT2.getRegistryName(), () -> COUNTER(execute));
+                if (actionMap.containsKey(rl)) {
+                    actionMap.get(rl).run();
+                }
+                super.executeOnServer(execute, args);
             }
         }
     }
+}

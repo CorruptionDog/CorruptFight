@@ -7,7 +7,8 @@
     "PlayerPatchMixin",
     "DodgeSkillMixin",
     "TechnicianSkillMixin",
-    "ParryingMixin"
+    "ParryingMixin",
+    "UtilMixin"
   ],
   "client": [
   ],

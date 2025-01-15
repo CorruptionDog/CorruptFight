@@ -2,6 +2,10 @@ package net.corruptdog.cdm.skill.identity;
 
 import net.corruptdog.cdm.gameasset.CorruptAnimations;
 import net.corruptdog.cdm.gameasset.CorruptSound;
+import net.corruptdog.cdm.network.server.NetworkManager;
+import net.corruptdog.cdm.network.server.SPAfterImagine;
+import net.corruptdog.cdm.network.server.SPLockOn;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +25,6 @@ import yesman.epicfight.network.server.SPPlayAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Comparator;
@@ -31,7 +34,6 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber
 public class Execute {
-    private static final List<CapabilityItem.WeaponCategories> executeCategories = List.of(CapabilityItem.WeaponCategories.SWORD);
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onRightClickEntity(PlayerInteractEvent.RightClickItem event) {
@@ -40,25 +42,24 @@ public class Execute {
     }
 
     public static void execute(Player player, Level level) {
-        if (player == null) return;
-        if (!level.isClientSide()) {
-            Vec3 playerPosition = new Vec3(player.getX(), player.getEyeY(), player.getZ());
-            List<LivingEntity> nearbyEntities = level.getEntitiesOfClass(LivingEntity.class, new AABB(playerPosition, playerPosition).inflate(3), e -> true)
-                    .stream()
-                    .sorted(Comparator.comparingDouble(entity -> entity.distanceToSqr(playerPosition)))
-                    .toList();
-
-            for (LivingEntity targetEntity : nearbyEntities) {
-                LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(targetEntity, LivingEntityPatch.class);
-                if (targetPatch != null && targetEntity != player) {
-                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-                    if (isAnimationValid(targetPatch, playerPatch)) {
-                        handleExecution(player, targetPatch, playerPatch);
-                        break;
-                    }
+        if (player == null || level == null || level.isClientSide()) return;
+        Vec3 playerPosition = new Vec3(player.getX(), player.getEyeY(), player.getZ());
+        getNearbyEntities(level, playerPosition).forEach(targetEntity -> {
+            LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(targetEntity, LivingEntityPatch.class);
+            if (targetPatch != null && targetEntity != player) {
+                PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                if (isAnimationValid(targetPatch, playerPatch)) {
+                    handleExecution((ServerPlayer) player, targetPatch, playerPatch);
                 }
             }
-        }
+        });
+    }
+
+    private static List<LivingEntity> getNearbyEntities(Level level, Vec3 playerPosition) {
+        return level.getEntitiesOfClass(LivingEntity.class, new AABB(playerPosition, playerPosition).inflate(3), e -> true)
+                .stream()
+                .sorted(Comparator.comparingDouble(entity -> entity.distanceToSqr(playerPosition)))
+                .toList();
     }
 
     private static boolean isAnimationValid(LivingEntityPatch<?> targetPatch, PlayerPatch<?> playerPatch) {
@@ -69,13 +70,11 @@ public class Execute {
                                 Animations.BIPED_COMMON_NEUTRALIZED, Animations.GREATSWORD_GUARD_BREAK).contains(longHitAnimation));
     }
 
-    private static void handleExecution(Player player, LivingEntityPatch<?> targetPatch, PlayerPatch<?> playerPatch) {
+    private static void handleExecution(ServerPlayer player, LivingEntityPatch<?> targetPatch, PlayerPatch<?> playerPatch) {
         Vec3 viewVec = targetPatch.getOriginal().getViewVector(1.0F);
         playerPatch.setGrapplingTarget(targetPatch.getOriginal());
-        if (playerPatch instanceof LocalPlayerPatch localPlayerPatch) {
-            localPlayerPatch.setLockOn(true);
-            localPlayerPatch.toggleLockOn();
-        }
+        SPLockOn msg = new SPLockOn();
+        NetworkManager.sendToAllPlayerTrackingThisEntityWithSelf(msg, player);
         player.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 100, 0));
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 50, 1));
         player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 70, 50));
@@ -86,3 +85,5 @@ public class Execute {
         targetPatch.playAnimationSynchronized(CorruptAnimations.GUARD_BREAK1, 0.35F, SPPlayAnimation::new);
     }
 }
+
+

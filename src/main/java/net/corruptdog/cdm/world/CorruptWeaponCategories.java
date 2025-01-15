@@ -7,7 +7,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCategory;
 import java.util.function.Function;
 
 public enum CorruptWeaponCategories implements WeaponCategory, Function<Item, CapabilityItem.Builder> {
-KATANA,S_GREATSWORD,YAMATO,S_SWORD,S_LONGSWORD,S_TACHI,S_SPEAR,DUAL_TACHI,S_DAGGER;
+KATANA,S_GREATSWORD,YAMATO,S_SWORD,S_LONGSWORD,S_TACHI,S_SPEAR,DUAL_TACHI,S_DAGGER,SANJI;
 
     final int id;
 

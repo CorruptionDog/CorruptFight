@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
 
+import net.corruptdog.cdm.main.CDmoveset;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.GameRenderer;
@@ -30,7 +31,8 @@ public class ParticleRenderTypes {
             mc.gameRenderer.lightTexture().turnOnLightLayer();
 
             bufferBuilder.begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR_LIGHTMAP);
-            RenderSystem.setShaderTexture(0, new ResourceLocation("cdmoveset", "textures/particle/afterimage.png"));
+            RenderSystem.setShaderTexture(0, new ResourceLocation(CDmoveset.MOD_ID, "after_image")
+            );
         }
 
         public void end(Tesselator tesselator) {
@@ -49,4 +51,9 @@ public class ParticleRenderTypes {
             return "CDMOVESET:TRANSLUCENT";
         }
     };
+
+    public static ResourceLocation GetTexture(String path){
+        return new ResourceLocation(CDmoveset.MOD_ID, "textures/" + path + ".png");
+    }
+
 }

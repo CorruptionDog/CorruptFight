@@ -7,14 +7,16 @@ public class CDConfig {
 
     public static final ForgeConfigSpec.BooleanValue ENABLE_DODGE_SOUND;
     public static final ForgeConfigSpec.BooleanValue ENABLE_DODGESUCCESS_SOUND;
+    public static final ForgeConfigSpec.BooleanValue SLOW_TIME;
     public static final ForgeConfigSpec SPEC;
     public static final ForgeConfigSpec CLIENT_SPEC;
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-        builder.push("闪避配置");
-        ENABLE_DODGE_SOUND = createBool(builder, "enable_dodge_sound", false, "是否启用玩家闪避音效");
-        ENABLE_DODGESUCCESS_SOUND = createBool(builder, "enable_dodgesuccess_sound", true, "是否启用玩家闪避成功音效");
+        builder.push("CorruptFight config");
+        ENABLE_DODGE_SOUND = createBool(builder, "enable_dodge_sound", false, "enable dodge sound");
+        ENABLE_DODGESUCCESS_SOUND = createBool(builder, "enable_dodgesuccess_sound", true, "enable dodgesuccess sound");
+        SLOW_TIME = createBool(builder, "slow_time", true, "enable slow_time");
         builder.pop();
         SPEC = builder.build();
 

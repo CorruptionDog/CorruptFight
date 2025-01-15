@@ -255,7 +255,7 @@ public class CDWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .collider(CorruptCollider.YAMATO)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.YAMATOSKILL)
-                    .newStyleCombo(Styles.TWO_HAND, CorruptAnimations.YAMATO_AUTO1, CorruptAnimations.YAMATO_AUTO2,CorruptAnimations.YAMATO_AUTO3,CorruptAnimations.YAMATO_AUTO4, CorruptAnimations.YAMATO_STRIKE1, CorruptAnimations.YAMATO_POWER3_REPEAT, CorruptAnimations.YAMATO_DASH,CorruptAnimations.YAMATO_AIRSLASH)
+                    .newStyleCombo(Styles.TWO_HAND, CorruptAnimations.YAMATO_AUTO1, CorruptAnimations.YAMATO_AUTO2,CorruptAnimations.YAMATO_AUTO3,CorruptAnimations.YAMATO_AUTO4, CorruptAnimations.YAMATO_STRIKE1, CorruptAnimations.YAMATO_POWER3_REPEAT, CorruptAnimations.YAMATO_TWIN_SLASH,CorruptAnimations.YAMATO_TURN_SLASH)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, CorruptAnimations.YAMATO_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, CorruptAnimations.YAMATO_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SNEAK, CorruptAnimations.YAMATO_IDLE)
@@ -300,8 +300,38 @@ public class CDWeaponCapabilityPresets {
             builder.hitParticle(tieredItem.getTier() == Tiers.WOOD ? EpicFightParticles.HIT_BLUNT.get() : EpicFightParticles.HIT_BLADE.get());
         }
 
+
+
+
         return builder;
     };
+
+
+//    public static final Function<Item, CapabilityItem.Builder> SANJI = (item) -> {
+//        CapabilityItem.Builder builder = WeaponCapability.builder()
+//                .category(WeaponCategories.FIST)
+//                .styleProvider((playerpatch) -> playerpatch instanceof PlayerPatch && ((PlayerPatch)playerpatch)
+//                        .getSkill(SkillSlots.WEAPON_INNATE).getRemainDuration() > 0 ? Styles.OCHS : Styles.ONE_HAND)
+//                .canBePlacedOffhand(false)
+//                .collider(CorruptCollider.KICK)
+//                .swingSound(EpicFightSounds.WHOOSH.get())
+//                .hitSound(EpicFightSounds.BLUNT_HIT.get())
+//                .newStyleCombo(Styles.ONE_HAND, CorruptAnimations.SANJI_AUTO_1, CorruptAnimations.SANJI_AUTO_2, CorruptAnimations.SANJI_AUTO_3, CorruptAnimations.SANJI_AUTO_4, CorruptAnimations.SANJI_ANTIMANER, CorruptAnimations.SANJI_CONCASSER)
+//                .innateSkill(Styles.ONE_HAND, (itemstack) -> OPXEFSkills.DIABLE_JAMBU)
+//                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, CorruptAnimations.SANJI_IDLE)
+//                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, CorruptAnimations.SANJI_WALK)
+//                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, CorruptAnimations.SANJI_RUN)
+//                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, CorruptAnimations.SANJI_RUN)
+//                .newStyleCombo(Styles.OCHS,CorruptAnimations.SANJI_DIABLE_AUTO_1, CorruptAnimations.SANJI_DIABLE_AUTO_2, CorruptAnimations.SANJI_DIABLE_AUTO_3, CorruptAnimations.SANJI_DIABLE_AUTO_4, CorruptAnimations.SANJI_DIABLE_ANTIMANER, CorruptAnimations.SANJI_CONCASSER)
+//                .innateSkill(Styles.OCHS, (itemstack) -> OPXEFSkills.DIABLE_JAMBU)
+//                .livingMotionModifier(Styles.OCHS, LivingMotions.IDLE, CorruptAnimations.SANJI_DIABLE_IDLE)
+//                .livingMotionModifier(Styles.OCHS, LivingMotions.WALK, CorruptAnimations.SANJI_DIABLE_WALK)
+//                .livingMotionModifier(Styles.OCHS, LivingMotions.CHASE, CorruptAnimations.SANJI_RUN)
+//                .livingMotionModifier(Styles.OCHS, LivingMotions.RUN, CorruptAnimations.SANJI_RUN);
+//        return builder;
+//    };
+
+
 
 
 
