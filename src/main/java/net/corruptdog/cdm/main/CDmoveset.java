@@ -8,8 +8,9 @@ import net.corruptdog.cdm.network.server.NetworkManager;
 import net.corruptdog.cdm.particle.CorruptParticles;
 import net.corruptdog.cdm.skill.CDSkillDataKeys;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
-import net.corruptdog.cdm.world.RanDer.KtanaSheathRenderer;
-import net.corruptdog.cdm.world.RanDer.YamatoRender;
+import net.corruptdog.cdm.world.Render.A_YamatoRender;
+import net.corruptdog.cdm.world.Render.KtanaSheathRenderer;
+import net.corruptdog.cdm.world.Render.YamatoRender;
 import net.corruptdog.cdm.world.item.CDAddonItems;
 import net.corruptdog.cdm.world.item.CorruptfightModTabs;
 import net.minecraft.network.chat.Component;
@@ -31,7 +32,6 @@ import org.slf4j.Logger;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -47,7 +47,6 @@ import yesman.epicfight.api.client.forgeevent.WeaponCategoryIconRegisterEvent;
 import yesman.epicfight.api.client.model.ItemSkins;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
-import yesman.epicfight.config.ConfigManager;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.skill.guard.GuardSkill;
@@ -109,7 +108,7 @@ public class CDmoveset
         event.registerCategory(CorruptWeaponCategories.S_LONGSWORD,new ItemStack(CDAddonItems.S_IRONLONGSWORD.get()));
         event.registerCategory(CorruptWeaponCategories.S_TACHI,new ItemStack(CDAddonItems.S_IRONTACHI.get()));
         event.registerCategory(CorruptWeaponCategories.S_SPEAR,new ItemStack(CDAddonItems.S_IRONSPEAR.get()));
-        event.registerCategory(CorruptWeaponCategories.DUAL_TACHI,new ItemStack(CDAddonItems.DUAL_TACHI.get()));
+//        event.registerCategory(CorruptWeaponCategories.DUAL_TACHI,new ItemStack(CDAddonItems.DUAL_TACHI.get()));
     }
 
     private void doCommonStuff(final FMLCommonSetupEvent event) {
@@ -147,6 +146,7 @@ public class CDmoveset
     public static void registerRenderer(PatchedRenderersEvent.Add event){
         event.addItemRenderer(CDAddonItems.KATANA.get(), new KtanaSheathRenderer());
         event.addItemRenderer(CDAddonItems.YAMATO.get(), new YamatoRender());
+        event.addItemRenderer(CDAddonItems.A_YAMATO.get(), new A_YamatoRender());
     }
 
     public static void addPackFindersEvent(AddPackFindersEvent event) {
@@ -260,13 +260,13 @@ public class CDmoveset
         impactGuardMotions.put(CorruptWeaponCategories.S_GREATSWORD, (item, player) ->
                 item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? Animations.GREATSWORD_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
 
-        guardMotions.put(CorruptWeaponCategories.DUAL_TACHI,
-                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.TACHI_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
-        guardBreakMotions.put(CorruptWeaponCategories.DUAL_TACHI,
-                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.GUARD_BREAK2 : CorruptAnimations.GUARD_BREAK1);
-        advancedGuardMotions.put(CorruptWeaponCategories.DUAL_TACHI, (itemCap, playerpatch) -> itemCap.getStyle(playerpatch) == CapabilityItem.Styles.ONE_HAND ?
-                new StaticAnimation[] { Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2 } :
-                new StaticAnimation[] { Animations.SWORD_GUARD_ACTIVE_HIT2, Animations.SWORD_GUARD_ACTIVE_HIT3 });
+//        guardMotions.put(CorruptWeaponCategories.DUAL_TACHI,
+//                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.TACHI_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
+//        guardBreakMotions.put(CorruptWeaponCategories.DUAL_TACHI,
+//                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.GUARD_BREAK2 : CorruptAnimations.GUARD_BREAK1);
+//        advancedGuardMotions.put(CorruptWeaponCategories.DUAL_TACHI, (itemCap, playerpatch) -> itemCap.getStyle(playerpatch) == CapabilityItem.Styles.ONE_HAND ?
+//                new StaticAnimation[] { Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2 } :
+//                new StaticAnimation[] { Animations.SWORD_GUARD_ACTIVE_HIT2, Animations.SWORD_GUARD_ACTIVE_HIT3 });
 
         guardMotions.put(CorruptWeaponCategories.S_SPEAR,
                 (item, player) -> Animations.SPEAR_GUARD_HIT);
@@ -277,13 +277,13 @@ public class CDmoveset
         impactGuardMotions.put(CorruptWeaponCategories.S_SPEAR, (item, player) -> Animations.SPEAR_GUARD_HIT);
 
         guardMotions.put(CorruptWeaponCategories.S_TACHI,
-                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.TACHI_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
+                (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? Animations.LONGSWORD_GUARD_HIT : Animations.SWORD_DUAL_GUARD_HIT);
         guardBreakMotions.put(CorruptWeaponCategories.S_TACHI,
                 (item, player) -> item.getStyle(player) == CapabilityItem.Styles.ONE_HAND ? CorruptAnimations.GUARD_BREAK2 : CorruptAnimations.GUARD_BREAK1);
         advancedGuardMotions.put(CorruptWeaponCategories.S_TACHI, (itemCap, playerpatch) -> itemCap.getStyle(playerpatch) == CapabilityItem.Styles.ONE_HAND ?
                 new StaticAnimation[] { Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT2 } :
                 new StaticAnimation[] { Animations.SWORD_GUARD_ACTIVE_HIT2, Animations.SWORD_GUARD_ACTIVE_HIT3 });
-        impactGuardMotions.put(CorruptWeaponCategories.S_TACHI, (item, player) -> CorruptAnimations.TACHI_GUARD);
+        impactGuardMotions.put(CorruptWeaponCategories.S_TACHI, (item, player) -> Animations.LONGSWORD_GUARD);
 
         guardMotions.put(CorruptWeaponCategories.S_LONGSWORD,
                 (item, player) -> Animations.LONGSWORD_GUARD_HIT);

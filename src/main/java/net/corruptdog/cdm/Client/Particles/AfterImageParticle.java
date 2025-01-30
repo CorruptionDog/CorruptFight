@@ -1,5 +1,6 @@
 package net.corruptdog.cdm.Client.Particles;
 
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import yesman.epicfight.api.animation.Pose;
 import yesman.epicfight.api.client.model.AnimatedMesh;
 import yesman.epicfight.api.client.model.MeshProvider;
 import yesman.epicfight.api.model.Armature;
@@ -66,7 +68,7 @@ public class AfterImageParticle extends CustomModelParticle<AnimatedMesh> {
         poseStack.mulPoseMatrix(this.modelMatrix);
         float alpha = this.alphaO + (this.alpha - this.alphaO) * partialTicks;
 
-        AnimationShaderInstance animShader = EpicFightRenderTypes.getAnimationShader(GameRenderer.getPositionColorLightmapShader());
+        AnimationShaderInstance animShader = EpicFightRenderTypes.getAnimationShader(GameRenderer.getPositionColorTexLightmapShader());
         this.particleMeshProvider.get().drawWithShader(poseStack, animShader, this.getLightColor(partialTicks), this.rCol, this.gCol, this.bCol, alpha, OverlayTexture.NO_OVERLAY, null, this.poseMatrices);
     }
 
@@ -101,18 +103,20 @@ public class AfterImageParticle extends CustomModelParticle<AnimatedMesh> {
         @SuppressWarnings({ "rawtypes", "unchecked" })
         @Override
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            Entity entity = level.getEntity((int)Double.doubleToLongBits(xSpeed));
-            LivingEntityPatch<?> entitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            Entity entity = level.getEntity((int) Double.doubleToLongBits(xSpeed));
+            LivingEntityPatch<?> entitypatch = (LivingEntityPatch<?>) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
             if (entitypatch != null && ClientEngine.getInstance().renderEngine.hasRendererFor(entitypatch.getOriginal())) {
                 PatchedEntityRenderer renderer = ClientEngine.getInstance().renderEngine.getEntityRenderer(entitypatch.getOriginal());
                 Armature armature = entitypatch.getArmature();
                 PoseStack poseStack = new PoseStack();
                 renderer.mulPoseStack(poseStack, armature, entitypatch.getOriginal(), entitypatch, 1.0F);
-                OpenMatrix4f[] matrices = renderer.getPoseMatrices(entitypatch, armature, 1.0F, true);
-                MeshProvider<AnimatedMesh> meshProvider = ClientEngine.getInstance().renderEngine.getEntityRenderer(entitypatch.getOriginal()).getMeshProvider(entitypatch);
-                AfterImageParticle particle = new AfterImageParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, meshProvider, matrices, poseStack.last().pose());
+                Pose pose = entitypatch.getAnimator().getPose(1.0F);
+                renderer.setJointTransforms(entitypatch, armature, pose, 1.0F);
+                OpenMatrix4f[] matrices = armature.getPoseAsTransformMatrix(pose, true);
+                MeshProvider<AnimatedMesh> meshProvider = renderer.getMeshProvider(entitypatch);
 
+                AfterImageParticle particle = new AfterImageParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, meshProvider, matrices, poseStack.last().pose());
                 return particle;
             }
 

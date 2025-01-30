@@ -48,6 +48,8 @@
   "skill.cdmoveset.katanaspskill.tooltip": "竖起架势,挡住敌人的攻击并且将敌人斩杀",
   "skill.cdmoveset.lethalslicing": "致命切割",
   "skill.cdmoveset.lethalslicing.tooltip": "击晕敌人并斩出强力的一击,根据敌人的数量斩击的次数也不同",
+  "skill.cdmoveset.fatalfalsh": "一闪",
+  "skill.cdmoveset.fatalfalsh.tooltip": "锁定低血量的敌人并进行斩杀,斩杀期间不可被打断(可用武器:打刀,武士刀,太刀,长剑)",
   "skill.cdmoveset.psstep": "狼神之跃",
   "skill.cdmoveset.psstep.tooltip": "允许你使用不同的动作进行闪避,闪避成功可以触发特效.并恢复武器充能.",
   "skill.cdmoveset.shiled_slahs": "盾击!!!!",

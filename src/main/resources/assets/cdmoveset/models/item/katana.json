@@ -3,7 +3,7 @@
 	"base":
 	{
 		"loader": "forge:obj",
-  		"model": "cdmoveset:models/item/obj/uchigatana.obj",
+  		"model": "cdmoveset:models/item/obj/katana.obj",
   		"flip_v": true,
 		"display":
 		{

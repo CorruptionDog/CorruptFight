@@ -1,7 +1,7 @@
 package net.corruptdog.cdm.Client;
 
 import net.corruptdog.cdm.main.CDmoveset;
-import net.corruptdog.cdm.world.RanDer.YamatoRender;
+import net.corruptdog.cdm.world.Render.YamatoRender;
 import net.corruptdog.cdm.world.item.CDAddonItems;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;

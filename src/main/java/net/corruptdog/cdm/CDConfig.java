@@ -16,7 +16,7 @@ public class CDConfig {
         builder.push("CorruptFight config");
         ENABLE_DODGE_SOUND = createBool(builder, "enable_dodge_sound", false, "enable dodge sound");
         ENABLE_DODGESUCCESS_SOUND = createBool(builder, "enable_dodgesuccess_sound", true, "enable dodgesuccess sound");
-        SLOW_TIME = createBool(builder, "slow_time", true, "enable slow_time");
+        SLOW_TIME = createBool(builder, "slow_time", false, "enable slow_time");
         builder.pop();
         SPEC = builder.build();
 

@@ -5,21 +5,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.ParseResults;
 import net.corruptdog.cdm.CDConfig;
 import net.corruptdog.cdm.gameasset.CorruptSound;
 import net.corruptdog.cdm.main.CDmoveset;
-import net.minecraft.client.Minecraft;
-import net.minecraft.commands.CommandSource;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -46,11 +36,10 @@ public class DodgeSkillMixin extends Skill {
     public void Slow_time(SkillContainer container) {
         Level var3 = container.getExecuter().getOriginal().level();
         if (container.getExecuter().getOriginal().level().getServer() != null && !FMLEnvironment.dist.isDedicatedServer() && container.getExecuter().getOriginal().level().getServer().getPlayerCount() <= 1) {
-            if (var3 instanceof ServerLevel _level) {
+            if (var3 instanceof ServerLevel) {
                 CDmoveset.changeAll(20);
            }
         }
-
     }
     @Override
     public void onInitiate(SkillContainer container) {
@@ -70,7 +59,6 @@ public class DodgeSkillMixin extends Skill {
                 }, 250L, TimeUnit.MILLISECONDS);
             }
         });
-
 
         container.getExecuter().getEventListener().addEventListener(PlayerEventListener.EventType.ANIMATION_BEGIN_EVENT, EVENT_UUID, (event) -> {
             StaticAnimation animation = event.getAnimation();

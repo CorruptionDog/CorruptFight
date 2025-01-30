@@ -2,10 +2,15 @@ package net.corruptdog.cdm.api.animation.types;
 
 import java.util.function.Function;
 
+import net.corruptdog.cdm.main.CDmoveset;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.spongepowered.asm.mixin.Unique;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
@@ -14,11 +19,13 @@ import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageType;
 import yesman.epicfight.world.entity.DodgeLeft;
 
 public class YamatoDodge extends ActionAnimation {
+    private SkillContainer container;
     public static final Function<DamageSource, AttackResult.ResultType> DODGEABLE_SOURCE_VALIDATOR = (damagesource) -> {
         if (damagesource.getEntity() != null && !damagesource.is(DamageTypeTags.IS_EXPLOSION) && !damagesource.is(DamageTypes.MAGIC) && !damagesource.is(DamageTypeTags.BYPASSES_ARMOR)
                 && !damagesource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damagesource.is(EpicFightDamageType.BYPASS_DODGE)) {
@@ -27,7 +34,6 @@ public class YamatoDodge extends ActionAnimation {
 
         return AttackResult.ResultType.SUCCESS;
     };
-
     public YamatoDodge(float convertTime, float delayTime, String path, float width, float height, Armature armature) {
         super(convertTime, delayTime, path, armature);
 

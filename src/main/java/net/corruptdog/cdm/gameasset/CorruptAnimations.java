@@ -1,10 +1,8 @@
 package net.corruptdog.cdm.gameasset;
 
-import net.corruptdog.cdm.api.animation.types.ExecuteAnimation;
-import net.corruptdog.cdm.api.animation.types.SanjiAttackAnimation;
+import net.corruptdog.cdm.CDConfig;
+import net.corruptdog.cdm.api.animation.types.*;
 import net.corruptdog.cdm.main.CDmoveset;
-import net.corruptdog.cdm.api.animation.types.YamtoAttackAnimation;
-import net.corruptdog.cdm.api.animation.types.DodgeAttackAnimation;
 import net.corruptdog.cdm.network.server.NetworkManager;
 import net.corruptdog.cdm.network.server.SPAfterImagine;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,9 +10,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent;
@@ -35,6 +35,8 @@ import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.*;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageType;
@@ -43,6 +45,7 @@ import yesman.epicfight.world.damagesource.StunType;
 import  net.corruptdog.cdm.particle.CorruptParticles;
 import yesman.epicfight.world.entity.eventlistener.ComboCounterHandleEvent;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -51,9 +54,8 @@ public class CorruptAnimations {
     public static StaticAnimation BIPED_HIT_LONG2;
     public static StaticAnimation GUARD_BREAK1;
     public static StaticAnimation GUARD_BREAK2;
-    public static StaticAnimation TACHI_GUARD;
-    public static StaticAnimation TACHI_GUARD_HIT;
     public static StaticAnimation KNOCKDOWN;
+    public static StaticAnimation SWORD_DEATH;
 
     //旧版本闪避动作
     public static StaticAnimation ROLL_FORWARD;
@@ -94,6 +96,8 @@ public class CorruptAnimations {
     public static StaticAnimation BACKWARD_SLASH;
     public static StaticAnimation BLADE_RUSH_FINISHER;
     public static StaticAnimation RECOVER;
+    public static StaticAnimation FATALFLASH;
+    public static StaticAnimation FATALFLASH_READY;
 
 
     public static StaticAnimation DUAL_GREATSWORD_IDLE;
@@ -268,10 +272,7 @@ public class CorruptAnimations {
         KNOCKDOWN = new KnockdownAnimation(0.08F, "biped/hit/knockdown", biped);
         GUARD_BREAK1 = new LongHitAnimation(0.05F, "biped/hit/guard_break1", biped);
         GUARD_BREAK2 = new LongHitAnimation(0.05F, "biped/hit/guard_break2", biped);
-
-        TACHI_GUARD = new StaticAnimation(0.25F, true, "biped/hit/guard_longsword", biped);
-        TACHI_GUARD_HIT = new GuardAnimation(0.05F, "biped/hit/guard_longsword_hit", biped);
-
+        SWORD_DEATH = new LongHitAnimation(0.05F, "biped/hit/sword_death", biped);
         ROLL_FORWARD = new DodgeAnimation(0.1F, "biped/new/dodge/psstep/roll_forward", 0.6F, 0.8F, biped);
         ROLL_BACKWARD = new DodgeAnimation(0.1F, "biped/new/dodge/psstep/roll_backward", 0.6F, 0.8F, biped);
         ROLL_LEFT = new DodgeAnimation(0.1F, "biped/new/dodge/psstep/roll_left", 0.6F, 0.8F, biped);
@@ -319,7 +320,7 @@ public class CorruptAnimations {
                 .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false);
 
 
-        SSTEP_FORWARD = new DodgeAnimation(0.15F, 0.55F, "biped/new/dodge/step_forward", 0.6F, 1.65F, biped)
+        SSTEP_FORWARD = new YamatoDodge(0.15F, 0.55F, "biped/new/dodge/step_forward", 0.6F, 1.65F, biped)
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.20F, (entitypatch, animation, params) -> {
                             Entity entity = entitypatch.getOriginal();
@@ -328,7 +329,7 @@ public class CorruptAnimations {
                         }, AnimationEvent.Side.CLIENT)
                 )
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
-        SSTEP_BACKWARD = new DodgeAnimation(0.05F, 0.55F, "biped/new/dodge/step_backward", 0.6F, 1.65F, biped)
+        SSTEP_BACKWARD = new YamatoDodge(0.05F, 0.55F, "biped/new/dodge/step_backward", 0.6F, 1.65F, biped)
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.20F, (entitypatch, animation, params) -> {
                             Entity entity = entitypatch.getOriginal();
@@ -337,7 +338,7 @@ public class CorruptAnimations {
                         }, AnimationEvent.Side.CLIENT)
                 )
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
-        SSTEP_LEFT = new DodgeAnimation(0.02F, 0.50F, "biped/new/dodge/step_left", 0.6F, 1.65F, biped)
+        SSTEP_LEFT = new YamatoDodge(0.02F, 0.50F, "biped/new/dodge/step_left", 0.6F, 1.65F, biped)
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.20F, (entitypatch, animation, params) -> {
                             Entity entity = entitypatch.getOriginal();
@@ -346,7 +347,7 @@ public class CorruptAnimations {
                         }, AnimationEvent.Side.CLIENT)
                 )
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
-        SSTEP_RIGHT = new DodgeAnimation(0.02F, 0.50F, "biped/new/dodge/step_right", 0.6F, 1.65F, biped)
+        SSTEP_RIGHT = new YamatoDodge(0.02F, 0.50F, "biped/new/dodge/step_right", 0.6F, 1.65F, biped)
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.20F, (entitypatch, animation, params) -> {
                             Entity entity = entitypatch.getOriginal();
@@ -423,6 +424,46 @@ public class CorruptAnimations {
                             entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundEvent, SoundSource.PLAYERS, 1.0F, 1.2F);
                         }, AnimationEvent.Side.SERVER)
                 );
+
+        FATALFLASH = new DodgeAttackAnimation(0.05F, 0.0F, 0.05F, 0.15F, 0.65F,CorruptCollider.BLADE_RUSH_FINISHER, biped.rootJoint, "biped/skill/fatal_flash", biped)
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0F)
+                .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.EVISCERATE.get())
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(1F))
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(10F))
+                .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_ON_LINK, false)
+                .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.35F))
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_UPDATE_TIME, TimePairList.create(0.0F, 0.25F))
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_TARGET_POSITION_BEGIN)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, MoveCoordFunctions.TRACE_ORIGIN_AS_TARGET_POSITION)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_GET, MoveCoordFunctions.WORLD_COORD)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, SLOW_SPEED)
+                .addState(EntityState.MOVEMENT_LOCKED, true)
+                .addState(EntityState.TURNING_LOCKED, true)
+                .addState(EntityState.LOCKON_ROTATE, true)
+                .addState(EntityState.CAN_SKILL_EXECUTION, false)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
+                .setResourceLocation("biped/new/katana/katana_sheath_dash")
+                .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(0.05F, (entitypatch, animation, params) -> {
+                            Entity entity = entitypatch.getOriginal();
+                            entity.level().addParticle(EpicFightParticles.ENTITY_AFTER_IMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0, 0);
+                        }, AnimationEvent.Side.CLIENT)
+                );
+        FATALFLASH_READY = new DodgeAttackAnimation(0.05F, 1.2F, 1.2F, 1.2F, 0.5F, CorruptCollider.YAMATO_P, biped.toolR, "biped/new/katana/skill/fatalflash_ready", biped)
+                .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false)
+                .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
+                .addProperty(AnimationProperty.ActionAnimationProperty.RESET_PLAYER_COMBO_COUNTER, true)
+                .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 4.0F))
+                .addState(EntityState.MOVEMENT_LOCKED, true)
+                .addState(EntityState.TURNING_LOCKED, true)
+                .addState(EntityState.LOCKON_ROTATE, true)
+                .addState(EntityState.CAN_SKILL_EXECUTION, false)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, SLOW_SPEED);
+
 
         YAMATO_DASH = new DashAttackAnimation(0.12F, 0.1F, 0.25F, 0.4F, 0.65F, null, biped.toolR, "biped/new/yamato/yamato_dash", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2))
@@ -669,10 +710,10 @@ public class CorruptAnimations {
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.05F, YAMATO_OUT, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(2.50F, YAMATO_IN, AnimationEvent.Side.SERVER),
-                        AnimationEvent.TimeStampedEvent.create(0.0F,COMBO_BREAK, AnimationEvent.Side.SERVER),
+                        AnimationEvent.TimeStampedEvent.create(0.05F,COMBO_BREAK, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(2.50F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_IN.get()),
                         AnimationEvent.TimeStampedEvent.create(2.55F, STAMINA, AnimationEvent.Side.SERVER),
-                        AnimationEvent.TimeStampedEvent.create(2.55F,COMBO_BREAK, AnimationEvent.Side.SERVER))
+                        AnimationEvent.TimeStampedEvent.create(2.45F,COMBO_BREAK, AnimationEvent.Side.SERVER))
                 .addState(EntityState.MOVEMENT_LOCKED, true);
         YAMATO_DASH = new DashAttackAnimation(0.12F, 0.1F, 0.25F, 0.4F, 0.65F, null, biped.toolR, "biped/new/yamato/yamato_dash", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2))
@@ -730,8 +771,6 @@ public class CorruptAnimations {
                 .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
                 .addState(EntityState.LOCKON_ROTATE, true)
-                .newTimePair(0.0F, 2.0F)
-                .addStateRemoveOld(EntityState.MOVEMENT_LOCKED, true)
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.4667F, YAMATO_OUT, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.65F, YAMATO_IN, AnimationEvent.Side.SERVER),
@@ -746,18 +785,20 @@ public class CorruptAnimations {
                         }, AnimationEvent.Side.SERVER));
 
 
-        YAMATO_POWER3_REPEAT = new BasicAttackAnimation(0.05F, "biped/new/yamato/skill/yamato_power3_repeat", biped,
+        YAMATO_POWER3_REPEAT = new YamtoAttackAnimation(0F, 0F,0.65F,0.48F,0.63F,0.04F,0.65F, 0F, 0F, "biped/new/yamato/skill/yamato_power3_repeat", biped,
                 new AttackAnimation.Phase(0.0F, 0.05F, 0.15F, 0.25F, 0.25F, biped.rootJoint, CorruptCollider.YAMATO_DASH)
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD).addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(5F)).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25F)),
-                new AttackAnimation.Phase(0.29F, 0.31F, 0.36F, 0.45F, 0.65F, biped.rootJoint, CorruptCollider.YAMATO_DASH)
+                new AttackAnimation.Phase(0.29F, 0.31F, 0.36F, 0.45F, 0.5F, biped.rootJoint, CorruptCollider.YAMATO_DASH)
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD).addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(5F)).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25F)))
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, Boolean.FALSE)
+                .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.35F)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addState(EntityState.MOVEMENT_LOCKED, true)
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.0F, YAMATO_OUT, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.5F, YAMATO_IN, AnimationEvent.Side.SERVER),
-                        AnimationEvent.TimeStampedEvent.create(0.01F, (entitypatch, animation, params) -> {
-                            float cost = 3;
+                        AnimationEvent.TimeStampedEvent.create(0.05F, (entitypatch, animation, params) -> {
+                            float cost = 2;
                             if (entitypatch instanceof ServerPlayerPatch patch) {
                                 BasicAttack.setComboCounterWithEvent(ComboCounterHandleEvent.Causal.ANOTHER_ACTION_ANIMATION, patch, patch.getSkill(SkillSlots.BASIC_ATTACK), YAMATO_POWER3_REPEAT, 5);
                                 patch.setStamina(patch.getStamina()-cost);
@@ -772,17 +813,15 @@ public class CorruptAnimations {
                             entitypatch.getOriginal().level().addParticle(EpicFightParticles.TSUNAMI_SPLASH.get(), pos.x + rand.x, pos.y + rand.y - 1.0D, pos.z + rand.z, rand.x * 0.1D, rand.y * 0.1D, rand.z * 0.1D);
                         }
                     }
-                }, AnimationEvent.Side.CLIENT))
-                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
-
-        YAMATO_POWER3_FINISH = new AttackAnimation(0.05F, "biped/new/yamato/skill/yamato_power3_finish", biped,
+                }, AnimationEvent.Side.CLIENT));
+        YAMATO_POWER3_FINISH = new YamtoAttackAnimation(0F, 0F,0.65F,0.48F,0.63F,0.04F,0.65F, 0F, 0F, "biped/new/yamato/skill/yamato_power3_finish", biped,
                 (new AttackAnimation.Phase(0.0F, 0.05F, 0.13F, 0.43F, 0.43F, biped.rootJoint, CorruptCollider.YAMATO_DASH))
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_PRIORITY, HitEntityList.Priority.TARGET)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.05F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(4.0F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get()),
-                (new AttackAnimation.Phase(0.43F, 0.82F, 0.9F, 1.35F, 1.35F, biped.rootJoint, CorruptCollider.YAMATO_DASH_FINISH))
+                (new AttackAnimation.Phase(0.43F, 0.82F, 0.9F, 1.35F, 1.5F, biped.rootJoint, CorruptCollider.YAMATO_DASH_FINISH))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(50F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN))
@@ -791,14 +830,14 @@ public class CorruptAnimations {
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.35F)
                 .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addState(EntityState.LOCKON_ROTATE, true)
-                .newTimePair(0.0F, 1.5F)
-                .addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0.133F, YAMATO_OUT, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.9F, YAMATO_IN, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(0.89F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_IN.get()))
                 .addState(EntityState.MOVEMENT_LOCKED, true)
-                .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false);
+                .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false)
+                .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(0.05F,COMBO_BREAK, AnimationEvent.Side.SERVER));
 
         YAMATO_POWER_DASH = new AttackAnimation(0.005F, "biped/new/yamato/skill/yamato_power_dash", biped,
                 (new AttackAnimation.Phase(0.0F, 0.38F, 0.9F, 1.17F, 1.17F, biped.rootJoint, CorruptCollider.YAMATO_DASH))
@@ -1249,15 +1288,15 @@ public class CorruptAnimations {
                 .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_ON_LINK, false)
                 .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.35F))
                 .addProperty(AnimationProperty.ActionAnimationProperty.COORD_UPDATE_TIME, TimePairList.create(0.0F, 0.25F))
-                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_DEST_LOCATION_BEGIN)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_TARGET_POSITION_BEGIN)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
         BLADE_RUSH2 = new AttackAnimation(0.1F, 0.05F, 0.05F, 0.25F, Float.MAX_VALUE, CorruptCollider.BLADE_RUSH,  biped.rootJoint, "biped/new/dagger/skill/blade_rush_second", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.HIT_PRIORITY, HitEntityList.Priority.TARGET)
                 .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_ON_LINK, false)
                 .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.35F))
                 .addProperty(AnimationProperty.ActionAnimationProperty.COORD_UPDATE_TIME, TimePairList.create(0.0F, 0.25F))
-                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_DEST_LOCATION_BEGIN)
-                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, MoveCoordFunctions.TRACE_DEST_LOCATION)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_TARGET_POSITION_BEGIN)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, MoveCoordFunctions.TRACE_ORIGIN_AS_TARGET_POSITION)
                 .addProperty(AnimationProperty.ActionAnimationProperty.COORD_GET, MoveCoordFunctions.WORLD_COORD)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
         BLADE_RUSH3 = new AttackAnimation(0.1F, 0.05F, 0.05F, 0.25F, Float.MAX_VALUE, CorruptCollider.BLADE_RUSH,  biped.rootJoint,"biped/new/dagger/skill/blade_rush_third", biped)
@@ -1265,7 +1304,7 @@ public class CorruptAnimations {
                 .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_ON_LINK, false)
                 .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.35F))
                 .addProperty(AnimationProperty.ActionAnimationProperty.COORD_UPDATE_TIME, TimePairList.create(0.0F, 0.25F))
-                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_DEST_LOCATION_BEGIN)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_TARGET_POSITION_BEGIN)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
         BLADE_RUSH4 = new AttackAnimation(0.15F, 0.05F, 0.15F, 0.35F, Float.MAX_VALUE, CorruptCollider.BLADE_RUSH, biped.rootJoint,"biped/new/dagger/skill/blade_rush_finisher", biped)
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
@@ -1275,9 +1314,8 @@ public class CorruptAnimations {
                 .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_ON_LINK, false)
                 .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.35F))
                 .addProperty(AnimationProperty.ActionAnimationProperty.COORD_UPDATE_TIME, TimePairList.create(0.0F, 0.25F))
-                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_DEST_LOCATION_BEGIN)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_ORIGIN_AS_TARGET_POSITION_BEGIN)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
-
 //        SANJI_IDLE = new StaticAnimation(0.1F, true, "biped/new/sanji/living/sanji_idle", biped);
 //        SANJI_WALK = new MovementAnimation(0.1F, true, "biped/new/sanji/living/sanji_walk", biped);
 //        SANJI_RUN = new MovementAnimation(0.1F, true, "biped/new/sanji/living/sanji_run", biped);
@@ -1477,6 +1515,9 @@ public class CorruptAnimations {
 
 
     public static final AnimationProperty.PlaybackSpeedModifier SPEED = (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> 1.1F;
+
+    public static final AnimationProperty.PlaybackSpeedModifier SLOW_SPEED = (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> 0.7F;
+
 
 
     public static final AnimationEvent.AnimationEventConsumer STAMINA = (entitypatch, animation, params) -> {

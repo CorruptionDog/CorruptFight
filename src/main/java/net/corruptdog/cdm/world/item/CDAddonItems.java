@@ -20,6 +20,12 @@ public class CDAddonItems {
     public static final RegistryObject<Item> YAMATO = ITEMS.register("yamato", () -> new YamatoItem(new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> YAMATO_BLADE = ITEMS.register("yamato_blade", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
+
+    public static final RegistryObject<Item> A_YAMATO = ITEMS.register("a_yamato", () -> new YamatoItem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> A_YAMATO_IN_SHEATH = ITEMS.register("a_yamato_in_sheath", () -> new YamatoItem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> A_YAMATO_SHEATH = ITEMS.register("a_yamato_sheath", () -> new YamatoItem(new Item.Properties().rarity(Rarity.RARE)));
+
+
     public static final RegistryObject<Item> S_IRONSPEAR = ITEMS.register("s_ironspear", () -> new SpearItem(new Item.Properties(), Tiers.IRON));
     public static final RegistryObject<Item> S_DIAMONDSPEAR = ITEMS.register("s_diamondspear", () -> new SpearItem(new Item.Properties(), Tiers.DIAMOND));
 

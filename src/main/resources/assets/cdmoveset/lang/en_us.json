@@ -65,5 +65,7 @@
   "skill.cdmoveset.bstep": "Better Step",
   "skill.cdmoveset.bstep.tooltip": "Better Step.\n\n(Stamina: %d)",
   "skill.cdmoveset.yamatoskill": "During the preparation phase of normal skill usage, being attacked by the enemy can trigger a counterattack. After 1a, 2a, 3a, you can release additional combos, and after a parry, you can release the Illusory Blade Realm for a counterattack.",
-  "skill.cdmoveset.yamatoskill.tooltip": "Depending on the attack, the combo delivered is different."
+  "skill.cdmoveset.yamatoskill.tooltip": "Depending on the attack, the combo delivered is different.",
+  "skill.cdmoveset.fatalfalsh": "Fatal Flash",
+  "skill.cdmoveset.fatalfalsh.tooltip": "Lock onto a low-health enemy and perform a kill, which cannot be interrupted during execution (Weapons allowed: uchigatana, katana, tachi, longsword)"
 }

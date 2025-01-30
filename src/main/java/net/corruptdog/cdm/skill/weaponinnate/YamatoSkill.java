@@ -100,8 +100,8 @@ public class YamatoSkill extends WeaponInnateSkill {
         listener.addEventListener(BASIC_ATTACK_EVENT, EVENT_UUID, (event) -> {
             float stamina = event.getPlayerPatch().getStamina();
             ResourceLocation rl = event.getPlayerPatch().getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
-            if (rl == CorruptAnimations.YAMATO_POWER3.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName()) {
-                if (stamina < 2){
+            if (stamina < 2) {
+                if (rl == CorruptAnimations.YAMATO_POWER3.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName()) {
                     event.setCanceled(true);
                 }
             }

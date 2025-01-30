@@ -24,7 +24,6 @@ public class ClientEvent {
 
     }
 
-
     @SubscribeEvent
     public static void addLayersEvent(EntityRenderersEvent.AddLayers event) {
         ClientEngine.getInstance().renderEngine.bootstrap(event.getContext());

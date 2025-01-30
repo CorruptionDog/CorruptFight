@@ -53,5 +53,11 @@
         "category":"player",
         "subtitle":"sfx.step",
         "sounds":[{"name":"cdmoveset:sfx/step", "stream":true, "attenuation_distance":50}]
+    },
+    "sfx.fatalflash":
+    {
+        "category":"player",
+        "subtitle":"sfx.fatalflash",
+        "sounds":[{"name":"cdmoveset:sfx/fatalflash", "stream":true, "attenuation_distance":50},{"name":"cdmoveset:sfx/fatalflash1", "stream":true, "attenuation_distance":50}]
     }
 }

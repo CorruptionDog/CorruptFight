@@ -108,11 +108,6 @@ public class SStep extends Skill {
         return packet;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public List<Object> getTooltipArgsOfScreen(List<Object> list) {
-        list.add(ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(this.consumption));
-        return list;
-    }
 
     public void executeOnServer(ServerPlayerPatch executer, FriendlyByteBuf args) {
         super.executeOnServer(executer, args);

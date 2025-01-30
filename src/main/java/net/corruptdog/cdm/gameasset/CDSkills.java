@@ -6,7 +6,10 @@ import net.corruptdog.cdm.main.CDmoveset;
 import net.corruptdog.cdm.skill.Dodge.Dodge;
 import net.corruptdog.cdm.skill.Dodge.SStep;
 import net.corruptdog.cdm.skill.Passive.BloodWolf;
+import net.corruptdog.cdm.skill.identity.FatalFlash;
 import net.corruptdog.cdm.skill.weaponinnate.*;
+import net.corruptdog.cdm.world.CDWeaponCapabilityPresets;
+import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
@@ -16,8 +19,10 @@ import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.*;
 import yesman.epicfight.skill.dodge.DodgeSkill;
+import yesman.epicfight.skill.identity.RevelationSkill;
 import yesman.epicfight.skill.passive.PassiveSkill;
 import yesman.epicfight.skill.weaponinnate.*;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.damagesource.EpicFightDamageType;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
@@ -44,7 +49,7 @@ public class CDSkills {
     public static Skill DUAL_TACHISKILL;
     public static Skill KATANASKILL;
     public static Skill SHILEDSLASH;
-
+    public static Skill FATALFLASH;
 
 //    public static Skill YAMATO_PASSIVE;
 //    public static Skill YAMATO_ART;
@@ -62,6 +67,7 @@ public class CDSkills {
         BLADE_RUSH = modRegistry.build( "blade_rush", DualDaggerSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         SHILEDSLASH = modRegistry.build( "shiled_slahs", ShiledSlash::new, WeaponInnateSkill.createWeaponInnateBuilder());
         BSTEP = modRegistry.build("bstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.STEP_FORWARD, () -> CorruptAnimations.STEP_BACKWARD, () -> CorruptAnimations.STEP_LEFT, () -> CorruptAnimations.STEP_RIGHT));
+        FATALFLASH = modRegistry.build("fatalfalsh",  FatalFlash::new, FatalFlash.createRevelationSkillBuilder().addAvailableWeaponCategory(CorruptWeaponCategories.KATANA, CapabilityItem.WeaponCategories.UCHIGATANA, CorruptWeaponCategories.S_LONGSWORD,CapabilityItem.WeaponCategories.LONGSWORD,CorruptWeaponCategories.S_TACHI,CapabilityItem.WeaponCategories.TACHI));
 
 //        YAMATO_ATTACK = modRegistry.build("yamato_attack",YamatoAttack::new,YamatoAttack.createBuilder());
 //        YAMATO_PASSIVE = modRegistry.build("yamato_passive",YamatoPassive::new,Skill.createBuilder().setCategory(SkillCategories.WEAPON_PASSIVE));

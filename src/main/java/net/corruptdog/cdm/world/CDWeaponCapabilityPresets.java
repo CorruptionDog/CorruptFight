@@ -116,7 +116,7 @@ public class CDWeaponCapabilityPresets {
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_TACHI)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_TACHI)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_TACHI)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, CorruptAnimations.TACHI_GUARD)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, CorruptAnimations.DUAL_GREATSWORD_IDLE)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, Animations.BIPED_HOLD_DUAL_WEAPON)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, CorruptAnimations.WALK_KATANA)
@@ -152,7 +152,7 @@ public class CDWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_DUAL_WEAPON)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_DUAL_WEAPON)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_DUAL_WEAPON)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, CorruptAnimations.TACHI_GUARD)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
                     .weaponCombinationPredicator((entitypatch) -> EpicFightCapabilities.getItemStackCapability(entitypatch.getOriginal().getOffhandItem()).getWeaponCategory() == CorruptWeaponCategories.DUAL_TACHI);
 
