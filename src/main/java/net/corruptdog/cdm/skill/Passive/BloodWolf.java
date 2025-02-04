@@ -69,10 +69,7 @@ public class BloodWolf extends PassiveSkill {
                 }
             }
         });
-        container.getExecuter().getEventListener().addEventListener(EventType.ACTION_EVENT_SERVER, EVENT_UUID, (event) -> {
-            container.getDataManager().setDataSync(CDSkillDataKeys.WOLFPASSIVE.get(), 0, event.getPlayerPatch().getOriginal());
-            container.getDataManager().setDataSync(CDSkillDataKeys.TIMER.get(), 0, event.getPlayerPatch().getOriginal());
-        });
+
         container.getExecuter().getEventListener().addEventListener(EventType.MODIFY_DAMAGE_EVENT, EVENT_UUID, (event) -> {
             Integer damage = container.getDataManager().getDataValue(CDSkillDataKeys.DAMAGE.get());
             if (damage == null) {
@@ -123,8 +120,12 @@ public class BloodWolf extends PassiveSkill {
         if (!level.isClientSide())
         {
             final Vec3 _center = new Vec3(player.getX(), player.getEyeY(), player.getZ());
-            List<LivingEntity> _entfound = level.getEntitiesOfClass(LivingEntity.class, new AABB(_center, _center).inflate(6 / 2d), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-            for (LivingEntity entityiterator : _entfound) {
+            List<LivingEntity> entfound = level.getEntitiesOfClass(LivingEntity.class, new AABB(_center, _center).inflate(6 / 2d), e -> true)
+                    .stream()
+                    .sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center)))
+                    .limit(4)
+                    .toList();
+            for (LivingEntity entityiterator : entfound) {
                 LivingEntityPatch<?> ep = EpicFightCapabilities.getEntityPatch(entityiterator, LivingEntityPatch.class);
                 if (ep != null && (entityiterator != player)) {
                     ep.playAnimationSynchronized(CorruptAnimations.BIPED_HIT_LONG2, 0.0F, SPPlayAnimation::new);

@@ -92,41 +92,6 @@ public class DodgeAttackAnimation extends AttackAnimation {
     }
 
     @Override
-    public void end(LivingEntityPatch<?> entitypatch, DynamicAnimation nextAnimation, boolean isEnd) {
-        super.end(entitypatch, nextAnimation, isEnd);
-
-        boolean stiffAttack = entitypatch.getOriginal().level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS).get();
-
-        if (!isEnd && !nextAnimation.isMainFrameAnimation() && entitypatch.isLogicalClient() && !stiffAttack) {
-            float playbackSpeed = EpicFightOptions.A_TICK * this.getPlaySpeed(entitypatch, this);
-            entitypatch.getClientAnimator().baseLayer.copyLayerTo(entitypatch.getClientAnimator().baseLayer.getLayer(Layer.Priority.HIGHEST), playbackSpeed);
-        }
-    }
-
-    @Override
-    public TypeFlexibleHashMap<StateFactor<?>> getStatesMap(LivingEntityPatch<?> entitypatch, float time) {
-        TypeFlexibleHashMap<StateFactor<?>> stateMap = super.getStatesMap(entitypatch, time);
-
-        if (!entitypatch.getOriginal().level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS).get()) {
-            stateMap.put(EntityState.MOVEMENT_LOCKED, (Object)false);
-            stateMap.put(EntityState.UPDATE_LIVING_MOTION, (Object)true);
-        }
-
-        return stateMap;
-    }
-
-    @Override
-    protected Vec3 getCoordVector(LivingEntityPatch<?> entitypatch, DynamicAnimation dynamicAnimation) {
-        Vec3 vec3 = super.getCoordVector(entitypatch, dynamicAnimation);
-
-        if (entitypatch.shouldBlockMoving() && this.getProperty(ActionAnimationProperty.CANCELABLE_MOVE).orElse(false)) {
-            vec3 = vec3.scale(0.0F);
-        }
-
-        return vec3;
-    }
-
-    @Override
     public Optional<JointMaskEntry> getJointMaskEntry(LivingEntityPatch<?> entitypatch, boolean useCurrentMotion) {
         if (entitypatch.isLogicalClient()) {
             if (entitypatch.getClientAnimator().getPriorityFor(this) == Layer.Priority.HIGHEST) {
@@ -135,23 +100,5 @@ public class DodgeAttackAnimation extends AttackAnimation {
         }
 
         return super.getJointMaskEntry(entitypatch, useCurrentMotion);
-    }
-
-    @Override
-    public boolean isBasicAttackAnimation() {
-        return true;
-    }
-
-    @Override
-    public boolean shouldPlayerMove(LocalPlayerPatch playerpatch) {
-        if (playerpatch.isLogicalClient()) {
-            if (!playerpatch.getOriginal().level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS).get()) {
-                if (playerpatch.getOriginal().input.forwardImpulse != 0.0F || playerpatch.getOriginal().input.leftImpulse != 0.0F) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 }

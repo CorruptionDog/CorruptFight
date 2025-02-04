@@ -13,4 +13,4 @@ public class CorruptParticles {
 
     public static final RegistryObject<SimpleParticleType> CORRUPT_AFTER_IMAGE = PARTICLES.register("corrupt_after_image", () -> new SimpleParticleType(true));
     public static final RegistryObject<HitParticleType> FORESIGHT = PARTICLES.register("foresight", () -> new HitParticleType(true, HitParticleType.RANDOM_WITHIN_BOUNDING_BOX, HitParticleType.ZERO));
-  }
+      }

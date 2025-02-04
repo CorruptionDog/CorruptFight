@@ -1,7 +1,7 @@
 package net.corruptdog.cdm.Client;
 
-import net.corruptdog.cdm.Client.Particles.AfterImageParticle;
-import net.corruptdog.cdm.Client.Particles.BladeRushParticle;
+import net.corruptdog.cdm.Client.Particles.Tyeps.AfterImageParticle;
+import net.corruptdog.cdm.Client.Particles.Tyeps.SimpleParticle;
 import net.corruptdog.cdm.main.CDmoveset;
 import net.corruptdog.cdm.particle.CorruptParticles;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,7 +19,7 @@ import yesman.epicfight.client.ClientEngine;
 public class ClientEvent {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onParticleRegistry(final RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(CorruptParticles.FORESIGHT.get(), BladeRushParticle.Provider::new);
+        event.registerSpriteSet(CorruptParticles.FORESIGHT.get(), SimpleParticle.Provider::new);
         event.registerSpecial(CorruptParticles.CORRUPT_AFTER_IMAGE.get(), new AfterImageParticle.Provider());
 
     }

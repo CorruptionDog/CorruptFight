@@ -18,6 +18,8 @@ public class CorruptSound {
 
     public static final RegistryObject<SoundEvent> YAMATO_STEP = registerSound("sfx.yamato_step");
     public static final RegistryObject<SoundEvent> YAMATO_IN = registerSound("yamato.yamato_in");
+    public static final RegistryObject<SoundEvent> YAMATO_CUT1 = registerSound("yamato.cut1");
+    public static final RegistryObject<SoundEvent> YAMATO_CUT2 = registerSound("yamato.cut2");
     public static final RegistryObject<SoundEvent> FORESIGHT = registerSound("sfx.foresight");
     public static final RegistryObject<SoundEvent> EXECUTE = registerSound("sfx.execute");
     public static final RegistryObject<SoundEvent> DAMAGE = registerSound("sfx.damage");

@@ -1,23 +1,15 @@
 package net.corruptdog.cdm.api.animation.types;
 
 import java.util.Locale;
-import java.util.Optional;
+
 import net.minecraft.world.phys.Vec3;
+import yesman.epicfight.api.animation.Pose;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
-import yesman.epicfight.api.animation.types.AttackAnimation;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.EntityState;
-import yesman.epicfight.api.animation.types.EntityState.StateFactor;
-import yesman.epicfight.api.animation.types.StateSpectrum;
-import yesman.epicfight.api.client.animation.Layer;
-import yesman.epicfight.api.client.animation.property.JointMaskEntry;
+import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.model.Armature;
-import yesman.epicfight.api.utils.datastruct.TypeFlexibleHashMap;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
-import yesman.epicfight.config.EpicFightOptions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.gamerule.EpicFightGamerules;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 
 public class YamtoAttackAnimation extends AttackAnimation {
 
@@ -85,9 +77,21 @@ public class YamtoAttackAnimation extends AttackAnimation {
 
                 .newTimePair(attackwinclose ,skillwinclose)
                 .addState(EntityState.PHASE_LEVEL, 3)
-                .addState(EntityState.TURNING_LOCKED, true);
+                .addState(EntityState.TURNING_LOCKED, true)
+                .addState(EntityState.CAN_BASIC_ATTACK, false);
     }
+    @Override
+    public void setLinkAnimation(DynamicAnimation dynamicAnimation, Pose pose1, boolean reverse, float timeModifier, LivingEntityPatch<?> entitypatch, LinkAnimation dest) {
+        float extTime = Math.max(this.convertTime + timeModifier, 0);
 
+        if (entitypatch instanceof PlayerPatch<?> playerpatch) {
+            Phase phase = this.getPhaseByTime(playerpatch.getAnimator().getPlayerFor(this).getElapsedTime());
+            extTime *= this.getTotalTime() * playerpatch.getAttackSpeed(phase.getHand());
+        }
+
+        extTime = Math.max(extTime - this.convertTime, 0);
+        super.setLinkAnimation(dynamicAnimation, pose1, reverse, this.convertTime, entitypatch, dest);
+    }
     @Override
     public void postInit() {
         super.postInit();
@@ -97,31 +101,6 @@ public class YamtoAttackAnimation extends AttackAnimation {
             this.addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, basisSpeed);
         }
     }
-
-    @Override
-    public void end(LivingEntityPatch<?> entitypatch, DynamicAnimation nextAnimation, boolean isEnd) {
-        super.end(entitypatch, nextAnimation, isEnd);
-
-        boolean stiffAttack = entitypatch.getOriginal().level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS).get();
-
-        if (!isEnd && !nextAnimation.isMainFrameAnimation() && entitypatch.isLogicalClient() && !stiffAttack) {
-            float playbackSpeed = EpicFightOptions.A_TICK * this.getPlaySpeed(entitypatch, this);
-            entitypatch.getClientAnimator().baseLayer.copyLayerTo(entitypatch.getClientAnimator().baseLayer.getLayer(Layer.Priority.HIGHEST), playbackSpeed);
-        }
-    }
-
-    @Override
-    public TypeFlexibleHashMap<StateFactor<?>> getStatesMap(LivingEntityPatch<?> entitypatch, float time) {
-        TypeFlexibleHashMap<StateFactor<?>> stateMap = super.getStatesMap(entitypatch, time);
-
-        if (!entitypatch.getOriginal().level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS).get()) {
-            stateMap.put(EntityState.MOVEMENT_LOCKED, (Object)false);
-            stateMap.put(EntityState.UPDATE_LIVING_MOTION, (Object)true);
-        }
-
-        return stateMap;
-    }
-
     @Override
     protected Vec3 getCoordVector(LivingEntityPatch<?> entitypatch, DynamicAnimation dynamicAnimation) {
         Vec3 vec3 = super.getCoordVector(entitypatch, dynamicAnimation);
@@ -132,33 +111,8 @@ public class YamtoAttackAnimation extends AttackAnimation {
 
         return vec3;
     }
-
-    @Override
-    public Optional<JointMaskEntry> getJointMaskEntry(LivingEntityPatch<?> entitypatch, boolean useCurrentMotion) {
-        if (entitypatch.isLogicalClient()) {
-            if (entitypatch.getClientAnimator().getPriorityFor(this) == Layer.Priority.HIGHEST) {
-                return Optional.of(JointMaskEntry.BASIC_ATTACK_MASK);
-            }
-        }
-
-        return super.getJointMaskEntry(entitypatch, useCurrentMotion);
-    }
-
     @Override
     public boolean isBasicAttackAnimation() {
-        return true;
-    }
-
-    @Override
-    public boolean shouldPlayerMove(LocalPlayerPatch playerpatch) {
-        if (playerpatch.isLogicalClient()) {
-            if (!playerpatch.getOriginal().level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS).get()) {
-                if (playerpatch.getOriginal().input.forwardImpulse != 0.0F || playerpatch.getOriginal().input.leftImpulse != 0.0F) {
-                    return false;
-                }
-            }
-        }
-
         return true;
     }
 }

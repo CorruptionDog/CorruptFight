@@ -48,6 +48,18 @@
         "subtitle":"yamato.yamato_in",
         "sounds":[{"name":"cdmoveset:yamato/yamato_in", "stream":true, "attenuation_distance":50},{"name":"cdmoveset:yamato/sword_in2", "stream":true, "attenuation_distance":50}]
     },
+    "yamato.cut1":
+    {
+        "category":"master",
+        "subtitle":"yamato.cut1",
+        "sounds":[{"name":"cdmoveset:yamato/cut1", "stream":true, "attenuation_distance":50}]
+    },
+    "yamato.cut2":
+    {
+        "category":"master",
+        "subtitle":"yamato.cut2",
+        "sounds":[{"name":"cdmoveset:yamato/cut2", "stream":true, "attenuation_distance":50}]
+    },
     "sfx.step":
     {
         "category":"player",

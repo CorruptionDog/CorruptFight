@@ -24,7 +24,7 @@ public class CDSkillDataKeys {
     public static final RegistryObject<SkillDataKey<Boolean>> DODGE_PLAYED = DATA_KEYS.register("dodge_played", () ->
             SkillDataKey.createBooleanKey(false, false, SStep.class));
 
-    public static final RegistryObject<SkillDataKey<Integer>> WOLFPASSIVE = DATA_KEYS.register("wolfpassive", () ->
+    public static final RegistryObject<SkillDataKey<Integer>> WOLFPASSIVE = DATA_KEYS.register("wolf_passive", () ->
             SkillDataKey.createIntKey(0, false, BloodWolf.class));
     public static final RegistryObject<SkillDataKey<Integer>> TIMER = DATA_KEYS.register("timer", () ->
             SkillDataKey.createIntKey(0, false, BloodWolf.class));
@@ -42,8 +42,8 @@ public class CDSkillDataKeys {
             SkillDataKey.createIntKey(0, false, YamatoAttack.class));
     public static final RegistryObject<SkillDataKey<Boolean>> POWER3 = DATA_KEYS.register("power3", () ->
             SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
-    public static final RegistryObject<SkillDataKey<Boolean>> FATALFLASH = DATA_KEYS.register("fatalslash", () ->
-            SkillDataKey.createBooleanKey(false, false, FatalFlash.class));
+    public static final RegistryObject<SkillDataKey<Boolean>> POWER = DATA_KEYS.register("power", () ->
+            SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
 
 //    public static final RegistryObject<SkillDataKey<Boolean>> FATAL = DATA_KEYS.register("fatal", () ->
 //            SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));

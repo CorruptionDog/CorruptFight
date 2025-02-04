@@ -263,6 +263,7 @@ public class CDWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, CorruptAnimations.YAMATO_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, CorruptAnimations.YAMATO_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_FALL)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.JUMP, Animations.BIPED_JUMP)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, CorruptAnimations.YAMATO_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, CorruptAnimations.YAMATO_GUARD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.LANDING_RECOVERY, Animations.BIPED_LANDING);

@@ -67,7 +67,6 @@ public class Execute {
                 (targetPatch.getAnimator().getPlayerFor(null).getAnimation() instanceof LongHitAnimation longHitAnimation &&
                         Set.of(Animations.WITHER_NEUTRALIZED, Animations.VEX_NEUTRALIZED, Animations.SPIDER_NEUTRALIZED,
                                 Animations.DRAGON_NEUTRALIZED, Animations.ENDERMAN_NEUTRALIZED,
-                                CorruptAnimations.SWORD_DEATH,
                                 Animations.BIPED_COMMON_NEUTRALIZED, Animations.GREATSWORD_GUARD_BREAK).contains(longHitAnimation));
     }
 

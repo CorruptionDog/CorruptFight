@@ -1,5 +1,6 @@
 package net.corruptdog.cdm.mixins;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -49,14 +50,14 @@ public class DodgeSkillMixin extends Skill {
             if (CDConfig.ENABLE_DODGESUCCESS_SOUND.get() ) {
                 container.getExecuter().playSound(CorruptSound.FORESIGHT.get(), 0.8F, 1.2F);
             }
-            if (CDConfig.SLOW_TIME.get() ) {
+            if (CDConfig.SLOW_TIME.get() && container.getExecuter().getOriginal().level().getServer() != null && !FMLEnvironment.dist.isDedicatedServer() && Objects.requireNonNull(container.getExecuter().getOriginal().level().getServer()).getPlayerCount() <= 1) {
 
-                CDmoveset.changeAll(2);
+                CDmoveset.changeAll(8);
 
                 ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
                 scheduledExecutorService.schedule(() -> {
                     this.Slow_time(container);
-                }, 250L, TimeUnit.MILLISECONDS);
+                }, 500L, TimeUnit.MILLISECONDS);
             }
         });
 

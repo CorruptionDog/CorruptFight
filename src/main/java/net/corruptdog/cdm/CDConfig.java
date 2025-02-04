@@ -27,7 +27,7 @@ public class CDConfig {
 
     private static ForgeConfigSpec.BooleanValue createBool(ForgeConfigSpec.Builder builder, String key, boolean defaultValue, String... comment) {
         return builder
-                .translation("config." + CDmoveset.MOD_ID + ".common." + key)
+                .translation("config." + "Resurrection" + ".common." + key)
                 .comment(comment)
                 .define(key, defaultValue);
     }
