@@ -20,7 +20,8 @@ public class CorruptCollider {
     public static final Collider YAMATO_DASH = new OBBCollider(1.7D, 1.0D, 2.0D, 0.0D, 1.0D, -1.0D);
     public static final Collider YAMATO_P0 = new OBBCollider(1.7D, 1.0D, -3.5D, 0.0D, 1.0D, -2.5D);
     public static final Collider YAMATO_DASH_FINISH = new OBBCollider(1.7D, 1.0D, 3.5D, 0.0D, 1.0D, 1.0D);
-    public static final Collider EXECUTE = new MultiOBBCollider(2, 0.8, 0.8, 1.383, 0.0, 0.0, -0.66);
+    public static final Collider EXECUTE = new MultiOBBCollider(3, 0.4D, 0.4D, 1.5D, 0.0D, 0.0D, -0.5D);
+    public static final Collider EXECUTE_SECOND = new MultiOBBCollider(2, 0.8, 0.8, 2.0, 0.0, 0.0, -0.66);
     public static final Collider BLADE_RUSH = new OBBCollider(0.8D, 0.5D, 0.95D, 0.0D, 1.0D, -1.2D);
     public static final Collider KICK = new MultiOBBCollider(4, 0.4, 0.4, 0.4, 0.0, 0.6, 0.0);
     public static final Collider KICK_HUGE = new MultiOBBCollider(4, 0.8, 0.8, 0.8, 0.0, 0.9, 0.0);

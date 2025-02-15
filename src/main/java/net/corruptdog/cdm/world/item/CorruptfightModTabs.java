@@ -31,10 +31,11 @@ public class CorruptfightModTabs {
                         tabData.accept(CDAddonItems.S_IRONGREATSWORD.get());
                         tabData.accept(CDAddonItems.S_DIAMONDGREATSWORD.get());
                         tabData.accept(CDAddonItems.S_NETHERITEGREATSWORD.get());
+                        tabData.accept(CDAddonItems.GREAT_TACHI.get());
 //                        tabData.accept(CDAddonItems.S_IRONDAGGER.get());
 //                        tabData.accept(CDAddonItems.S_DIAMONDDAGGER.get());
 //                        tabData.accept(CDAddonItems.S_NETHERITEDAGGER.get());
-//                        tabData.accept(CDAddonItems.DUAL_TACHI.get());
+//
                     })
 
                     .build());

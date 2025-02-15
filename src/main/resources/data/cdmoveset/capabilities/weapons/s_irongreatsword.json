@@ -1,14 +1,14 @@
 {
   "attributes":
   {
-    "common":
+    "two_hand":
     {
       "speed_bonus": -0.15,
       "impact":4.3,
       "max_strikes":4,
       "damage_bonus": 1
     },
-    "two_hand":
+    "one_hand":
     {
       "impact": 2.5,
       "max_strikes":2

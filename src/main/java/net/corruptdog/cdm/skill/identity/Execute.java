@@ -26,6 +26,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
+import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 
 import java.util.Comparator;
 import java.util.List;
@@ -80,9 +81,9 @@ public class Execute {
         player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 70, 50));
         targetPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 0));
         targetPatch.playSound(CorruptSound.EXECUTE.get(), 1.0F, 1.0F);
-        player.teleportTo(targetPatch.getOriginal().getX() + viewVec.x() * 1.85, targetPatch.getOriginal().getY(), targetPatch.getOriginal().getZ() + viewVec.z() * 1.85);
+        player.teleportTo(targetPatch.getOriginal().getX() + viewVec.x() * 1.5, targetPatch.getOriginal().getY(), targetPatch.getOriginal().getZ() + viewVec.z() * 1.5);
         playerPatch.playAnimationSynchronized(CorruptAnimations.EXECUTE, 0.0F);
-        targetPatch.playAnimationSynchronized(CorruptAnimations.GUARD_BREAK1, 0.35F, SPPlayAnimation::new);
+        targetPatch.playAnimationSynchronized(CorruptAnimations.EXECUTED_WEAPON, 0.25F, SPPlayAnimation::new);
     }
 }
 

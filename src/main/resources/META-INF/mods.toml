@@ -17,9 +17,9 @@ displayName="${mod_name}" #mandatory
 
 logoFile="icon.png"
 
-authors="CorruptDog,Asanginxst,墨镜,namelesssLK,MegaDarkness()" #optional
+authors="(main)CorruptDog,(animation)Asanginxst,(animation)墨镜,(animation)Yonchi Chikito(yamato)namelesssLK,(slow time)MegaDarkness()" #optional
 
-description='''仅仅只是为了个人游玩添加的武器和动作,未经允许严禁转载和发布'''
+description='''Added more mechanisms and weapons for Epic-fight.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.cdmoveset]] #optional
     modId="forge" #mandatory

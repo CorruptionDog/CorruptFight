@@ -1,7 +1,7 @@
 {
 	"attributes":
 	{
-		"common":
+		"two_hand":
 		{
 			"speed_bonus": -0.30,
 			"impact":0.8,

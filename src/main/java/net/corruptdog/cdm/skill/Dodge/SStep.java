@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class SStep extends Skill {
-    private static final UUID EVENT_UUID = UUID.fromString("d2d011cc-f30f-11ed-a05b-0242ac114515");
+    private static final UUID EVENT_UUID = UUID.fromString("e33b7c1a-8909-47c1-9b95-81f9d86c412e");
     public static final int RESET_TICKS = 100;
     protected final StaticAnimationProvider[][] animations;
 

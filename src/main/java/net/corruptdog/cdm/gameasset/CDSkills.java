@@ -45,8 +45,8 @@ public class CDSkills {
     public static Skill YAMATO_STEP;
     public static Skill SSTEP;
     public static Skill BSTEP;
-    public static Skill PSSTEP;
-    public static Skill DUAL_TACHISKILL;
+    public static Skill WOLF_DODGE;
+    public static Skill GREAT_TACHISKILL;
     public static Skill KATANASKILL;
     public static Skill SHILEDSLASH;
     public static Skill FATALFLASH;
@@ -62,7 +62,7 @@ public class CDSkills {
         SSTEP = modRegistry.build("sstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.SSTEP_FORWARD, () -> CorruptAnimations.SSTEP_BACKWARD, () -> CorruptAnimations.SSTEP_LEFT, () -> CorruptAnimations.SSTEP_RIGHT));
         GUARDPARRY = modRegistry.build("guardparry", GuardParrySkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION_INFINITE));
         BLOODWOLF = modRegistry.build( "bloodwolf", BloodWolf::new, PassiveSkill.createIdentityBuilder());
-        DUAL_TACHISKILL = modRegistry.build( "dual_tachiskill", DualTchiSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        GREAT_TACHISKILL = modRegistry.build( "greeat_tachiskill", DualTchiSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         YAMATOSKILL = modRegistry.build( "yamatoskill", YamatoSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         BLADE_RUSH = modRegistry.build( "blade_rush", DualDaggerSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         SHILEDSLASH = modRegistry.build( "shiled_slahs", ShiledSlash::new, WeaponInnateSkill.createWeaponInnateBuilder());
@@ -74,7 +74,7 @@ public class CDSkills {
 
 
         SkillBuildEvent.ModRegistryWorker registryWorker = build.createRegistryWorker(CDmoveset.MOD_ID);
-        PSSTEP = registryWorker.build("psstep", SStep::new, SStep.createDodgeBuilder()
+        WOLF_DODGE = registryWorker.build("wolf_dodge", SStep::new, SStep.createDodgeBuilder()
                 .setAnimations1(
                         () -> CorruptAnimations.WOLFDODGE_FORWARD,
                         () -> CorruptAnimations.WOLFDODGE_BACKWARD,

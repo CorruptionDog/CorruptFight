@@ -7,7 +7,7 @@
   "epicfight.weapon_category.s_sword": "强化单手剑",
   "epicfight.weapon_category.s_tachi": "强化太刀",
   "epicfight.weapon_category.yamato": "阎魔刀",
-  "item.cdmoveset.dual_tachi": "重太刀",
+  "epicfight.weapon_category.great_tachi": "重太刀",
   "item.cdmoveset.katana": "武士刀",
   "item.cdmoveset.katana.tooltip": "5秒不攻击后收刀，下次的攻击将会强化.技能也会得到强化",
   "item.cdmoveset.s_diamonddagger": "强化钻石制匕首",
@@ -29,6 +29,8 @@
   "item.cdmoveset.s_netheritetachi": "强化下界合金太刀",
   "item.cdmoveset.yamato": "阎魔刀",
   "item.cdmoveset.yamato.tooltip": "弱化版的阎魔刀,你感受到来自这把刀的力量不稳定",
+  "item.cdmoveset.great_tachi": "绯红之牙",
+  "item.cdmoveset.great_tachi.tooltip": "染上绯红的一把太刀,你感受到这把刀对于鲜血的渴望",
   "item_group.cdmoveset.corrupt_fight": "Corrupt Fight",
   "pack.More_Power.title": "More_Power ! ! !",
   "pack.corrupt_animation.title": "Corrupt Animation",
@@ -50,8 +52,8 @@
   "skill.cdmoveset.lethalslicing.tooltip": "击晕敌人并斩出强力的一击,根据敌人的数量斩击的次数也不同",
   "skill.cdmoveset.fatalfalsh": "一闪",
   "skill.cdmoveset.fatalfalsh.tooltip": "锁定低血量的敌人并进行斩杀,斩杀期间不可被打断(可用武器:打刀,武士刀,太刀,长剑)",
-  "skill.cdmoveset.psstep": "狼神之跃",
-  "skill.cdmoveset.psstep.tooltip": "允许你使用不同的动作进行闪避,闪避成功可以触发特效.并恢复武器充能.",
+  "skill.cdmoveset.wolf_dodge": "狼神之跃",
+  "skill.cdmoveset.wolf_dodge.tooltip": "允许你使用不同的动作进行闪避,闪避成功可以触发特效.并恢复武器充能.",
   "skill.cdmoveset.shiled_slahs": "盾击!!!!",
   "skill.cdmoveset.shiled_slahs.tooltip": "使用盾牌,抵挡住敌人的攻击,并且眩晕敌人",
   "skill.cdmoveset.spearslash": "枪舞",
@@ -67,5 +69,7 @@
   "skill.cdmoveset.bstep": "更好的跨步",
   "skill.cdmoveset.bstep.tooltip": "更好的跨步.\n\n（耐力：%d）",
   "skill.cdmoveset.yamatoskill": "普通技能在使用过程的准备阶段受到敌人的攻击可以反击,1a,2a,3a后均可释放追加连段,在招架之后可以释放虚幻刀界进行反击",
-  "skill.cdmoveset.yamatoskill.tooltip": "根据攻击的不同,打出的连击也不同"
+  "skill.cdmoveset.yamatoskill.tooltip": "根据攻击的不同,打出的连击也不同",
+  "skill.cdmoveset.greeat_tachiskill": "血刃裂空",
+  "skill.cdmoveset.greeat_tachiskill.tooltip": "短暂的蓄力之后,眩晕敌人,造成致命攻击,并有效地击退敌人"
 }

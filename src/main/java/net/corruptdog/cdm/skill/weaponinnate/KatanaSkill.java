@@ -38,9 +38,7 @@ public class KatanaSkill extends WeaponInnateSkill {
     @Override
     public void executeOnServer(ServerPlayerPatch executer, FriendlyByteBuf args) {
         boolean isSheathed = executer.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().getDataValue(SkillDataKeys.SHEATH.get());
-        if (isSheathed) {
-            executer.playAnimationSynchronized(CorruptAnimations.FATAL_DRAW, -0.33F);
-        }else if (executer.getOriginal().isSprinting()) {
+        if (executer.getOriginal().isSprinting()) {
             float stamina = executer.getStamina();
             float maxStamina = executer.getMaxStamina();
             float p = maxStamina * 0.15F;
@@ -48,6 +46,8 @@ public class KatanaSkill extends WeaponInnateSkill {
                 SKILL2(executer);
                 executer.setStamina(stamina - p);
             }
+        } else if (isSheathed) {
+            executer.playAnimationSynchronized(CorruptAnimations.FATAL_DRAW, -0.33F);
         } else {
             SKILL1(executer);
         }

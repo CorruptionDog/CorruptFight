@@ -1,12 +1,17 @@
 package net.corruptdog.cdm.gameasset;
 
+import net.corruptdog.cdm.Client.Particles.SkillEvent.Cut;
 import net.corruptdog.cdm.api.animation.types.*;
 import net.corruptdog.cdm.main.CDmoveset;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent;
@@ -27,6 +32,8 @@ import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.*;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageType;
@@ -35,6 +42,7 @@ import yesman.epicfight.world.damagesource.StunType;
 import  net.corruptdog.cdm.particle.CorruptParticles;
 import yesman.epicfight.world.entity.eventlistener.ComboCounterHandleEvent;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -44,7 +52,9 @@ public class CorruptAnimations {
     public static StaticAnimation GUARD_BREAK1;
     public static StaticAnimation GUARD_BREAK2;
     public static StaticAnimation KNOCKDOWN;
-
+    public static StaticAnimation EXECUTED_WEAPON;
+    public static StaticAnimation TACHI_GUARD;
+    public static StaticAnimation TACHI_GUARD_HIT;
     //旧版本闪避动作
     public static StaticAnimation ROLL_FORWARD;
     public static StaticAnimation ROLL_BACKWARD;
@@ -177,19 +187,24 @@ public class CorruptAnimations {
     public static StaticAnimation LETHAL_SLICING_ONCE1;
 
 
+    public static StaticAnimation UCHIGATANA_IDLE;
+    public static StaticAnimation UCHIGATANA_WALK;
+    public static StaticAnimation UCHIGATANA_RUN;
     public static StaticAnimation UCHIGATANA_AUTO1;
     public static StaticAnimation UCHIGATANA_AUTO2;
     public static StaticAnimation UCHIGATANA_AUTO3;
     public static StaticAnimation UCHIGATANA_AUTO4;
     public static StaticAnimation UCHIGATANA_AUTO5;
     public static StaticAnimation UCHIGATANA_DASH;
+    public static StaticAnimation UCHIGATANA_SKILL1;
+    public static StaticAnimation UCHIGATANA_SKILL2;
+
+    public static StaticAnimation DUAL_TACHI_AIRSLASH;
     public static StaticAnimation DUAL_TACHI_AUTO1;
     public static StaticAnimation DUAL_TACHI_AUTO2;
     public static StaticAnimation DUAL_TACHI_AUTO3;
     public static StaticAnimation DUAL_TACHI_AUTO4;
     public static StaticAnimation DUAL_TACHI_AUTO5;
-    public static StaticAnimation DUAL_TACHI_SKILL1;
-    public static StaticAnimation DUAL_TACHI_SKILL2;
 
     public static StaticAnimation TACHI_TWOHAND_AUTO_1;
     public static StaticAnimation TACHI_TWOHAND_AUTO_2;
@@ -226,7 +241,6 @@ public class CorruptAnimations {
     public static StaticAnimation BLADE_RUSH3;
     public static StaticAnimation BLADE_RUSH4;
 
-
     @SubscribeEvent
     public static void registerAnimations(AnimationRegistryEvent event){
         event.getRegistryMap().put(CDmoveset.MOD_ID, CorruptAnimations::build);
@@ -244,6 +258,21 @@ public class CorruptAnimations {
                 .addState(EntityState.LOCKON_ROTATE, true)
                 .addState(EntityState.CAN_SKILL_EXECUTION, false)
                 .addState(EntityState.CAN_BASIC_ATTACK, false);
+        EXECUTED_WEAPON = new LongHitAnimation(0.01F, "biped/hit/executed_weapon", biped)
+                .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false)
+                .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, false)
+                .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 4.0F))
+                .addState(EntityState.MOVEMENT_LOCKED, true)
+                .addState(EntityState.TURNING_LOCKED, true)
+                .addState(EntityState.LOCKON_ROTATE, true)
+                .addState(EntityState.CAN_SKILL_EXECUTION, false)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, EXECUT);
+
+        TACHI_GUARD = new StaticAnimation(0.25F, true, "biped/hit/guard_longsword", biped);
+        TACHI_GUARD_HIT = new GuardAnimation(0.05F, "biped/hit/guard_longsword_hit", biped);
+
         BIPED_HIT_LONG2 = new LongHitAnimation(0.08F, "biped/hit/hit_long", biped);
         KNOCKDOWN = new KnockdownAnimation(0.08F, "biped/hit/knockdown", biped);
         GUARD_BREAK1 = new LongHitAnimation(0.05F, "biped/hit/guard_break1", biped);
@@ -346,7 +375,8 @@ public class CorruptAnimations {
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2.0F))
-                .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get());
+                .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
+                .addProperty(AnimationProperty.ActionAnimationProperty.RESET_PLAYER_COMBO_COUNTER, false);
         KATANA_SHEATHING_DASH = (new DashAttackAnimation(0.06F, 0.05F, 0.05F, 0.11F, 0.65F, null, biped.toolR, "biped/new/katana/katana_sheath_dash", biped))
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
@@ -357,7 +387,8 @@ public class CorruptAnimations {
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(30.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
-                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F);
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
+                .addProperty(AnimationProperty.ActionAnimationProperty.RESET_PLAYER_COMBO_COUNTER, false);
         FATAL_DRAW = (new AttackAnimation(0.15F, 0.0F, 0.7F, 0.81F, 1.0F, ColliderPreset.BATTOJUTSU, biped.rootJoint, "biped/new/katana/skill/fatal_draw", biped))
                 .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
@@ -692,11 +723,11 @@ public class CorruptAnimations {
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, Boolean.TRUE);
         YAMATO_AIRSLASH = new AirSlashAnimation(0.25F, 0.15F, 0.26F, 0.5F, null, biped.toolR, "biped/new/yamato/yamato_airslash", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.adder(1.5F));
-        YAMATO_POWER1 = (new AttackAnimation(0.05F, 0.42F, 0.43F, 0.53F, 3.83F, CorruptCollider.YAMATO_P, biped.toolR, "biped/new/yamato/skill/yamato_power1", biped))
-                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+        YAMATO_POWER1 = (new KnockbackAnimation(0.05F, 0.42F, 0.43F, 0.53F, 3.83F, CorruptCollider.YAMATO_P, biped.toolR, "biped/new/yamato/skill/yamato_power1", biped))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
                 .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
                 .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
-                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(10F))
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(3F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter( 15F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(3))
@@ -734,7 +765,7 @@ public class CorruptAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25F)),
-                (new AttackAnimation.Phase(0.88F, 0.94F, 1.0F, 1.0F, 1.28F, biped.rootJoint, CorruptCollider.YAMATO_DASH))
+                (new AttackAnimation.Phase(0.88F, 0.94F, 1.0F, 1.0F, 1.8F, biped.rootJoint, CorruptCollider.YAMATO_DASH))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25F)))
@@ -968,13 +999,13 @@ public class CorruptAnimations {
                         }, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(1.05F,COMBO_BREAK, AnimationEvent.Side.SERVER));
 
-        YAMATO_RISING_SLASH = new AttackAnimation(0.25F,"biped/new/yamato/skill/yamato_risingslash", biped,
+        YAMATO_RISING_SLASH = new KnockbackAnimation(0.25F,"biped/new/yamato/skill/yamato_risingslash", biped,
                 new AttackAnimation.Phase(0.0F, 0.35F, 0.50F, 0.60F, 0.7F, biped.rootJoint, CorruptCollider.RISING)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
-                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER,ValueModifier.multiplier(1.25F)),
                 new AttackAnimation.Phase(0.7F, 1.75F, 1.9F, 2.0F, 2.3F, biped.rootJoint, CorruptCollider.RISING)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER,ValueModifier.multiplier(0.5F)))
                 .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
                 .newTimePair(0.0F,3.0F)
@@ -1049,9 +1080,15 @@ public class CorruptAnimations {
                     Entity entity = entitypatch.getOriginal();
                     entitypatch.getOriginal().level().addParticle(CorruptParticles.CORRUPT_AFTER_IMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0, 0);
                 }, AnimationEvent.Side.CLIENT))
+                .addProperty(AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS, new AnimationEvent[]{
+                        AnimationEvent.create((ep, anim, objs) -> {
+                            Cut.prev(ep);
+                        }, AnimationEvent.Side.CLIENT)
+                })
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(1.95F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_CUT1.get()),
                         AnimationEvent.TimeStampedEvent.create(4.55F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_CUT2.get()),
+                        AnimationEvent.TimeStampedEvent.create(4.55F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_IN.get()),
                         AnimationEvent.TimeStampedEvent.create(1.7F, YAMATO_OUT, AnimationEvent.Side.SERVER),
                         AnimationEvent.TimeStampedEvent.create(4.65F, YAMATO_IN, AnimationEvent.Side.SERVER))
                 .addState(EntityState.MOVEMENT_LOCKED, true)
@@ -1059,8 +1096,57 @@ public class CorruptAnimations {
                 .addState(EntityState.CAN_SKILL_EXECUTION, false)
                 .addState(EntityState.CAN_BASIC_ATTACK, false);
 
-//             /indestructible b7664b5a-9b1a-4958-a906-92bb62dfa079 play "cdmoveset:biped/new/yamato/skill/yamato_judgement_cut" 0 0
-//             /indestructible 05152760-e5b7-4d45-9bee-bb6075bac46e play "cdmoveset:biped/new/yamato/skill/yamato_judgement_cut" 0 0
+//             /indestructible 9aeaa1be-2bda-4409-bc3a-63e08352f07f play "cdmoveset:biped/new/yamato/skill/yamato_judgement_cut" 0 0
+
+
+        EX_YAMATO_AUTO1 = (new YamtoAttackAnimation(0.05F, 0.0F, 1.41F, 0.75F, 1.3F, 0.27F, 1.41F, 0.0F, 0.0F, "biped/new/yamato/ex_yamato/yamato_auto1", biped,
+                new AttackAnimation.Phase(0.0F, 0.05F, 0.15F, 0.25F, 0.5F, 0.5F, InteractionHand.MAIN_HAND, biped.toolL, CorruptCollider.YAMATO_SHEATH)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)))
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
+                .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(0.0F, YAMATO_IN, AnimationEvent.Side.SERVER))
+                .addState(EntityState.MOVEMENT_LOCKED, true);
+
+        EX_YAMATO_AUTO2 = (new YamtoAttackAnimation(0.05F, 0.0F, 2.1F, 0.7F, 1.2F, 0.3F, 2.1F, 0.0F, 0.0F, "biped/new/yamato/ex_yamato/yamato_auto2", biped,
+                new AttackAnimation.Phase(0.0F, 0.05F, 0.17F, 0.73F, 0.75F, biped.toolL, CorruptCollider.YAMATO_SHEATH)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 2.0F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD))
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F)
+                .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(1.8F, STAMINAR, AnimationEvent.Side.SERVER),
+                        AnimationEvent.TimeStampedEvent.create(1.8F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_IN.get()))
+                .addState(EntityState.MOVEMENT_LOCKED, true);
+        EX_YAMATO_AUTO3 = new YamtoAttackAnimation(0.05F, 0.0F, 2.65F, 1.3F, 1.75F, 0.7F, 2.65F, 0.0F, 0.0F, "biped/new/yamato/ex_yamato/yamato_auto3", biped,
+                new AttackAnimation.Phase(0.0F, 0.1F, 0.17F, 0.23F, 0.23F, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get()),
+                new AttackAnimation.Phase(0.23F, 0.25F, 0.35F, 0.43F, 0.75F, biped.toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD))
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.1F)
+                .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.75F)
+                .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(2.1F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_IN.get()))
+                .addState(EntityState.MOVEMENT_LOCKED, true);
+        EX_YAMATO_AUTO4 = new YamtoAttackAnimation(0.10F, 0.0F, 2.87F, 2.87F, 2.87F, 0.81F, 2.87F, 0.81F, 2.87F, "biped/new/yamato/ex_yamato/yamato_auto4", biped,
+                (new AttackAnimation.Phase(0.0F, 0.45F, 0.50F, 0.60F, 2.3F, biped.toolR, CorruptCollider.YAMATO_P))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 5F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(15.0F)))
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.95F)
+                .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
+                .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(2.5F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_IN.get()),
+                        AnimationEvent.TimeStampedEvent.create(2.55F, STAMINA, AnimationEvent.Side.SERVER))
+                .addState(EntityState.MOVEMENT_LOCKED, true);
+
+
         LONGSWORD_OLD_AUTO1 = new BasicAttackAnimation(0.1F, 0.2F, 0.3F, 0.4F, null, biped.toolR, "biped/new/longsword/longsword_twohand_auto_1", biped)
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.35F);
         LONGSWORD_OLD_AUTO2 = new BasicAttackAnimation(0.1F, 0.2F, 0.3F, 0.4F, null, biped.toolR, "biped/new/longsword/longsword_twohand_auto_2", biped)
@@ -1074,27 +1160,37 @@ public class CorruptAnimations {
                 .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true);
         LONGSWORD_OLD_AIRSLASH = new AirSlashAnimation(0.1F, 0.3F, 0.41F, 0.5F, null, biped.toolR, "biped/new/longsword/longsword_airslash", biped);
 
-
+        UCHIGATANA_IDLE = new StaticAnimation(true, "biped/new/dual_tachi/uchigatana_idle", biped);
+        UCHIGATANA_WALK = new StaticAnimation(true, "biped/new/dual_tachi/uchigatana_walk", biped);
+        UCHIGATANA_RUN = new StaticAnimation(true, "biped/new/dual_tachi/uchigatana_run", biped);
         UCHIGATANA_AUTO1 = new BasicAttackAnimation(0.05F, 0.467F, 0.6F, 0.833F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_auto1", biped)
-                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F)
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.HOLD)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter(2.0F));
+        UCHIGATANA_AUTO2 = new BasicAttackAnimation(0.1F, 0.433F, 0.6F, 0.833F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_auto2", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.HOLD)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter(2.0F))
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F);
+        UCHIGATANA_AUTO3 = new BasicAttackAnimation(0.1F, 0.4F, 0.533F, 0.833F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_auto3", biped)
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.HOLD)
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter(1.5F));
-        UCHIGATANA_AUTO2 = new BasicAttackAnimation(0.1F, 0.433F, 0.6F, 0.833F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_auto2", biped)
-                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F);
-        UCHIGATANA_AUTO3 = new BasicAttackAnimation(0.1F, 0.4F, 0.533F, 0.833F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_auto3", biped)
-                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F)
-                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.HOLD)
-                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter(1.25F));
         UCHIGATANA_AUTO4 = new BasicAttackAnimation(0.1F, 0.467F, 0.567F, 0.833F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_auto4", biped)
-                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F)
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.HOLD)
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter(1.5F));
         UCHIGATANA_AUTO5 = new BasicAttackAnimation(0.2F, 0.567F, 0.667F, 2.0F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_auto5", biped)
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
-                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.LONG);
-        UCHIGATANA_DASH = new DashAttackAnimation(0.1F, 0.5F, 0.6F, 0.7F, 1.2F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_dash", biped)
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.LONG)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter(3F));
+        UCHIGATANA_DASH = new YamtoAttackAnimation(0.05F, 0.0F, 2.87F, 2.87F, 2.87F, 0.81F, 2.87F, 0.81F, 0.83F,  "biped/new/dual_tachi/uchigatana_dash", biped,
+                 new AttackAnimation.Phase(0.0F, 0.5F, 0.6F, 0.7F, 1.2F,1.8F, biped.toolR,null))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.LONG)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter(5F))
                 .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
+
+        DUAL_TACHI_AIRSLASH = new AirSlashAnimation(0.1F, 0.15F, 0.26F, 0.5F, ColliderPreset.DUAL_SWORD_AIR_SLASH, biped.torso, "biped/new/dual_tachi/dual_tachi_airslash", biped);
         DUAL_TACHI_AUTO1 = new BasicAttackAnimation(0.1F, "biped/new/dual_tachi/dual_tachi_auto1", biped,
                 new AttackAnimation.Phase(0.0F, 0.367F, 0.41F, 0.567F, 1.3F, InteractionHand.OFF_HAND, biped.toolL, null),
                 new AttackAnimation.Phase(0.2F, 0.633F, 0.68F, 0.767F, 1.3F,  biped.toolR, null))
@@ -1121,15 +1217,36 @@ public class CorruptAnimations {
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.LONG);
 
-        DUAL_TACHI_SKILL1 = new BasicAttackAnimation(0.05F, 0.9F, 1.05F, 1.5F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_heavy1", biped)
-                .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.9F)
+        UCHIGATANA_SKILL1 = new AttackAnimation(0.3F,"biped/new/dual_tachi/uchigatana_heavy1", biped,
+                new AttackAnimation.Phase(  0.0F, 0.9F, 1.05F, 1.5F,1.5F, biped.toolR,null))
+                .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.1F)
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.HOLD)
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter( 6.5F ))
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER,ValueModifier.setter( 25F ))
+                .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_LOCROT_TARGET)
+                .addProperty(AnimationProperty.ActionAnimationProperty.COORD_SET_TICK, MoveCoordFunctions.TRACE_LOCROT_TARGET)
+                .addState(EntityState.MOVEMENT_LOCKED, true)
+                .addState(EntityState.TURNING_LOCKED, true)
+                .addState(EntityState.LOCKON_ROTATE, true)
+                .addState(EntityState.CAN_BASIC_ATTACK, false)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
-                .addState(EntityState.MOVEMENT_LOCKED, true);
-        DUAL_TACHI_SKILL2 = new BasicAttackAnimation(0.05F, 1.2F, 1.35F, 1.5F, null, biped.toolR, "biped/new/dual_tachi/uchigatana_heavy2", biped)
-                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.FALL)
-                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter( 3F ))
+                .addEvents(
+                        AnimationEvent.TimeStampedEvent.create(1.25F, (entitypatch, animation, params) -> {
+                            if (entitypatch.isLastAttackSuccess()) {
+                                entitypatch.playAnimationSynchronized(UCHIGATANA_SKILL2, 0.0F);
+                            }
+                        }, AnimationEvent.Side.SERVER)
+                );
+
+        UCHIGATANA_SKILL2 = new AttackAnimation(0.05F,"biped/new/dual_tachi/uchigatana_heavy2", biped,
+                new AttackAnimation.Phase(  0.0F, 1.2F, 1.35F, 1.35F,3F, biped.toolR,null))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.LONG)
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER,ValueModifier.multiplier( 1.25F ))
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER,ValueModifier.setter( 10F ))
+                .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER,ValueModifier.setter( 3F ))
                 .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER,ValueModifier.setter( 25F ))
+                .addProperty(AnimationProperty.AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.TARGET_LOST_HEALTH.create(0.15F)))
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                 .addState(EntityState.MOVEMENT_LOCKED, true);
 
@@ -1227,14 +1344,13 @@ public class CorruptAnimations {
 
 
         EXECUTE = new ExecuteAnimation(0.0F, 0.0F, 2.65F, 1.3F, 1.75F, 0.7F, 2.65F, 0.0F, 0.0F,  "biped/new/skill/execute", biped,
-                new AttackAnimation.Phase(0.0F, 0.75F, 0.51F, 0.95F,  3F, biped.toolR, CorruptCollider.EXECUTE)
+                new AttackAnimation.Phase(0.0F, 0.75F, 0.51F, 0.95F,  3.10F, biped.toolR, CorruptCollider.EXECUTE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.1F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(10F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(1F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, CorruptSound.DAMAGE.get()),
-                new AttackAnimation.Phase(1.05F, 2.95F, 3.15F, 6.0F, Float.MAX_VALUE, biped.rootJoint, ColliderPreset.BIPED_BODY_COLLIDER)
+                new AttackAnimation.Phase(3F, 3.05F, 3.15F, 6.0F, Float.MAX_VALUE, biped.rootJoint, CorruptCollider.EXECUTE_SECOND)
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                         .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(100.0F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.EVISCERATE.get())
@@ -1254,7 +1370,6 @@ public class CorruptAnimations {
 
                 .addEvents(
                         AnimationEvent.TimeStampedEvent.create(0F, (entitypatch, animation, params) -> {
-
                         }, AnimationEvent.Side.CLIENT),
                         AnimationEvent.TimeStampedEvent.create(3.1F, STAMINASKILL, AnimationEvent.Side.SERVER))
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE);
@@ -1531,6 +1646,7 @@ public class CorruptAnimations {
 
     public static final AnimationProperty.PlaybackSpeedModifier SLOW_SPEED = (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> 0.7F;
 
+    public static final AnimationProperty.PlaybackSpeedModifier EXECUT = (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> 0.85F;
 
 
     public static final AnimationEvent.AnimationEventConsumer STAMINA = (entitypatch, animation, params) -> {

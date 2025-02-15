@@ -7,6 +7,7 @@
   "epicfight.weapon_category.s_sword": "Enhanced One-handed Sword",
   "epicfight.weapon_category.s_tachi": "Enhanced Tachi",
   "epicfight.weapon_category.yamato": "Yamato",
+  "epicfight.weapon_category.great_tachi": "Dual Tachi",
   "item.cdmoveset.dual_tachi": "Dual Tachi",
   "item.cdmoveset.katana": "Katana",
   "item.cdmoveset.katana.tooltip": "After 5 seconds of not attacking, the katana is sheathed, and the next attack will be enhanced. Skills will also be enhanced.",
@@ -29,6 +30,8 @@
   "item.cdmoveset.s_netheritetachi": "Enhanced Netherite Tachi",
   "item.cdmoveset.yamato": "Yamato",
   "item.cdmoveset.yamato.tooltip": "A weakened version of the Yamato, you feel the unstable power from this blade.",
+  "item.cdmoveset.great_tachi": "Crimson Fang",
+  "item.cdmoveset.great_tachi.tooltip": "A Tachi stained crimson, you can feel the blade's thirst for blood",
   "item_group.cdmoveset.corrupt_fight": "Corrupt Fight",
   "pack.More_Power.title": "More Power !!!",
   "pack.corrupt_animation.title": "Corrupt Animation",
@@ -48,8 +51,8 @@
   "skill.cdmoveset.katanaspskill.tooltip": "Adopt a stance to block the enemy's attack and then execute a killing blow.",
   "skill.cdmoveset.lethalslicing": "Lethal Slash",
   "skill.cdmoveset.lethalslicing.tooltip": "Stun the enemy and deliver a powerful strike. The number of strikes varies depending on the number of enemies.",
-  "skill.cdmoveset.psstep": "Wolf God Leap",
-  "skill.cdmoveset.psstep.tooltip": "Allows you to use different actions to dodge. A successful dodge can trigger special effects and restore weapon charge.",
+  "skill.cdmoveset.wolf_dodge": "Wolf God Leap",
+  "skill.cdmoveset.wolf_dodge.tooltip": "Allows you to use different actions to dodge. A successful dodge can trigger special effects and restore weapon charge.",
   "skill.cdmoveset.shiled_slahs": "Shield Bash!!!!",
   "skill.cdmoveset.shiled_slahs.tooltip": "Use the shield to block the enemy's attack and stun the enemy.",
   "skill.cdmoveset.spearslash": "Spear Dance",
@@ -67,5 +70,7 @@
   "skill.cdmoveset.yamatoskill": "During the preparation phase of normal skill usage, being attacked by the enemy can trigger a counterattack. After 1a, 2a, 3a, you can release additional combos, and after a parry, you can release the Illusory Blade Realm for a counterattack.",
   "skill.cdmoveset.yamatoskill.tooltip": "Depending on the attack, the combo delivered is different.",
   "skill.cdmoveset.fatalfalsh": "Fatal Flash",
-  "skill.cdmoveset.fatalfalsh.tooltip": "Lock onto a low-health enemy and perform a kill, which cannot be interrupted during execution (Weapons allowed: uchigatana, katana, tachi, longsword)"
+  "skill.cdmoveset.fatalfalsh.tooltip": "Lock onto a low-health enemy and perform a kill, which cannot be interrupted during execution (Weapons allowed: uchigatana, katana, tachi, longsword)",
+  "skill.cdmoveset.greeat_tachiskill": "Blood Blade",
+  "skill.cdmoveset.greeat_tachiskill.tooltip": "After a brief charge, stun the enemy, deal a fatal attack, and effectively push back the enemy."
 }

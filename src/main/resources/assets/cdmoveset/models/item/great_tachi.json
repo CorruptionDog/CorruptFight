@@ -1,0 +1,6 @@
+{
+  "parent": "cdmoveset:item/tachi",
+  "textures": {
+    "layer0": "cdmoveset:item/great_tachi"
+  }
+}

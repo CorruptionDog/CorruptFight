@@ -13,7 +13,7 @@ public class CDConfig {
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-        builder.push("CorruptFight config");
+        builder.push("Resurrection config");
         ENABLE_DODGE_SOUND = createBool(builder, "enable_dodge_sound", false, "enable dodge sound");
         ENABLE_DODGESUCCESS_SOUND = createBool(builder, "enable_dodgesuccess_sound", true, "enable dodgesuccess sound");
         SLOW_TIME = createBool(builder, "slow_time", false, "enable slow_time");
@@ -27,7 +27,7 @@ public class CDConfig {
 
     private static ForgeConfigSpec.BooleanValue createBool(ForgeConfigSpec.Builder builder, String key, boolean defaultValue, String... comment) {
         return builder
-                .translation("config." + "Resurrection" + ".common." + key)
+                .translation("config."+ CDmoveset.MOD_ID+ ".common."+key)
                 .comment(comment)
                 .define(key, defaultValue);
     }

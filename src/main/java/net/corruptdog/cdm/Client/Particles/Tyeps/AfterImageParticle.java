@@ -78,7 +78,8 @@ public class AfterImageParticle extends CustomModelParticle<AnimatedMesh> {
         this.setupPoseStack(poseStack, camera, partialTicks);
         poseStack.mulPoseMatrix(this.modelMatrix);
         float alpha = this.alphaO + (this.alpha - this.alphaO) * partialTicks;
-
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         AnimationShaderInstance animShader = null;
         if (GameRenderer.getPositionTexLightmapColorShader() != null) {
             animShader = EpicFightRenderTypes.getAnimationShader(GameRenderer.getPositionTexLightmapColorShader());
@@ -110,21 +111,6 @@ public class AfterImageParticle extends CustomModelParticle<AnimatedMesh> {
     @Override
     public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderTypes.TRANSLUCENT;
-    }
-    public static ResourceLocation getEntityTexture(Entity entity) {
-        if (Minecraft.getInstance().level != null && entity != null) {
-            EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
-            if(renderer instanceof HumanoidMobRenderer<?,?>){
-                return Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).getTextureLocation(entity);
-            }
-        }
-        return AFTER_IMAGE_TEXTURE;
-    }
-    public static void GLSetTexture(AbstractTexture abstractTexture) {
-       RenderSystem.bindTexture(abstractTexture.getId());
-      RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-       RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-       RenderSystem.setShaderTexture(0, abstractTexture.getId());
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -51,7 +51,7 @@ public class CDAddonItems {
     public static final RegistryObject<Item> S_DIAMONDDAGGER = ITEMS.register("s_diamonddagger", () -> new DaggerItem(new Item.Properties(), Tiers.DIAMOND));
     public static final RegistryObject<Item> S_NETHERITEDAGGER = ITEMS.register("s_netheritedagger", () -> new DaggerItem(new Item.Properties(), Tiers.NETHERITE));
 
-    public static final RegistryObject<Item> DUAL_TACHI = ITEMS.register("dual_tachi", () -> new TachiItem(new Item.Properties(), Tiers.NETHERITE));
+    public static final RegistryObject<Item> GREAT_TACHI = ITEMS.register("great_tachi", () -> new TachiItem(new Item.Properties(), Tiers.NETHERITE));
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

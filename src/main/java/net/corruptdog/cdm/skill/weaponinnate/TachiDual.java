@@ -104,5 +104,8 @@ public class TachiDual extends WeaponInnateSkill {
         executer.playAnimationSynchronized(CorruptAnimations.CLASH, 0.0F);
         super.executeOnServer(executer, args);
     }
-
+    public void onRemoved(SkillContainer container) {
+        container.getExecuter().getEventListener().removeListener(PlayerEventListener.EventType.HURT_EVENT_PRE, EVENT_UUID);
+        container.getExecuter().getEventListener().removeListener(PlayerEventListener.EventType.ATTACK_ANIMATION_END_EVENT, EVENT_UUID);
+    }
 }

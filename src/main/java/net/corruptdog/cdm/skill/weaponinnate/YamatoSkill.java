@@ -2,6 +2,7 @@ package net.corruptdog.cdm.skill.weaponinnate;
 
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -9,10 +10,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Maps;
+import net.corruptdog.cdm.CDConfig;
 import net.corruptdog.cdm.gameasset.CDSkills;
+import net.corruptdog.cdm.main.CDmoveset;
 import net.corruptdog.cdm.network.server.NetworkManager;
 import net.corruptdog.cdm.network.server.SPAfterImagine;
 import net.corruptdog.cdm.skill.CDSkillDataKeys;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,7 +26,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.spongepowered.asm.mixin.Unique;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -193,6 +200,7 @@ public class YamatoSkill extends WeaponInnateSkill {
     }
 
     public void onRemoved(SkillContainer container) {
+        container.getExecuter().getEventListener().removeListener(PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
         container.getExecuter().getEventListener().removeListener(PlayerEventListener.EventType.HURT_EVENT_PRE, EVENT_UUID);
         container.getExecuter().getEventListener().removeListener(PlayerEventListener.EventType.DEALT_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
         container.getExecuter().getEventListener().removeListener(PlayerEventListener.EventType.ATTACK_ANIMATION_END_EVENT, EVENT_UUID);
@@ -228,6 +236,14 @@ public class YamatoSkill extends WeaponInnateSkill {
     }
     private void COUNTER(ServerPlayerPatch executer) {
         executer.playAnimationSynchronized(CorruptAnimations.YAMATO_COUNTER1, 0.25F);
+            if (CDConfig.SLOW_TIME.get() && executer.getOriginal().level().getServer() != null && !FMLEnvironment.dist.isDedicatedServer() &&
+                    Objects.requireNonNull(executer.getOriginal().level().getServer()).getPlayerCount() <= 1) {
+                CDmoveset.changeAll(10);
+                ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+                scheduledExecutorService.schedule(() -> {
+                    this.Slow_time(executer);
+                }, 1500L, TimeUnit.MILLISECONDS);
+        }
     }
     private void RISING(ServerPlayerPatch executer) {
         executer.playAnimationSynchronized(CorruptAnimations.YAMATO_RISING_SLASH, 0.25F);
@@ -238,8 +254,15 @@ public class YamatoSkill extends WeaponInnateSkill {
     private void POWER(ServerPlayerPatch executer) {
         executer.playAnimationSynchronized(CorruptAnimations.YAMATO_JUDEGMENT_CUT, 0.0F);
     }
-
-
+    @Unique
+    public void Slow_time(ServerPlayerPatch container) {
+        Level var3 = container.getOriginal().level();
+        if (container.getOriginal().level().getServer() != null && !FMLEnvironment.dist.isDedicatedServer() && container.getOriginal().level().getServer().getPlayerCount() <= 1) {
+            if (var3 instanceof ServerLevel) {
+                CDmoveset.changeAll(20);
+            }
+        }
+    }
     @Override
     public boolean canExecute(PlayerPatch<?> executer) {
         ResourceLocation rl = executer.getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
@@ -257,7 +280,9 @@ public class YamatoSkill extends WeaponInnateSkill {
     }
 
     private void stackCost(ServerPlayerPatch player, int cost) {
-        this.setStackSynchronize(player, player.getSkill(CDSkills.YAMATOSKILL).getStack() - cost);
+        if ( player.getSkill(SkillSlots.WEAPON_INNATE).hasSkill(CDSkills.YAMATOSKILL)) {
+            this.setStackSynchronize(player, player.getSkill(CDSkills.YAMATOSKILL).getStack() - cost);
+        }
     }
     @Override
     public void executeOnServer(ServerPlayerPatch execute, FriendlyByteBuf args) {

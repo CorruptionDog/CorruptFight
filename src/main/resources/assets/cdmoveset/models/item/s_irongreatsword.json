@@ -1,5 +1,5 @@
 {
-  "parent": "cdmoveset:item/longsword",
+  "parent": "cdmoveset:item/greatsword",
   "textures": {
     "layer0": "cdmoveset:item/s_irongreatsword"
   }
