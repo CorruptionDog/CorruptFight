@@ -42,9 +42,7 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 import javax.annotation.Nullable;
 
 public class KnockbackAnimation extends AttackAnimation {
-    public KnockbackAnimation(float convertTime, float antic, float contact, float recovery, @Nullable Collider collider, Joint colliderJoint, String path, Armature armature) {
-        this(convertTime, antic, antic, contact, recovery, collider, colliderJoint, path, armature);
-    }
+
 
     public KnockbackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, Joint colliderJoint, String path, Armature armature) {
         this(convertTime, path, armature, new AttackAnimation.Phase(0.0F, antic, preDelay, contact, recovery, Float.MAX_VALUE, colliderJoint, collider));

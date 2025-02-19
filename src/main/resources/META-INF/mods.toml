@@ -35,13 +35,13 @@ mandatory=true
 versionRange="[1.18.2]"
 ordering="NONE"
 side="BOTH"
-
-[[dependencies.cdmoveset]]
-modId="epicacg"
-mandatory=true
-versionRange="[18.5.21,)"
-ordering="BEFORE"
-side="BOTH"
+#
+#[[dependencies.cdmoveset]]
+#modId="epicacg"
+#mandatory=true
+#versionRange="[18.5.21,)"
+#ordering="BEFORE"
+#side="BOTH"
 
 [[dependencies.cdmoveset]]
 modId="epicfight"
