@@ -54,7 +54,7 @@ public class CDSkills {
     public static Skill SHILEDSLASH;
     public static Skill FATALFLASH;
 
-//    public static Skill YAMATO_PASSIVE;
+    public static Skill YAMATO_PASSIVE;
 //    public static Skill YAMATO_ART;
     public static Skill YAMATO_ATTACK;
     @SubscribeEvent
@@ -75,7 +75,7 @@ public class CDSkills {
         FATALFLASH = modRegistry.build("fatalfalsh",  FatalFlash::new, FatalFlash.createRevelationSkillBuilder().addAvailableWeaponCategory(CorruptWeaponCategories.KATANA, CapabilityItem.WeaponCategories.UCHIGATANA, CorruptWeaponCategories.S_LONGSWORD,CapabilityItem.WeaponCategories.LONGSWORD,CorruptWeaponCategories.S_TACHI,CapabilityItem.WeaponCategories.TACHI));
 
 //        YAMATO_ATTACK = modRegistry.build("yamato_attack",YamatoAttack::new,YamatoAttack.createBuilder());
-//        YAMATO_PASSIVE = modRegistry.build("yamato_passive",YamatoPassive::new,Skill.createBuilder().setCategory(SkillCategories.WEAPON_PASSIVE));
+        YAMATO_PASSIVE = modRegistry.build("yamato_passive",YamatoPassive::new,Skill.createBuilder().setCategory(SkillCategories.WEAPON_PASSIVE));
 
 
         SkillBuildEvent.ModRegistryWorker registryWorker = build.createRegistryWorker(CDmoveset.MOD_ID);

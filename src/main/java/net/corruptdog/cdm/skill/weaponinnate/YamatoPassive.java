@@ -27,7 +27,6 @@ public class YamatoPassive extends Skill {
             step.setSkill(CDSkills.EX_YAMATO_STEP);
         }
 
-        executer.getSkillCapability().skillContainers[SkillCategories.BASIC_ATTACK.universalOrdinal()].setSkill(CDSkills.YAMATO_ATTACK);
 
         executer.getEventListener().addEventListener(EventType.ACTION_EVENT_SERVER, EVENT_UUID, (event) -> {
             if (!(event.getAnimation() instanceof AttackAnimation)){

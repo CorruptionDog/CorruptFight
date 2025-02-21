@@ -242,6 +242,7 @@ public class CDWeaponCapabilityPresets {
                     .styleProvider((playerpatch) -> Styles.TWO_HAND)
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .collider(CorruptCollider.YAMATO)
+                    .passiveSkill(CDSkills.YAMATO_PASSIVE)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.YAMATOSKILL)
                     .newStyleCombo(Styles.TWO_HAND, CorruptAnimations.YAMATO_AUTO1, CorruptAnimations.YAMATO_AUTO2,CorruptAnimations.YAMATO_AUTO3,CorruptAnimations.YAMATO_AUTO4,
                             CorruptAnimations.YAMATO_STRIKE1, CorruptAnimations.YAMATO_POWER3_REPEAT, CorruptAnimations.YAMATO_AIR1,CorruptAnimations.YAMATO_AIR2,CorruptAnimations.YAMATO_AIR3,

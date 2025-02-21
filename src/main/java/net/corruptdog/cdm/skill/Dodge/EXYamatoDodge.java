@@ -6,7 +6,6 @@ import io.netty.buffer.Unpooled;
 import java.util.UUID;
 
 import net.corruptdog.cdm.gameasset.CDSkills;
-import net.corruptdog.cdm.world.CDWeaponCapabilityPresets;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -29,7 +28,6 @@ import yesman.epicfight.network.client.CPExecuteSkill;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.skill.dodge.DodgeSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.entity.eventlistener.SkillConsumeEvent;
@@ -50,10 +48,6 @@ public class EXYamatoDodge extends DodgeSkill {
 
     public void onInitiate(SkillContainer container) {
         super.onInitiate(container);
-        if(!(container.getExecuter().getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == CorruptWeaponCategories.YAMATO)){
-            SkillContainer dodge = container.getExecuter().getSkillCapability().skillContainers[SkillCategories.DODGE.universalOrdinal()];
-            dodge.setSkill(CDSkills.EX_YAMATO_STEP);
-        }
 
         container.getExecuter().getEventListener().addEventListener(EventType.DEALT_DAMAGE_EVENT_DAMAGE, EVENT_UUID, (event) -> {
             container.getDataManager().setDataSync(TARGET_ID.get(), event.getTarget().getId(), event.getPlayerPatch().getOriginal());
@@ -110,6 +104,10 @@ public class EXYamatoDodge extends DodgeSkill {
     }
 
     public void executeOnServer(ServerPlayerPatch executer, FriendlyByteBuf args) {
+        if(!(executer.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == CorruptWeaponCategories.YAMATO)){
+            SkillContainer dodge = executer.getSkillCapability().skillContainers[SkillCategories.DODGE.universalOrdinal()];
+            dodge.setSkill(CDSkills.EX_YAMATO_STEP);
+        }
         SkillConsumeEvent event = new SkillConsumeEvent(executer, this, this.resource);
         executer.getEventListener().triggerEvents(EventType.SKILL_CONSUME_EVENT, event);
         if (!event.isCanceled()) {
