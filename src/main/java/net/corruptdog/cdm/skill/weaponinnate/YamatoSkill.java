@@ -13,11 +13,8 @@ import com.google.common.collect.Maps;
 import net.corruptdog.cdm.CDConfig;
 import net.corruptdog.cdm.gameasset.CDSkills;
 import net.corruptdog.cdm.main.CDmoveset;
-import net.corruptdog.cdm.network.server.NetworkManager;
-import net.corruptdog.cdm.network.server.SPAfterImagine;
 import net.corruptdog.cdm.skill.CDSkillDataKeys;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.corruptdog.cdm.gameasset.CorruptAnimations;
@@ -33,13 +30,11 @@ import org.spongepowered.asm.mixin.Unique;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.skill.*;
-import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.entity.eventlistener.ComboCounterHandleEvent;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 
 import static net.corruptdog.cdm.skill.CDSkillDataKeys.*;
@@ -64,8 +59,21 @@ public class YamatoSkill extends WeaponInnateSkill {
                 item.getOrCreateTag().putBoolean("unsheathed", false);
             }
             if (!container.getExecuter().isLogicalClient()) {
-                if (animation ==CorruptAnimations.YAMATO_AUTO3  || animation ==CorruptAnimations.YAMATO_AUTO4 || animation ==CorruptAnimations.YAMATO_POWER2) {
+                if (animation ==CorruptAnimations.YAMATO_AUTO3
+                        || animation ==CorruptAnimations.YAMATO_AUTO4
+                        || animation ==CorruptAnimations.YAMATO_POWER3
+                        || animation ==CorruptAnimations.YAMATO_POWER3_REPEAT
+                        || animation ==CorruptAnimations.YAMATO_POWER3_FINISH
+                        || animation ==CorruptAnimations.YAMATO_POWER2
+                        || animation ==CorruptAnimations.YAMATO_AIR1
+                        || animation ==CorruptAnimations.YAMATO_AIR2
+                        || animation ==CorruptAnimations.YAMATO_AIR3) {
                     item.getOrCreateTag().putBoolean("unsheathed", true);
+                }
+            }
+            if (container.getExecuter().getSkill(SkillSlots.DODGE).isActivated()) {
+                if (container.getExecuter() instanceof ServerPlayerPatch patch) {
+                    BasicAttack.setComboCounterWithEvent(ComboCounterHandleEvent.Causal.ANOTHER_ACTION_ANIMATION, patch, patch.getSkill(SkillSlots.BASIC_ATTACK), null, 0);
                 }
             }
             if (animation == CorruptAnimations.YAMATO_COUNTER2) {
@@ -106,6 +114,15 @@ public class YamatoSkill extends WeaponInnateSkill {
             } else if (id == CorruptAnimations.YAMATO_POWER3_FINISH.getId() || id == CorruptAnimations.YAMATO_POWER_DASH.getId()) {
                 container.getDataManager().setData(DAMAGES.get(), 0);
             }
+            else if (id == CorruptAnimations.YAMATO_DAWN.getId()) {
+            event.getPlayerPatch().reserveAnimation(CorruptAnimations.YAMATO_DAWN_END);
+            } else if (id == CorruptAnimations.YAMATO_DAWN_END.getId()) {
+            int end_recover = 1;
+            ServerPlayerPatch playerPatch = (ServerPlayerPatch) container.getExecuter();
+            if (playerPatch != null) {
+                this.stackCost(playerPatch, -end_recover);
+            }
+        }
         });
         listener.addEventListener(BASIC_ATTACK_EVENT, EVENT_UUID, (event) -> {
             float stamina = event.getPlayerPatch().getStamina();
@@ -115,14 +132,9 @@ public class YamatoSkill extends WeaponInnateSkill {
                     event.setCanceled(true);
                 }
             }
-            ServerPlayerPatch executer = event.getPlayerPatch();
-            int strike1_cost = 5;
-            int skillstack = event.getPlayerPatch().getSkill(CDSkills.YAMATOSKILL).getStack();
-            if (rl == CorruptAnimations.YAMATO_POWER0_2.getRegistryName() && skillstack >= 5) {
+            if (rl == CorruptAnimations.YAMATO_AIR3.getRegistryName()) {
                 event.setCanceled(true);
-                    POWER(executer);
-                this.stackCost(event.getPlayerPatch(), strike1_cost);
-
+                event.getPlayerPatch().playAnimationSynchronized(CorruptAnimations.YAMATO_TURN_SLASH, 0.1F);
             }
         });
         listener.addEventListener(DEALT_DAMAGE_EVENT_DAMAGE, EVENT_UUID, (event) -> {
@@ -252,7 +264,7 @@ public class YamatoSkill extends WeaponInnateSkill {
         executer.playAnimationSynchronized(CorruptAnimations.N_YAMATO_POWER0_1, 0.25F);
     }
     private void POWER(ServerPlayerPatch executer) {
-        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_JUDEGMENT_CUT, 0.0F);
+        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_JUDEGMENT_CUT_END, 0.0F);
     }
     @Unique
     public void Slow_time(ServerPlayerPatch container) {
@@ -263,13 +275,19 @@ public class YamatoSkill extends WeaponInnateSkill {
             }
         }
     }
+    private void RISING_STAR(ServerPlayerPatch executer) {
+        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_RISING_STAR, 0.25F);
+    }
+    private void DAWN(ServerPlayerPatch executer) {
+        executer.playAnimationSynchronized(CorruptAnimations.YAMATO_DAWN, 0.25F);
+    }
     @Override
     public boolean canExecute(PlayerPatch<?> executer) {
         ResourceLocation rl = executer.getAnimator().getPlayerFor(null).getAnimation().getRegistryName();
         if (rl == CorruptAnimations.YAMATO_POWER3.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName()
                 || rl == CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT.getRegistryName() || rl == CorruptAnimations.YAMATO_ACTIVE_GUARD_HIT2.getRegistryName()
-                || rl == CorruptAnimations.YAMATO_COUNTER1.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER0_2.getRegistryName()
-                || rl == CorruptAnimations.YAMATO_TWIN_SLASH.getRegistryName()) {
+                || rl == CorruptAnimations.YAMATO_COUNTER1.getRegistryName() || rl == CorruptAnimations.YAMATO_POWER0_2.getRegistryName()  || rl == CorruptAnimations.YAMATO_POWER1.getRegistryName()
+                || rl == CorruptAnimations.YAMATO_TWIN_SLASH.getRegistryName()   || rl == CorruptAnimations.YAMATO_TURN_SLASH.getRegistryName() || rl == CorruptAnimations.YAMATO_RISING_STAR.getRegistryName() ) {
             return true;
         } else if (executer.isLogicalClient()) {
             return executer.getEntityState().canBasicAttack();
@@ -328,6 +346,11 @@ public class YamatoSkill extends WeaponInnateSkill {
                 actionMap.put(CorruptAnimations.YAMATO_AUTO1.getRegistryName(), () -> POWER_1(execute));
                 actionMap.put(CorruptAnimations.YAMATO_AUTO2.getRegistryName(), () -> POWER_2(execute));
                 actionMap.put(CorruptAnimations.YAMATO_AUTO3.getRegistryName(), () -> POWER_3(execute));
+                actionMap.put(CorruptAnimations.YAMATO_POWER1.getRegistryName(), () -> RISING_STAR(execute));
+                actionMap.put(CorruptAnimations.YAMATO_AIR1.getRegistryName(), () -> DAWN(execute));
+                actionMap.put(CorruptAnimations.YAMATO_AIR2.getRegistryName(), () -> DAWN(execute));
+                actionMap.put(CorruptAnimations.YAMATO_AIR3.getRegistryName(), () -> DAWN(execute));
+                actionMap.put(CorruptAnimations.YAMATO_RISING_STAR.getRegistryName(), () -> DAWN(execute));
                 actionMap.put(CorruptAnimations.YAMATO_TWIN_SLASH.getRegistryName(), () -> RISING(execute));
                 actionMap.put(CorruptAnimations.YAMATO_TURN_SLASH.getRegistryName(), () -> POWER_DASHS(execute));
                 actionMap.put(CorruptAnimations.YAMATO_POWER3.getRegistryName(), () -> POWER_DASHS(execute));

@@ -43,14 +43,17 @@ import javax.annotation.Nullable;
 public class KnockbackAnimation extends AttackAnimation {
 
 
+    public KnockbackAnimation(float convertTime, float antic, float contact, float recovery, @Nullable Collider collider, Joint colliderJoint, String path, Armature armature) {
+        this(convertTime, antic, antic, contact, recovery, collider, colliderJoint, path, armature);
+    }
+
     public KnockbackAnimation(float convertTime, float antic, float preDelay, float contact, float recovery, @Nullable Collider collider, Joint colliderJoint, String path, Armature armature) {
         this(convertTime, path, armature, new AttackAnimation.Phase(0.0F, antic, preDelay, contact, recovery, Float.MAX_VALUE, colliderJoint, collider));
     }
-
     public KnockbackAnimation(float convertTime, String path, Armature armature, AttackAnimation.Phase... phases) {
         super(convertTime, path, armature, phases);
         this.newTimePair(0.0F, Float.MAX_VALUE);
-        this.addStateRemoveOld(EntityState.TURNING_LOCKED, false);
+        this.addStateRemoveOld(EntityState.TURNING_LOCKED, true);
         this.addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_LOC_TARGET);
         this.addProperty(ActionAnimationProperty.COORD_SET_TICK, (self, entitypatch, transformSheet) -> {
             LivingEntity attackTarget = entitypatch.getTarget();

@@ -27,7 +27,10 @@ import yesman.epicfight.world.damagesource.EpicFightDamageType;
 
 public class DodgeAttackAnimation extends AttackAnimation {
     public static final Function<DamageSource, AttackResult.ResultType> DODGEABLE_SOURCE_VALIDATOR = (damagesource) -> {
-        if (damagesource.getEntity() != null && !damagesource.is(DamageTypeTags.IS_EXPLOSION) && !damagesource.is(DamageTypes.MAGIC) && !damagesource.is(DamageTypeTags.BYPASSES_ARMOR)
+        if (damagesource.getEntity() != null
+                && !damagesource.is(DamageTypeTags.IS_EXPLOSION)
+                && !damagesource.is(DamageTypes.MAGIC)
+                && !damagesource.is(DamageTypeTags.BYPASSES_ARMOR)
                 && !damagesource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damagesource.is(EpicFightDamageType.BYPASS_DODGE)) {
             return AttackResult.ResultType.MISSED;
         }

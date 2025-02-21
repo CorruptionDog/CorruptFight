@@ -14,6 +14,7 @@ import net.corruptdog.cdm.world.Render.KtanaSheathRenderer;
 import net.corruptdog.cdm.world.Render.YamatoRender;
 import net.corruptdog.cdm.world.item.CDAddonItems;
 import net.corruptdog.cdm.world.item.CorruptfightModTabs;
+import net.corruptdog.cdm.world.item.YamatoStyle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -50,9 +51,11 @@ import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSkills;
+import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.Style;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 import java.lang.reflect.Field;
@@ -84,6 +87,7 @@ public class CDmoveset
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
         WeaponCategory.ENUM_MANAGER.registerEnumCls(MOD_ID, CorruptWeaponCategories.class);
+        YamatoStyle.ENUM_MANAGER.registerEnumCls(MOD_ID,YamatoStyle.class);
         CDAddonItems.ITEMS.register(bus);
         CorruptSound.SOUNDS.register(bus);
         CDSkillDataKeys.DATA_KEYS.register(bus);

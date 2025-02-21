@@ -4,6 +4,7 @@ import java.util.Set;
 
 import net.corruptdog.cdm.main.CDmoveset;
 import net.corruptdog.cdm.skill.Dodge.Dodge;
+import net.corruptdog.cdm.skill.Dodge.EXYamatoDodge;
 import net.corruptdog.cdm.skill.Dodge.SStep;
 import net.corruptdog.cdm.skill.Passive.BloodWolf;
 import net.corruptdog.cdm.skill.identity.FatalFlash;
@@ -43,6 +44,8 @@ public class CDSkills {
     public static Skill BLOODWOLF;
     public static Skill BLADE_RUSH;
     public static Skill YAMATO_STEP;
+    public static Skill EX_YAMATO_STEP;
+
     public static Skill SSTEP;
     public static Skill BSTEP;
     public static Skill WOLF_DODGE;
@@ -59,6 +62,8 @@ public class CDSkills {
 
         SkillBuildEvent.ModRegistryWorker modRegistry = build.createRegistryWorker(CDmoveset.MOD_ID);
         YAMATO_STEP = modRegistry.build("yamato_step", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.YAMATO_STEP_FORWARD, () -> CorruptAnimations.YAMATO_STEP_BACKWARD, () -> CorruptAnimations.YAMATO_STEP_LEFT, () -> CorruptAnimations.YAMATO_STEP_RIGHT));
+        EX_YAMATO_STEP = modRegistry.build("ex_yamato_step", EXYamatoDodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.YAMATO_STEP_FORWARD, () -> CorruptAnimations.YAMATO_STEP_BACKWARD, () -> CorruptAnimations.YAMATO_STEP_LEFT, () -> CorruptAnimations.YAMATO_STEP_RIGHT,() -> CorruptAnimations.YAMATO_CHASE));
+
         SSTEP = modRegistry.build("sstep", Dodge::new, DodgeSkill.createDodgeBuilder().setAnimations(() -> CorruptAnimations.SSTEP_FORWARD, () -> CorruptAnimations.SSTEP_BACKWARD, () -> CorruptAnimations.SSTEP_LEFT, () -> CorruptAnimations.SSTEP_RIGHT));
         GUARDPARRY = modRegistry.build("guardparry", GuardParrySkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION_INFINITE));
         BLOODWOLF = modRegistry.build( "bloodwolf", BloodWolf::new, PassiveSkill.createIdentityBuilder());

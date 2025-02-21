@@ -1,6 +1,7 @@
 package net.corruptdog.cdm.skill;
 
 import net.corruptdog.cdm.main.CDmoveset;
+import net.corruptdog.cdm.skill.Dodge.EXYamatoDodge;
 import net.corruptdog.cdm.skill.Dodge.SStep;
 import net.corruptdog.cdm.skill.Passive.BloodWolf;
 import net.corruptdog.cdm.skill.identity.FatalFlash;
@@ -45,8 +46,8 @@ public class CDSkillDataKeys {
     public static final RegistryObject<SkillDataKey<Boolean>> POWER = DATA_KEYS.register("power", () ->
             SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
 
-//    public static final RegistryObject<SkillDataKey<Boolean>> FATAL = DATA_KEYS.register("fatal", () ->
-//            SkillDataKey.createBooleanKey(false, false, YamatoSkill.class));
+    public static final RegistryObject<SkillDataKey<Integer>> TARGET_ID = DATA_KEYS.register("target_id", () ->
+            SkillDataKey.createIntKey(0, false, EXYamatoDodge.class));
 
     public static final RegistryObject<SkillDataKey<Integer>> RUSH_COMBO = DATA_KEYS.register("rush_combo", () ->
             SkillDataKey.createIntKey(0, false, DualDaggerSkill.class));

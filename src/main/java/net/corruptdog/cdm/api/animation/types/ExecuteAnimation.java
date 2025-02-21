@@ -1,29 +1,35 @@
 package net.corruptdog.cdm.api.animation.types;
 
-import java.util.Locale;
-import java.util.Optional;
-import net.minecraft.world.phys.Vec3;
+import java.util.function.Function;
+
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
-import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
-import yesman.epicfight.api.animation.types.EntityState.StateFactor;
 import yesman.epicfight.api.animation.types.StateSpectrum;
 import yesman.epicfight.api.client.animation.Layer;
-import yesman.epicfight.api.client.animation.property.JointMaskEntry;
 import yesman.epicfight.api.model.Armature;
-import yesman.epicfight.api.utils.datastruct.TypeFlexibleHashMap;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
+import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.config.EpicFightOptions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.EpicFightDamageType;
 import yesman.epicfight.world.gamerule.EpicFightGamerules;
 
-import static net.corruptdog.cdm.api.animation.types.DodgeAttackAnimation.DODGEABLE_SOURCE_VALIDATOR;
 
 public class ExecuteAnimation extends AttackAnimation {
 
+    public static final Function<DamageSource, AttackResult.ResultType> DODGEABLE_SOURCE_VALIDATOR = (damagesource) -> {
+        if (damagesource.getEntity() != null
+                && !damagesource.is(DamageTypeTags.BYPASSES_ARMOR)
+                && !damagesource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damagesource.is(EpicFightDamageType.BYPASS_DODGE)) {
+            return AttackResult.ResultType.MISSED;
+        }
 
+        return AttackResult.ResultType.SUCCESS;
+    };
     protected final StateSpectrum.Blueprint stateUtilsBlueprint = new StateSpectrum.Blueprint();
     private final StateSpectrum stateUtils = new StateSpectrum();
     protected final float attackstart;
@@ -88,6 +94,7 @@ public class ExecuteAnimation extends AttackAnimation {
                 .newTimePair(attackwinclose ,skillwinclose)
                 .addState(EntityState.PHASE_LEVEL, 3)
                 .addState(EntityState.TURNING_LOCKED, true)
+
                 .newTimePair(0.0F, Float.MAX_VALUE)
                 .addState(EntityState.ATTACK_RESULT, DODGEABLE_SOURCE_VALIDATOR);
 

@@ -1,8 +1,10 @@
 package net.corruptdog.cdm.gameasset;
 
+import net.minecraft.resources.ResourceLocation;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.collider.MultiOBBCollider;
 import yesman.epicfight.api.collider.OBBCollider;
+import yesman.epicfight.main.EpicFightMod;
 
 public class CorruptCollider {
     public static final Collider GREATSWORD = new MultiOBBCollider(3, 0.2, 0.8, 1.0, 0.0, 0.0, -1.2);
@@ -21,15 +23,16 @@ public class CorruptCollider {
     public static final Collider YAMATO_P0 = new OBBCollider(1.7D, 1.0D, -3.5D, 0.0D, 1.0D, -2.5D);
     public static final Collider YAMATO_DASH_FINISH = new OBBCollider(1.7D, 1.0D, 3.5D, 0.0D, 1.0D, 1.0D);
     public static final Collider EXECUTE = new MultiOBBCollider(3, 0.4D, 0.4D, 1.5D, 0.0D, 0.0D, -0.5D);
-    public static final Collider EXECUTE_SECOND = new MultiOBBCollider(2, 0.8, 0.8, 2.0, 0.0, 0.0, -0.66);
+    public static final Collider EXECUTE_SECOND = new MultiOBBCollider(2, 0.8, 0.8, 2.0, 0.0, 1.0D, -1.0D);
+
     public static final Collider BLADE_RUSH = new OBBCollider(0.8D, 0.5D, 0.95D, 0.0D, 1.0D, -1.2D);
-    public static final Collider KICK = new MultiOBBCollider(4, 0.4, 0.4, 0.4, 0.0, 0.6, 0.0);
-    public static final Collider KICK_HUGE = new MultiOBBCollider(4, 0.8, 0.8, 0.8, 0.0, 0.9, 0.0);
-    public static final Collider ANTIMANER = new MultiOBBCollider(4, 0.8, 2.0, 0.8, 0.0, 0.0, 0.0);
-    public static final Collider PARTYTABLE = new OBBCollider(1.7D, 1.0D, 2.0D, 0.0D, 1.0D, -1.0D);
-    public static final Collider CONQUEROR_HAKI = new OBBCollider(24.0, 4.5, 24.0, 0.0, 1.75, 0.0);
+
     public static final Collider RISING = new OBBCollider(1.7D, 1.0D, -3.5D, 0.0D, 1.0D, -2.5D);
     public static final Collider POWER = new OBBCollider(9, 3.5, 9, 0.0, 3, 0);
+    public static final Collider DAWN = new OBBCollider(2.5D, 0.6D, 2.0D, 0.0D, 0.5D, -1.75D);
+    public static final Collider RISING_STAR = new MultiOBBCollider(3, 0.2D, 0.8D, 2.5D, 0.0D, 0.0D, -0.5D);
+
+    public static final Collider RISING_STAR_SECOND = new OBBCollider(3.0D, 0.4D, 2.0D, 0.0D, 1.2D, -1.0D);
 
     public CorruptCollider() {
     }
