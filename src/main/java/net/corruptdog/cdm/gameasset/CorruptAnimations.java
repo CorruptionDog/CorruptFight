@@ -805,7 +805,7 @@ public class CorruptAnimations {
                         AnimationEvent.TimeStampedEvent.create(1.93F, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.SERVER).params(CorruptSound.YAMATO_IN.get()),
                         AnimationEvent.TimeStampedEvent.create(1.93F, YAMATO_IN, AnimationEvent.Side.SERVER));
 
-        YAMATO_DAWN = new KnockbackAnimation(0.05F, 0.6F, 1.2F, 3F, CorruptCollider.DAWN, biped.rootJoint, "biped/new/yamato/skill/yamato_dawn", biped)
+        YAMATO_DAWN = new KnockbackAnimation(0.05F, 0.8F, 1.2F, 3F, CorruptCollider.DAWN, biped.rootJoint, "biped/new/yamato/skill/yamato_dawn", biped)
                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F))
                 .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
@@ -1299,10 +1299,10 @@ public class CorruptAnimations {
                 .addState(EntityState.MOVEMENT_LOCKED, true);
 
         YAMATO_AIR1 = new KnockbackAnimation(0.02F,  "biped/new/yamato/ex_yamato/yamato_air1", biped,
-                (new AttackAnimation.Phase(0.0F, 0.1F, 0.40F, 0.45F, 0.45F, biped.toolR, CorruptCollider.YAMATO_P))
+                (new AttackAnimation.Phase(0.0F, 0.1F, 0.40F, 0.45F, 1.0F, biped.toolR, CorruptCollider.YAMATO_P))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 3.5F)))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 2F)))
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.5F)
                 .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
@@ -1319,10 +1319,10 @@ public class CorruptAnimations {
                         AnimationEvent.TimeStampedEvent.create(1.0F,COMBO_BREAK, AnimationEvent.Side.SERVER))
                 .addState(EntityState.MOVEMENT_LOCKED, true);
         YAMATO_AIR2 = new KnockbackAnimation(0.02F,  "biped/new/yamato/ex_yamato/yamato_air2", biped,
-                (new AttackAnimation.Phase(0.0F, 0.05F, 0.45F, 0.45F, 0.45F, biped.toolR, CorruptCollider.YAMATO_P))
+                (new AttackAnimation.Phase(0.0F, 0.05F, 0.45F, 0.45F, 1.1F, biped.toolR, CorruptCollider.YAMATO_P))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 3.5F)))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 4F)))
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.5F)
                 .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
@@ -1339,10 +1339,10 @@ public class CorruptAnimations {
                         AnimationEvent.TimeStampedEvent.create(1.0F,COMBO_BREAK, AnimationEvent.Side.SERVER) )
                 .addState(EntityState.MOVEMENT_LOCKED, true);
         YAMATO_AIR3 = new KnockbackAnimation(0.1F,  "biped/new/yamato/ex_yamato/yamato_air3", biped,
-                (new AttackAnimation.Phase(0.0F, 0.05F, 0.45F, 0.60F, 0.6F, biped.toolR, CorruptCollider.YAMATO_P))
+                (new AttackAnimation.Phase(0.0F, 0.05F, 0.45F, 0.60F, 1.3F, biped.toolR, CorruptCollider.YAMATO_P))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.25F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 3.5F)))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 2F)))
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.3F)
                 .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5F)
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)

@@ -11,7 +11,7 @@ license="All Rights Reserved"
 # The modid of the mod
 modId="cdmoveset" #mandatory
 # The version number of the mod
-version="1.0" #mandatory
+version="1.19" #mandatory
 
 displayName="EpicFight-Resurrection" #mandatory
 
