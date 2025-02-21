@@ -39,10 +39,8 @@ public class YamatoPassive extends Skill {
     public void onRemoved(SkillContainer container) {
         PlayerPatch executer = container.getExecuter();
         SkillContainer exdodgeskill = executer.getSkillCapability().skillContainers[SkillCategories.DODGE.universalOrdinal()];
-
         executer.getEventListener().removeListener(EventType.ACTION_EVENT_SERVER, EVENT_UUID);
-
-        if(exdodgeskill.hasSkill(CDSkills.YAMATO_STEP)){
+        if(exdodgeskill.hasSkill(CDSkills.EX_YAMATO_STEP)){
             exdodgeskill.setSkill(CDSkills.YAMATO_STEP);
         }
     }

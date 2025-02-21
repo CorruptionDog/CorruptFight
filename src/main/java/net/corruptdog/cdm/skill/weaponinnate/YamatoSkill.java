@@ -352,7 +352,7 @@ public class YamatoSkill extends WeaponInnateSkill {
                 actionMap.put(CorruptAnimations.YAMATO_AIR3.getRegistryName(), () -> DAWN(execute));
                 actionMap.put(CorruptAnimations.YAMATO_RISING_STAR.getRegistryName(), () -> DAWN(execute));
                 actionMap.put(CorruptAnimations.YAMATO_TWIN_SLASH.getRegistryName(), () -> RISING(execute));
-                actionMap.put(CorruptAnimations.YAMATO_TURN_SLASH.getRegistryName(), () -> POWER_DASHS(execute));
+                actionMap.put(CorruptAnimations.YAMATO_TURN_SLASH.getRegistryName(), () -> POWER_DASH(execute));
                 actionMap.put(CorruptAnimations.YAMATO_POWER3.getRegistryName(), () -> POWER_DASHS(execute));
                 actionMap.put(CorruptAnimations.YAMATO_POWER3_REPEAT.getRegistryName(), () -> POWER_DASHS(execute));
                 actionMap.put(CorruptAnimations.YAMATO_STRIKE1.getRegistryName(), () -> POWER_2(execute));

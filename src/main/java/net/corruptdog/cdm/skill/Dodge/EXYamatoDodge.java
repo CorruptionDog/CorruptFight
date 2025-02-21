@@ -48,7 +48,12 @@ public class EXYamatoDodge extends DodgeSkill {
 
     public void onInitiate(SkillContainer container) {
         super.onInitiate(container);
-
+        container.getExecuter().getEventListener().addEventListener(EventType.ACTION_EVENT_SERVER, EVENT_UUID, (event) -> {
+            if(event.getPlayerPatch().getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != CorruptWeaponCategories.YAMATO)  {
+                SkillContainer dodge = event.getPlayerPatch().getSkillCapability().skillContainers[SkillCategories.DODGE.universalOrdinal()];
+                dodge.setSkill(CDSkills.YAMATO_STEP);
+            }
+        });
         container.getExecuter().getEventListener().addEventListener(EventType.DEALT_DAMAGE_EVENT_DAMAGE, EVENT_UUID, (event) -> {
             container.getDataManager().setDataSync(TARGET_ID.get(), event.getTarget().getId(), event.getPlayerPatch().getOriginal());
         });
@@ -57,6 +62,7 @@ public class EXYamatoDodge extends DodgeSkill {
     public void onRemoved(SkillContainer container) {
         super.onRemoved(container);
         container.getExecuter().getEventListener().removeListener(EventType.DEALT_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
+        container.getExecuter().getEventListener().removeListener(EventType.ACTION_EVENT_SERVER, EVENT_UUID);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -104,10 +110,6 @@ public class EXYamatoDodge extends DodgeSkill {
     }
 
     public void executeOnServer(ServerPlayerPatch executer, FriendlyByteBuf args) {
-        if(!(executer.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == CorruptWeaponCategories.YAMATO)){
-            SkillContainer dodge = executer.getSkillCapability().skillContainers[SkillCategories.DODGE.universalOrdinal()];
-            dodge.setSkill(CDSkills.EX_YAMATO_STEP);
-        }
         SkillConsumeEvent event = new SkillConsumeEvent(executer, this, this.resource);
         executer.getEventListener().triggerEvents(EventType.SKILL_CONSUME_EVENT, event);
         if (!event.isCanceled()) {

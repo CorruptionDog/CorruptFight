@@ -7,6 +7,7 @@
   "epicfight.weapon_category.s_sword": "强化单手剑",
   "epicfight.weapon_category.s_tachi": "强化太刀",
   "epicfight.weapon_category.yamato": "阎魔刀",
+  "epicfight.style.yamato": "Yamato",
   "epicfight.weapon_category.great_tachi": "重太刀",
   "item.cdmoveset.katana": "武士刀",
   "item.cdmoveset.katana.tooltip": "5秒不攻击后收刀，下次的攻击将会强化.技能也会得到强化",
@@ -70,6 +71,8 @@
   "skill.cdmoveset.bstep.tooltip": "更好的跨步.\n\n（耐力：%d）",
   "skill.cdmoveset.yamatoskill": "普通技能在使用过程的准备阶段受到敌人的攻击可以反击,1a,2a,3a后均可释放追加连段,在招架之后可以释放虚幻刀界进行反击",
   "skill.cdmoveset.yamatoskill.tooltip": "根据攻击的不同,打出的连击也不同",
+  "skill.cdmoveset.ex_yamato_step": "Yamato step(无法学习)",
+  "skill.cdmoveset.ex_yamato_step.tooltip": "阎魔刀专属闪避技能 (没有阎魔刀,你无法使用此技能,当持有阎魔刀时,并且闪避为阎魔刀闪避时,此技能会自动激活)",
   "skill.cdmoveset.greeat_tachiskill": "血刃裂空",
   "skill.cdmoveset.greeat_tachiskill.tooltip": "短暂的蓄力之后,眩晕敌人,造成致命攻击,并有效地击退敌人"
 }

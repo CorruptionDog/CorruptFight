@@ -1339,7 +1339,7 @@ public class CorruptAnimations {
                         AnimationEvent.TimeStampedEvent.create(1.0F,COMBO_BREAK, AnimationEvent.Side.SERVER) )
                 .addState(EntityState.MOVEMENT_LOCKED, true);
         YAMATO_AIR3 = new KnockbackAnimation(0.1F,  "biped/new/yamato/ex_yamato/yamato_air3", biped,
-                (new AttackAnimation.Phase(0.0F, 0.05F, 0.45F, 0.60F, 1.3F, biped.toolR, CorruptCollider.YAMATO_P))
+                (new AttackAnimation.Phase(0.0F, 0.1F, 0.45F, 0.60F, 1.3F, biped.toolR, CorruptCollider.YAMATO_P))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.25F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter( 2F)))
